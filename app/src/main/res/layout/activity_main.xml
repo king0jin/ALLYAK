@@ -6,6 +6,16 @@
     android:background="@color/maincolor"
     tools:context=".MainActivity">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_allyak"
+            android:contentDescription="해당 view는 ALLYAK로고를 보여줍니다."
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

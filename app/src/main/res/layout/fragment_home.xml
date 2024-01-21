@@ -3,11 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FBFBFB"
     tools:context=".HomeFragment">
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="THis is Home" />
-
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="약 찾기"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="70dp"
+            android:textSize="35dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="190dp"
+            android:orientation="horizontal">
+            <View
+                android:id="@+id/searchSymptom"
+                android:layout_width="145dp"
+                android:layout_height="161dp"
+                android:layout_marginLeft="53dp"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/rect1"
+                android:elevation="6dp">
+            </View>
+            <LinearLayout
+                android:layout_width="155dp"
+                android:layout_height="190dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical">
+                <View
+                    android:id="@+id/searchName"
+                    android:layout_width="145dp"
+                    android:layout_height="77dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rect1"
+                    android:elevation="6dp"/>
+                <View
+                    android:id="@+id/searchShape"
+                    android:layout_width="145dp"
+                    android:layout_height="77dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rect1"
+                    android:elevation="6dp"/>
+            </LinearLayout>
+            </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

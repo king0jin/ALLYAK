@@ -27,9 +27,9 @@ class MainActivity : AppCompatActivity() {
             true
         }
         // main에서 로그인 화면으로 자동 전환 코드
-        val intent = Intent(this, kakaoLogin::class.java)
+/*        val intent = Intent(this, kakaoLogin::class.java)
         startActivity(intent)
-        finish()
+        finish()*/
         //bottomNav code
         bottomNav = findViewById(R.id.bottomNav) as BottomNavigationView
         bottomNav.setSelectedItemId(R.id.home)

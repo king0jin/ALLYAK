@@ -1,8 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Allyak" parent="Theme.Material3.DayNight.NoActionBar">
+    <!--Theme.Material3.DayNight.NoActionBar-->
+    <style name="Base.Theme.Allyak" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/maincolor</item>
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="logo">@mipmap/ic_launcher</item>
+        <item name="logoDescription">@string/app_name</item>
     </style>
 
     <style name="Theme.Allyak" parent="Base.Theme.Allyak" />

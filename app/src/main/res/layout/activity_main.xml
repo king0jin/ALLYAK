@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/maincolor"
-    tools:context=".MainActivity">
-
-    <LinearLayout
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/maincolor"/>
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_allyak"
-            android:contentDescription="해당 view는 ALLYAK로고를 보여줍니다."
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
+            android:layout_weight="1"
+            android:orientation="vertical" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:backgroundTint="@color/maincolor"
+            app:itemActiveIndicatorStyle="@android:color/transparent"
+            app:itemIconTint="@drawable/selector"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/navigation_bottom" />
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

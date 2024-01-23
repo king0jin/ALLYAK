@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 
 class CommunityFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    // Access a Cloud Firestore instance from your Activity
+
+    //val db = Firebase.firestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,56 +1,36 @@
 package com.example.allyak
 
-import android.app.Application
-import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.content.pm.Signature
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import com.kakao.sdk.auth.model.OAuthToken
 
 
-@Suppress("DEPRECATION")
 class kakaoLogin : AppCompatActivity(){
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)
-
-        Log.d("getKeyHash", "" + getKeyHash(this))
-
-    }
-
-    private fun getKeyHash(context: Context): String? {
-        val pm: PackageManager = context.packageManager
-        try {
-            val packageInfo: PackageInfo = pm.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
-                ?: return null
-            for (signature: Signature in packageInfo.signatures) {
-                try {
-                    val md: MessageDigest = MessageDigest.getInstance("SHA")
-                    md.update(signature.toByteArray())
-                    return Base64.encodeToString(md.digest(), Base64.NO_WRAP)
-                } catch (e: NoSuchAlgorithmException) {
-                    e.printStackTrace()
-                }
+        
+        //카카오 로그인
+        //카카오계정으로 로그인 공통 callback 구성
+        //카카오톡으로 로그인 할 수 없어 카카오톡계정으로 로그인할 경우 사용
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                //로그인 실패
+                Log.e("kakaoLogin", "카카오계정으로 로그인 실패", error)
             }
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+            else if (token != null) {
+                //로그인 성공
+                Log.i("kakaoLogin", "카카오 계정으로 로그인 성공 ${token.accessToken}")
+                //HomeFragment로 이동하는 코드
+
+
+            }
         }
-        return null
+
     }
 
-}
 
-class LoginScreen : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        // Kakao Sdk 초기화
-        com.kakao.sdk.common.KakaoSdk.init(this, "@string/kakao_app_key")
-    }
 }

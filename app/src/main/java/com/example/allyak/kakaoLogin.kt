@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
-import com.kakao.sdk.common.util.Utility.getKeyHash
+import androidx.appcompat.app.AppCompatActivity
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+
 
 @Suppress("DEPRECATION")
 class kakaoLogin : AppCompatActivity(){
@@ -22,8 +22,10 @@ class kakaoLogin : AppCompatActivity(){
         setContentView(R.layout.activity_kakao_login)
 
         Log.d("getKeyHash", "" + getKeyHash(this))
+
     }
-    fun getKeyHash(context: Context): String? {
+
+    private fun getKeyHash(context: Context): String? {
         val pm: PackageManager = context.packageManager
         try {
             val packageInfo: PackageInfo = pm.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)

@@ -5,6 +5,7 @@ import android.content.Context
 import com.kakao.sdk.common.KakaoSdk
 
 class LoginApplication : Application(){
+
     companion object{
         var appContext : Context? = null
     }
@@ -12,5 +13,11 @@ class LoginApplication : Application(){
         super.onCreate()
         appContext = this
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
+
+
+
+
+
     }
+
 }

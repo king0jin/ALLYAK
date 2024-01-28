@@ -1,6 +1,5 @@
 package com.example.allyak
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -32,10 +31,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("Allyak", "Toolbar Clicked")
             true
         }
-        // main에서 로그인 화면으로 자동 전환 코드
-        val intent = Intent(this, kakaoLogin::class.java)
-        startActivity(intent)
-        finish()
 
         //bottomNav code
         bottomNav = findViewById(R.id.bottomNav) as BottomNavigationView

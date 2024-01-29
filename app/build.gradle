@@ -56,6 +56,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation("com.google.firebase:firebase-firestore")
     // Kakao Login
-    implementation 'com.kakao.sdk:v2-user:2.10.0'
+    implementation 'com.kakao.sdk:v2-user:2.19.0'
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.27.0'
 }

@@ -5,8 +5,13 @@
     android:layout_height="match_parent"
     android:background="#FBFBFB"
     tools:context=".MapFragment">
-    <TextView
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_view"
+        android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="map_fragment" />
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="56dp"/>
+
 </FrameLayout>

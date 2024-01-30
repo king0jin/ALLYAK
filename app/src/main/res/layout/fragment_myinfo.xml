@@ -3,12 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FBFBFB"
     tools:context=".MyinfoFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="myInfo_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:text="현재 복용 중인 약"
+            android:fontFamily="@font/notoebold"
+            android:textColor="@color/black"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="40dp"
+            android:textSize="25dp"/>
 
+        <LinearLayout
+            android:id="@+id/medicineList"
+            android:layout_width="304dp"
+            android:layout_height="170dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/rect1"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="73dp"
+            android:text="부작용이 있는 약"
+            android:fontFamily="@font/notoebold"
+            android:textColor="@color/black"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="50dp"
+            android:textSize="25dp"/>
+
+        <LinearLayout
+            android:id="@+id/sideeffectList"
+            android:layout_width="304dp"
+            android:layout_height="170dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/rect1"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="#3B7CFC"
+        android:src="@drawable/ic_plus"
+        app:borderWidth="0dp"
+        android:contentDescription="약 정보 추가하는 버튼 입니다."/>
 </FrameLayout>

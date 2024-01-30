@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:name=".LoginApplication"
         android:allowBackup="true"
@@ -18,10 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Allyak"
         tools:targetApi="31">
-
+        <activity
+            android:name=".AddmyinfoActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -32,9 +40,16 @@
         <meta-data
             android:name="com.naver.maps.map.CLIENT_TYPE"
             android:value="gov" />
+
         <activity
             android:name=".kakaoLogin"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AddpostActivity"
             android:exported="false" />
@@ -46,8 +61,7 @@
             android:exported="false" />
         <activity
             android:name=".SearchshapeActivity"
-            android:exported="false" />
-        <!-- 카카오 로그인, 인가코드를 받기 위한 액티비티 -->
+            android:exported="false" /> <!-- 카카오 로그인, 인가코드를 받기 위한 액티비티 -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -67,8 +81,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEFEF"
+    android:orientation="vertical"
+    tools:context=".AddmyinfoActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/maincolor"/>
+    <LinearLayout
+        android:layout_width="355dp"
+        android:layout_height="490dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/rect2"
+        android:elevation="20dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="40dp">
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:text="현재 복용 약"
+                android:background="@drawable/emptyround"
+                android:fontFamily="@font/notobold"
+                android:layout_margin="3dp"/>
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:background="@drawable/emptyround"
+                android:text="부작용이 있는 약"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/notobold"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rect1"
+                android:layout_marginTop="10dp"
+                android:hint="약 이름"
+                android:paddingStart="25dp"
+                android:layout_gravity="center" />
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="230dp"
+                android:background="@drawable/rect1"
+                android:layout_marginTop="10dp"
+                android:hint="메모"
+                android:paddingStart="25dp"
+                android:paddingBottom="170dp"
+                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="16dp">
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:text="확인"
+                    android:fontFamily="@font/notobold"
+                    android:background="@drawable/buttonround2"
+                    android:layout_margigTop="1dp"
+                    />
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:text="취소"
+                    android:fontFamily="@font/notobold"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/buttonround1"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

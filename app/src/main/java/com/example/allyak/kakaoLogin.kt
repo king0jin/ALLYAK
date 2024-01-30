@@ -13,7 +13,6 @@ class kakaoLogin : AppCompatActivity(){
 
     private var kakaoLoginButton: AppCompatImageButton? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)

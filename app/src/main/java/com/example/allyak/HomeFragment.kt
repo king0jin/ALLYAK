@@ -1,5 +1,7 @@
 package com.example.allyak
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,19 +25,17 @@ class HomeFragment : Fragment() {
         searchName = view.findViewById(R.id.searchName)
         searchShape = view.findViewById(R.id.searchShape)
         searchSymptom.setOnClickListener {
-            loadFragment(SearchSymptomFragment())
+            loadActivity(SearchsymptomActivity())
         }
         searchName.setOnClickListener {
-            loadFragment(SearchNameFragment())
+            loadActivity(SearchnameActivity())
         }
         searchShape.setOnClickListener {
-            loadFragment(SearchShapeFragment())
+            loadActivity(SearchshapeActivity())
         }
     }
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameLayout, fragment)
-        transaction?.addToBackStack(null) //move to previous fragment
-        transaction?.commit()
+    private fun loadActivity(activity: Activity) {
+        val intent = Intent(this.requireContext(), activity::class.java)
+        startActivity(intent)
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBFBFB"
-    tools:context=".SearchNameFragment">
+    tools:context=".CommunityFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             app:queryBackground="@null"
             app:queryHint="게시글 검색" />
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -35,13 +35,13 @@
             android:text="인기 게시글"
             android:textColor="@color/black"
             android:textSize="20dp" />
-        <View
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="335dp"
             android:layout_height="50dp"
             android:layout_marginLeft="37dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/rect2"/>
-        <View
+        <LinearLayout
             android:layout_width="335dp"
             android:layout_height="530dp"
             android:layout_marginLeft="37dp"
@@ -52,7 +52,7 @@
         </ScrollView>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/addPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"

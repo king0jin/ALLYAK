@@ -146,12 +146,21 @@
             android:textColor="@color/black"
             android:layout_marginLeft="55dp"
             android:textSize="25dp"/>
-        <View
+        <LinearLayout
             android:id="@+id/todayList"
             android:layout_width="304dp"
             android:layout_height="160dp"
             android:layout_marginLeft="53dp"
             android:background="@drawable/rect1">
-        </View>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/todayRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:scrollbars="none"/>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

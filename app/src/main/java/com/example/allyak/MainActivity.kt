@@ -1,5 +1,6 @@
 package com.example.allyak
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +17,9 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val intent = Intent(this, kakaoLogin::class.java)
+        startActivity(intent)
+        finish()
         //키해시얻기
         val keyHash = Utility.getKeyHash(this)
         Log.d("getHash", keyHash)

@@ -1,12 +1,15 @@
 package com.example.allyak
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MyinfoFragment : Fragment() {
+    lateinit var addInfo: FloatingActionButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -16,5 +19,14 @@ class MyinfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_myinfo, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        addInfo = view.findViewById(R.id.addPost)
+        addInfo.setOnClickListener {
+            val intent = Intent(this.requireContext(), AddpostActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

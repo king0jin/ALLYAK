@@ -79,7 +79,7 @@
                     android:text="확인"
                     android:fontFamily="@font/notobold"
                     android:background="@drawable/buttonround2"
-                    android:layout_margigTop="1dp"
+                    android:layout_marginTop="1dp"
                     />
                 <Button
                     android:layout_width="80dp"

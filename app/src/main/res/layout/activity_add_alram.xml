@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddAlramActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/maincolor"/>
+        <TimePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="163dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="약 이름"
+                android:textSize="18dp"
+                android:fontFamily="@font/notobold"/>
+
+            <EditText
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:hint=""
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+            <Button
+                android:id="@+id/add"
+                android:layout_width="100dp"
+                android:layout_height="55dp"
+                android:text="추가"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/notobold"
+                android:background="@drawable/buttonround2"
+                android:layout_marginTop="1dp"
+                />
+            <Button
+                android:id="@+id/cancel2"
+                android:layout_width="100dp"
+                android:layout_height="55dp"
+                android:text="취소"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/notobold"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/buttonround1"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

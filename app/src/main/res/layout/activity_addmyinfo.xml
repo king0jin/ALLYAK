@@ -74,6 +74,7 @@
                 android:gravity="center"
                 android:layout_marginTop="16dp">
                 <Button
+                    android:id="@+id/oK"
                     android:layout_width="80dp"
                     android:layout_height="48dp"
                     android:text="확인"
@@ -82,6 +83,7 @@
                     android:layout_marginTop="1dp"
                     />
                 <Button
+                    android:id="@+id/cancel1"
                     android:layout_width="80dp"
                     android:layout_height="48dp"
                     android:text="취소"

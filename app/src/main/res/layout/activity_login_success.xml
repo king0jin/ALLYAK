@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/maincolor"
+    android:orientation="vertical"
+    >
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/maincolor"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="99dp"
+            android:background="@drawable/loginsuccess"
+            android:gravity="center"
+            android:text="로그인 성공!\n메인화면으로 이동합니다."
+            android:textColor="@color/black"
+            android:textSize="23dp"
+            android:wrap_content="wrap_content"
+            android:layout_marginBottom="40dp"/>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

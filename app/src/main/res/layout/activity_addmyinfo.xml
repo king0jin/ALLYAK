@@ -51,6 +51,7 @@
             android:layout_marginTop="5dp">
 
             <EditText
+                android:id="@+id/mediname"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:background="@drawable/rect1"
@@ -59,6 +60,7 @@
                 android:paddingStart="25dp"
                 android:layout_gravity="center" />
             <EditText
+                android:id="@+id/medimemo"
                 android:layout_width="250dp"
                 android:layout_height="230dp"
                 android:background="@drawable/rect1"

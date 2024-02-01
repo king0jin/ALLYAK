@@ -16,9 +16,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        val intent = Intent(this, kakaoLogin::class.java)
-//        startActivity(intent)
-//        finish()
+        //val intent = Intent(this, kakaoLogin::class.java)
+        //startActivity(intent)
         //키해시얻기
         val keyHash = Utility.getKeyHash(this)
         Log.d("getHash", keyHash)

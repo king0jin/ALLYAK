@@ -22,7 +22,6 @@
             android:text="로그인 성공!\n메인화면으로 이동합니다."
             android:textColor="@color/black"
             android:textSize="23dp"
-            android:wrap_content="wrap_content"
             android:layout_marginBottom="40dp"/>
 
     </LinearLayout>

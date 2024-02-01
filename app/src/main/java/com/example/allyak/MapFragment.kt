@@ -24,7 +24,7 @@ class MapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mapView = view.findViewById(R.id.map_view)
+        mapView = view.findViewById(R.id.map_fragment)
         mapView.onCreate(savedInstanceState)
     }
 
@@ -43,20 +43,19 @@ class MapFragment : Fragment() {
         super.onPause()
         mapView.onPause()
     }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView.onSaveInstanceState(outState)
+    }
 
     override fun onStop() {
         super.onStop()
         mapView.onStop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         mapView.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
     }
 
     override fun onLowMemory() {

@@ -62,7 +62,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.android.volley:volley:1.2.1'
     // Kakao Login
+    implementation "com.kakao.sdk:v2-all:2.19.0"
     implementation 'com.kakao.sdk:v2-user:2.19.0'
     // naver map
-    implementation("com.naver.maps:map-sdk:3.17.0")
+    implementation 'com.naver.maps:map-sdk:3.17.0'
+    implementation "com.google.android.gms:play-services-location:21.1.0"
 }

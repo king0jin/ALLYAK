@@ -10,7 +10,7 @@ class MyApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         //  Kakao Sdk 초기화
-        KakaoSdk.init(this, getString(R.string.kakao_app_key))
+        KakaoSdk.init(this, "a57851993143c72edcb786a7e4b45846")
         // MAPAPI를 호출해 클라이언트 ID를 지정
         NaverMapSdk.getInstance(this).client =
             NaverMapSdk.NaverCloudPlatformClient("u3lhdtxvx3")

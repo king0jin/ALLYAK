@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class CommunityFragment : Fragment() {
     // Access a Cloud Firestore instance from your Activity
     //val db = Firebase.firestore
+    lateinit var adapter: MyAdapter
     lateinit var addPost: FloatingActionButton
 
     override fun onCreateView(

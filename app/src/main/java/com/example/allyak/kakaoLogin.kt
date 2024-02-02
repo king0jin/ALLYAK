@@ -6,25 +6,21 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 
-
 class kakaoLogin : AppCompatActivity(){
-
-    private var loginButton= findViewById<ImageButton>(R.id.kakaobtn)
-
     companion object {
         private const val TAG = "KakaoAuth"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)
-
-        //val kakaoLoginButton= findViewById<ImageButton>(R.id.kakaobtn)
-
+        val loginButton: ImageButton = findViewById(R.id.kakaobtn)
         // 로그인 정보 확인
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             if (error != null) {

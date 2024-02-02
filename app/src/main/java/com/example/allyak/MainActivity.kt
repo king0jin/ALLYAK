@@ -1,6 +1,5 @@
 package com.example.allyak
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -19,9 +18,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this, kakaoLogin::class.java)
-        startActivity(intent)
-        finish()
+//        val intent = Intent(this, kakaoLogin::class.java)
+//        startActivity(intent)
+//        finish()
         //키해시얻기
         val keyHash = Utility.getKeyHash(this)
         Log.d("getHash", keyHash)

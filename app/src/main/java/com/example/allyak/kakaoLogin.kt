@@ -13,11 +13,11 @@ import com.kakao.sdk.user.UserApiClient
 
 class kakaoLogin : AppCompatActivity(){
 
-    private var loginButton= findViewById<ImageButton>(R.id.kakaobtn)
 
     companion object {
         private const val TAG = "KakaoAuth"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)
@@ -39,7 +39,7 @@ class kakaoLogin : AppCompatActivity(){
                 Toast.makeText(this, "카카오 계정으로 로그인 성공!", Toast.LENGTH_SHORT).show()
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
-                val intent = Intent(this, LoginSuccessActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
 
@@ -63,7 +63,8 @@ class kakaoLogin : AppCompatActivity(){
                     } else if (token != null) {
                         Toast.makeText(this, "카카오톡으로 로그인 성공!", Toast.LENGTH_SHORT).show()
                         Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-                        val intent = Intent(this, LoginSuccessActivity::class.java)
+
+                        val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

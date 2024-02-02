@@ -6,27 +6,27 @@
     android:background="#FBFBFB"
     tools:context=".MapFragment">
 
-<!--    <androidx.appcompat.widget.SearchView-->
-<!--        android:id="@+id/parmseach"-->
-<!--        android:layout_width="335dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginLeft="37dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:background="@drawable/searchbar"-->
-<!--        android:iconifiedByDefault="false"-->
-<!--        android:queryBackground="@null"-->
-<!--        android:queryHint="검색" />-->
-    <fragment
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.naver.maps.map.MapFragment" />
-
-<!--    <com.naver.maps.map.MapView-->
-<!--        android:id="@+id/map_view"-->
-<!--        android:name="com.naver.maps.map.MapFragment"-->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/parmseach"
+        android:layout_width="335dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/searchbar"
+        android:iconifiedByDefault="false"
+        android:queryBackground="@null"
+        android:queryHint="검색" />
+<!--    <fragment-->
+<!--        android:id="@+id/map"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="center" />-->
+<!--        android:name="com.naver.maps.map.MapFragment" />-->
+
+    <com.naver.maps.map.MapView
+        android:id="@+id/map_view"
+        android:name="com.naver.maps.map.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
 
 </FrameLayout>

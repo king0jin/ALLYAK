@@ -4,14 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 
-class MapFragmentActivity : AppCompatActivity() {
+abstract class MapFragmentActivity : AppCompatActivity() {
 
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1004
-
-    private val PERMISSIONS = arrayOf(
-        android.Manifest.permission.ACCESS_FINE_LOCATION,
-        android.Manifest.permission.ACCESS_COARSE_LOCATION
-    )
 
 
 
@@ -19,10 +13,17 @@ class MapFragmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
 
+//        val fm = supportFragmentManager
+//        val mapFragment = fm.findFragmentById(R.id.map_view) as MapFragment?
+//            ?: MapFragment.newInstance().also {
+//                fm.beginTransaction().add(R.id.map_view, it).commit()
+//            }
+//        mapFragment.getMapAsync(this)
+
     }
 
 
 
 
-
 }
+

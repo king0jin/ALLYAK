@@ -16,15 +16,10 @@
         android:iconifiedByDefault="false"
         android:queryBackground="@null"
         android:queryHint="검색" />
-<!--    <fragment-->
-<!--        android:id="@+id/map"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:name="com.naver.maps.map.MapFragment" />-->
 
     <com.naver.maps.map.MapView
         android:id="@+id/map_view"
-        android:name="com.naver.maps.map.MapFragment"
+        android:name="com.naver.maps.map.MapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />

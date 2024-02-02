@@ -10,6 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MyinfoFragment : Fragment() {
     lateinit var addInfo: FloatingActionButton
+//    lateinit var adapter: InfoAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -25,7 +26,7 @@ class MyinfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         addInfo = view.findViewById(R.id.addPost)
         addInfo.setOnClickListener {
-            val intent = Intent(this.requireContext(), AddpostActivity::class.java)
+            val intent = Intent(this.requireContext(), AddmyinfoActivity::class.java)
             startActivity(intent)
         }
     }

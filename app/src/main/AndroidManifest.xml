@@ -19,15 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Allyak"
         tools:targetApi="31">
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key" />
-        <meta-data
-            android:name="com.naver.maps.map.Client_Id"
-            android:value="@string/naver_client_id" />
-        <meta-data
-            android:name="com.naver.maps.map.CLIENT_TYPE"
-            android:value="gov" />
         <activity
             android:name=".AddAlramActivity"
             android:exported="false" />
@@ -42,9 +33,21 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.naver.maps.map.Client_Id"
+            android:value="@string/naver_client_id" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_TYPE"
+            android:value="gov" />
+
         <activity
             android:name=".kakaoLogin"
             android:exported="false"/>
@@ -69,12 +72,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="oauth"
                     android:scheme="kakaoa57851993143c72edcb786a7e4b45846" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

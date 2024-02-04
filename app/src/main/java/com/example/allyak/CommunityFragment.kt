@@ -1,6 +1,5 @@
 package com.example.allyak
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +21,7 @@ class CommunityFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_community, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

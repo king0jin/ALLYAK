@@ -5,14 +5,27 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FBFBFB"
-    tools:context=".PillFragment">
+    tools:context=".PillFragment"
+    android:orientation="vertical">
 
     <CalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
         android:layout_height="305dp"
-        android:firstDayOfWeek="2" />
+        android:firstDayOfWeek="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/pillnAlramcheck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="날짜 : 약 이름 : 알람시간 : 체크박스"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:layout_margin="30dp"/>
 
+    </LinearLayout>
 
 
 </LinearLayout>

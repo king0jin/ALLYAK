@@ -24,7 +24,7 @@ class MyinfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addInfo = view.findViewById(R.id.myInfo)
+        addInfo = view.findViewById(R.id.addInfo)
         addInfo.setOnClickListener {
             val intent = Intent(this.requireContext(), AddmyinfoActivity::class.java)
             startActivity(intent)

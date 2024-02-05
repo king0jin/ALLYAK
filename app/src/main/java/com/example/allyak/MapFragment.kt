@@ -1,25 +1,26 @@
 package com.example.allyak
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraAnimation
-import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapFragment
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
-import com.naver.maps.map.NaverMapSdk
-import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.util.FusedLocationSource
 
-//private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
-class MapFragment : Fragment(){
+private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
+
+class MapFragment : Fragment(), OnMapReadyCallback {
     lateinit var naverMap: NaverMap
     lateinit var mapView: MapView
-//    lateinit var locationSource: FusedLocationSource
-//    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-
+    lateinit var locationSource: FusedLocationSource
+    private lateinit var pharmacyViewModel: PharmacyLocationTaskViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,156 +30,64 @@ class MapFragment : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-        NaverMapSdk.getInstance(requireContext()).client = NaverMapSdk.NaverCloudPlatformClient("u3lhdtxvx3")
-        //return inflater.inflate(R.layout.fragment_map, container, false)
-        val rootMapView = inflater.inflate(R.layout.fragment_map, container, false)
-        mapView = rootMapView.findViewById(R.id.map_view)
-        mapView.onCreate(savedInstanceState)
-//        mapView.getMapAsync(this)
-        //locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-        mapView.getMapAsync { naverMap ->
-            this.naverMap = naverMap
-            setupMap()
+        return inflater.inflate(R.layout.fragment_map, container, false)
+    }
+    override fun onViewCreated(view: View, davedInstanceState: Bundle?) {
+        super.onViewCreated(view, davedInstanceState)
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+        //pharmacyViewModel = ViewModelProvider(this).get(PharmacyLocationTaskViewModel::class.java)
+
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as MapView?
+        if (mapFragment != null) {
+            val newMapFragmenrt = MapFragment.newInstance()
+                childFragmentManager.beginTransaction().add(R.id.map_view, newMapFragmenrt).commit()
         }
-//        requestPermissionLauncher = registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()) { isGrantes ->
-//            if(isGrantes) {
-//                setupMap()
-//            } else {
-//                Toast.makeText(requireContext(), "위치 권한을 허용해주세요.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-        return rootMapView
+        mapFragment?.getMapAsync(this)
 
     }
 
-//    override fun onMapReady(naverMap: NaverMap) {
-//        this.naverMap = naverMap
-////        naverMap.locationSource = locationSource
-//        naverMap.locationTrackingMode = LocationTrackingMode.Follow
-//        setupMap()
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+        // 사용자의 현재 위치를 가져와서 지도 중심으로 설정
+        enableMyLocation()
+        // 약국 위치를 가져와서 지도에 표시하는 함수 호출
+        //loadNearbyPharmacies(userLocation)
+
+
+    }
+
+//    private fun loadNearbyPharmacies(userLocation: Location) {
+//        //API호출 및 약국 위치 데이터 처리
+//
 //    }
 
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
+    private fun enableMyLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ){
+            //권한이 없는 경우 권한 요청
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+
+        }
+        // 현재 위치 버튼 활성화
+        naverMap.uiSettings.isLocationButtonEnabled = true
+
+        // 위치 소스 설정
+        naverMap.locationSource = locationSource
     }
-
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mapView.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView.onStop()
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mapView.onDestroy()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
-    private fun setupMap() {
-        val initialPosition = LatLng(37.5666103, 126.9783882)
-        val cameraUpdate = CameraUpdate.scrollTo(initialPosition)
-            .animate(CameraAnimation.Easing)
-
-        naverMap.moveCamera(cameraUpdate)
-
-        val marker = Marker()
-        marker.position = initialPosition
-        marker.map = naverMap
-//        if (ActivityCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            naverMap.locationTrackingMode = LocationTrackingMode.Follow
-//            naverMap.locationSource = locationSource
-//            naverMap.uiSettings.isLocationButtonEnabled = true
-//            naverMap.uiSettings.isCompassEnabled = true
-//            val lastLocation = locationSource.lastLocation
-//            lastLocation?.let {
-//                val initialPosition = LatLng(it.latitude, it.longitude)
-//                val cameraUpdate = CameraUpdate.scrollTo(initialPosition)
-//                    .animate(CameraAnimation.Easing)
-//                naverMap.moveCamera(cameraUpdate)
-//                val marker = Marker()
-//                marker.position = initialPosition
-//                marker.map = naverMap
-//            } ?: run {
-//                Toast.makeText(requireContext(), "현재 위치를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
-//            }
-//        } else {
-////            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//            return
-//
-//        }
-
-//        naverMap.locationTrackingMode = LocationTrackingMode.Follow
-//        naverMap.locationSource = locationSource
-//        val lastLocation = locationSource.lastLocation
-//        lastLocation?.let {
-//            val initalPosition = LatLng(it.latitude, it.longitude)
-//            val cameraUpdate = CameraUpdate.scrollTo(initalPosition)
-//                .animate(com.naver.maps.map.CameraAnimation.Easing)
-//            naverMap.moveCamera(cameraUpdate)
-//            val marker = Marker()
-//            marker.position = initalPosition
-//            marker.map = naverMap
-//        } ?: run {
-//            Toast.makeText(requireContext(), "현재 위치를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
-//
-//        }
-
-
-
-    }
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        when (requestCode) {
-//            LOCATION_PERMISSION_REQUEST_CODE -> {
-//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    setupMap()
-//                } else {
-//                    Toast.makeText(requireContext(), "위치 권한을 허용해주세요.", Toast.LENGTH_SHORT)
-//                        .show()
-//
-//                }
-//
-//            }
-//        }
-//    }
-
-//    override fun onLocationChanged(location: Location?) {
-//        location?.let {
-//            val newPosition = LatLng(it.latitude, it.longitude)
-//            val cameraUpdate = CameraUpdate.scrollTo(LatLng(it.latitude, it.longitude))
-//                .animate(CameraAnimation.Easing)
-//            this.naverMap.moveCamera(cameraUpdate)
-//        }
-//    }
-
 
 }
 

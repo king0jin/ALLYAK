@@ -18,7 +18,7 @@
             android:fontFamily="@font/notoebold"
             android:textColor="@color/black"
             android:layout_marginLeft="55dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="25dp"
             android:textSize="25dp"/>
 
         <LinearLayout
@@ -37,7 +37,7 @@
             android:fontFamily="@font/notoebold"
             android:textColor="@color/black"
             android:layout_marginLeft="55dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:textSize="25dp"/>
 
         <LinearLayout

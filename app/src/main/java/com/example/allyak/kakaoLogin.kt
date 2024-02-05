@@ -13,7 +13,6 @@ import com.kakao.sdk.user.UserApiClient
 
 class kakaoLogin : AppCompatActivity(){
 
-
     companion object {
         private const val TAG = "KakaoAuth"
     }

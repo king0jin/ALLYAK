@@ -21,7 +21,6 @@ class MyAdapter(val context: Context, val itemList: MutableList<ItemData>): Recy
 
         holder.binding.run {
             communityTitle.text = data.title
-            communityTitle.text = data.nickname
             communityTime.text = data.time
             communityLike.text = data.like
             communityCmt.text = data.comment

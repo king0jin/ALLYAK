@@ -15,14 +15,18 @@
         android:orientation="vertical"
         android:paddingTop="30dp">
     <EditText
+        android:id="@+id/postTitle"
         android:layout_width="335dp"
         android:layout_height="65dp"
+        android:inputType="text"
         android:hint="제목"
         android:paddingStart="25dp"
         android:background="@drawable/rect2" />
     <EditText
+        android:id="@+id/postContent"
         android:layout_width="335dp"
         android:layout_height="460dp"
+        android:inputType="text"
         android:layout_marginTop="20dp"
         android:hint="내용을 입력하세요"
         android:paddingStart="25dp"

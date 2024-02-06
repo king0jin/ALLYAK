@@ -12,6 +12,7 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 
 private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
@@ -21,29 +22,30 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     lateinit var mapView: MapView
     lateinit var locationSource: FusedLocationSource
     private lateinit var pharmacyViewModel: PharmacyLocationTaskViewModel
+    private val markers = mutableListOf<Marker>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        val view = inflater.inflate(R.layout.fragment_map, container, false)
+        mapView = view.findViewById(R.id.map_view)
+        mapView.onCreate(savedInstanceState)
+        return view
+        //return inflater.inflate(R.layout.fragment_map, container, false)
     }
     override fun onViewCreated(view: View, davedInstanceState: Bundle?) {
         super.onViewCreated(view, davedInstanceState)
-        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         //pharmacyViewModel = ViewModelProvider(this).get(PharmacyLocationTaskViewModel::class.java)
-
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as MapView?
         if (mapFragment != null) {
             val newMapFragmenrt = MapFragment.newInstance()
                 childFragmentManager.beginTransaction().add(R.id.map_view, newMapFragmenrt).commit()
         }
         mapFragment?.getMapAsync(this)
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
     }
 
@@ -52,13 +54,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 사용자의 현재 위치를 가져와서 지도 중심으로 설정
         enableMyLocation()
         // 약국 위치를 가져와서 지도에 표시하는 함수 호출
-        //loadNearbyPharmacies(userLocation)
+        //loadNearbyPharmacies()
 
 
     }
 
-//    private fun loadNearbyPharmacies(userLocation: Location) {
-//        //API호출 및 약국 위치 데이터 처리
+//    private fun loadNearbyPharmacies() {
+//        파싱한 약국 위치 지도에 표시
 //
 //    }
 
@@ -88,6 +90,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 위치 소스 설정
         naverMap.locationSource = locationSource
     }
+
 
 }
 

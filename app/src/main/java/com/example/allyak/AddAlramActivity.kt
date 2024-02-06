@@ -21,7 +21,7 @@ class AddAlramActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_alram)
+        setContentView(R.layout.activity_add_alarm)
 
         timePicker = findViewById(R.id.timePicker)
         alramMediName = findViewById(R.id.alrammediname)

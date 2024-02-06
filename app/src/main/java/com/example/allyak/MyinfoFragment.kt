@@ -2,6 +2,7 @@ package com.example.allyak
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.kakao.sdk.user.UserApiClient
 
 class MyinfoFragment : Fragment() {
     lateinit var addInfo: FloatingActionButton
@@ -25,16 +27,22 @@ class MyinfoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_myinfo, container, false)
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.logout_menu, menu)
-        true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout_action -> {
-                //카카오 로그아웃하고 카카오 로그인 액티비티로 이동
+                //카카오 로그아웃
+                UserApiClient.instance.logout { error ->
+                    if (error != null) {
+                        Log.d("카카오","카카오 로그아웃 실패")
+                    }else {
+                        Log.d("카카오","카카오 로그아웃 성공!")
+                    }
+                }
                 return true
-
             }
             else -> return super.onOptionsItemSelected(item)
         }

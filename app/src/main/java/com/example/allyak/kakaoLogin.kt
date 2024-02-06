@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -20,7 +21,11 @@ class kakaoLogin : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)
+        //파이어베이스 인증 객체
+        val firebaseAuth = FirebaseAuth.getInstance()
+
         val loginButton: ImageButton = findViewById(R.id.kakaobtn)
+
         // 로그인 정보 확인
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             if (error != null) {
@@ -30,6 +35,7 @@ class kakaoLogin : AppCompatActivity(){
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
             }
         }
+        //카카오 로그인 성공시 호출되는 콜백
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Toast.makeText(this, "카카오 계정으로 로그인 실패!", Toast.LENGTH_SHORT).show()
@@ -37,6 +43,9 @@ class kakaoLogin : AppCompatActivity(){
             } else if (token != null) {
                 Toast.makeText(this, "카카오 계정으로 로그인 성공!", Toast.LENGTH_SHORT).show()
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+                //파이어베이스에 OAuth토큰 전달하여 로그인 시도
+
+
 
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

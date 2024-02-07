@@ -11,13 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.kakao.sdk.user.UserApiClient
 
 class MyinfoFragment : Fragment() {
     lateinit var addInfo: FloatingActionButton
+    lateinit var auth: FirebaseAuth
 //    lateinit var adapter: InfoAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Firebase 인증 객체 가져오기
+        auth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -27,7 +31,6 @@ class MyinfoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_myinfo, container, false)
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.logout_menu, menu)
     }
 
@@ -40,11 +43,14 @@ class MyinfoFragment : Fragment() {
                         Log.d("카카오","카카오 로그아웃 실패")
                     }else {
                         Log.d("카카오","카카오 로그아웃 성공!")
+                        auth.signOut()
+                        val intent = Intent(this.requireContext(), kakaoLogin::class.java)
+                        startActivity(intent)
                     }
                 }
                 return true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> return true
         }
     }
 

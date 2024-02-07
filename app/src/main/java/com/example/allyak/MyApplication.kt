@@ -1,6 +1,7 @@
 package com.example.allyak
 
 import androidx.multidex.MultiDexApplication
+import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kakao.sdk.common.KakaoSdk
 import com.naver.maps.map.NaverMapSdk
@@ -11,7 +12,6 @@ class MyApplication :MultiDexApplication(){  //원래 :Application() 이었음
 //    }
 //수경 코드
     companion object {
-        //lateinit var auth: FirebaseAuth 인증 관리
         lateinit var db: FirebaseFirestore
 /*        fun checkAuth(): Boolean {
             var currentUser = auth.currentUser
@@ -26,6 +26,11 @@ class MyApplication :MultiDexApplication(){  //원래 :Application() 이었음
 
     override fun onCreate() {
         super.onCreate()
+        //최초실생시, 초기화합니다.
+
+        //SDK초기화
+        FirebaseApp.initializeApp(this)
+
         //firebase 데이터베이스
         db = FirebaseFirestore.getInstance()
         //  Kakao Sdk 초기화
@@ -34,13 +39,5 @@ class MyApplication :MultiDexApplication(){  //원래 :Application() 이었음
         NaverMapSdk.getInstance(this).client =
             NaverMapSdk.NaverCloudPlatformClient("u3lhdtxvx3")
     }
-//    override fun onTerminate() {
-//        super.onTerminate()
-//        instance = null
-//    }
-//    fun getAppContext() : MyApplication {
-//        checkNotNull(instance) { "this application does not inherit com.kakao.GlobalApplication" }
-//        return instance!!
-//    }
 
 }

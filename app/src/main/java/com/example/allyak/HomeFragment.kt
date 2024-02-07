@@ -3,16 +3,20 @@ package com.example.allyak
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class HomeFragment : Fragment() {
     lateinit var searchSymptom: CardView
     lateinit var searchName: CardView
     lateinit var searchShape: CardView
+    private lateinit var TodayRecyclerView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +37,25 @@ class HomeFragment : Fragment() {
         searchShape.setOnClickListener {
             loadActivity(SearchshapeActivity())
         }
+        TodayRecyclerView = view.findViewById(R.id.todayRecyclerView)
+        //약 정보 데이터 가져오기
+        //이게 최선 ...?
+        MyApplication.db.collection("pill")
+            .get()
+            .addOnSuccessListener {result ->
+                val itemList = mutableListOf<TodayData>()
+                for(document in result){
+                    val item = document.toObject(TodayData::class.java)
+                    item.docId=document.id
+                    itemList.add(item)
+                }
+                TodayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                //adapter = MyAdapter(requireContext(), itemList) copilot에서 자동완성으로 추가 밑코드는 내 코드
+                TodayRecyclerView.adapter = TodayAdapter(requireContext(), itemList)
+            }
+            .addOnFailureListener{exception ->
+                Log.d("Allyak", "error.. getting document..", exception)
+            }
     }
     private fun loadActivity(activity: Activity) {
         val intent = Intent(this.requireContext(), activity::class.java)

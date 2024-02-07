@@ -19,9 +19,9 @@ class MyAdapter(val context: Context, val itemList: MutableList<ItemData>): Recy
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val data = itemList.get(position)
 
-        holder.binding.run {
+        holder.binding.run {   //커뮤니티 뷰
             communityTitle.text = data.title
-            communityTime.text = data.time
+            communityTime.text = data.date
             communityLike.text = data.like
             communityCmt.text = data.comment
         }

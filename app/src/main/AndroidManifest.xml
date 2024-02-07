@@ -51,6 +51,7 @@
 
         <activity
             android:name=".AddpostActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".SearchsymptomActivity"
@@ -62,7 +63,8 @@
             android:name=".SearchshapeActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"/>
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
 <!--            android:exported="true">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->

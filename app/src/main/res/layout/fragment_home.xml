@@ -153,8 +153,7 @@
             android:id="@+id/todayList"
             android:layout_width="304dp"
             android:layout_height="160dp"
-            android:layout_marginLeft="53dp"
-            android:background="@drawable/rect1">
+            android:layout_marginLeft="53dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/todayRecyclerView"
                 android:layout_width="match_parent"

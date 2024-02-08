@@ -13,6 +13,7 @@ class AddmyinfoActivity : AppCompatActivity() {
         tb = findViewById(R.id.toolbar)
         tb.setTitle("")
         setSupportActionBar(tb)
+
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         getMenuInflater().inflate(R.menu.pilllist_menu, menu)

@@ -2,12 +2,12 @@ package com.example.allyak
 
 //import com.google.firebase.auth.FirebaseAuth
 //import com.google.firebase.database.FirebaseDatabase
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
-import java.util.Calendar
 //import android.app.AlarmManager
 //import android.app.PendingIntent
 //import android.content.Intent
@@ -16,6 +16,9 @@ class AddAlramActivity : AppCompatActivity() {
 
     lateinit var timePicker: TimePicker
     lateinit var alramMediName: EditText
+    lateinit var add: Button
+    lateinit var cancel2: Button
+
     //lateinit var firebaseAuth: FirebaseAuth
     //lateinit var database: FirebaseDatabase
 
@@ -25,36 +28,42 @@ class AddAlramActivity : AppCompatActivity() {
 
         timePicker = findViewById(R.id.timePicker)
         alramMediName = findViewById(R.id.alrammediname)
+        add = findViewById(R.id.add)
+        cancel2 = findViewById(R.id.cancel2)
+
+        add.setOnClickListener {
+            //알람설정 정보 저장
+            val hour = timePicker.hour
+            val minute = timePicker.minute
+            val mediName = alramMediName.text.toString()
+
+            //알람정보를 알람리스트액티비티로 전달
+            val alarmIntent = Intent(this, PillListActivity::class.java).apply {
+                putExtra("hour", hour)
+                putExtra("minute", minute)
+                putExtra("mediName", mediName)
+            }
+            startActivity(alarmIntent)
+        }
+        cancel2.setOnClickListener {
+            // AddAlarmActivity 종료
+            finish()
+        }
 
         //firebaseAuth = FirebaseAuth.getInstance()
         //database = FirebaseDatabase.getInstance()
 
-        val addAlarmButton: Button = findViewById(R.id.add)
-        val cancelAlarmButton: Button = findViewById(R.id.cancel2)
-
-        addAlarmButton.setOnClickListener {
-            //알람설정
-            setAlram()
-        }
-        cancelAlarmButton.setOnClickListener {
-            // AddAlarmActivity 종료
-            finish()
-
-
-        }
-
-
     }
-    private fun setAlram() {
-        val hour = timePicker.hour
-        val minute = timePicker.minute
-        val mediName = alramMediName.text.toString()
-
-        //알람 시간 설정
-        val calender = Calendar.getInstance()
-        calender.set(Calendar.HOUR_OF_DAY, hour)
-        calender.set(Calendar.MINUTE, minute)
-        calender.set(Calendar.SECOND, 0)
+//    private fun setAlram() {
+//        val hour = timePicker.hour
+//        val minute = timePicker.minute
+//        val mediName = alramMediName.text.toString()
+//
+//        //알람 시간 설정
+//        val calender = Calendar.getInstance()
+//        calender.set(Calendar.HOUR_OF_DAY, hour)
+//        calender.set(Calendar.MINUTE, minute)
+//        calender.set(Calendar.SECOND, 0)
 
         //알람 정보를 저장할 경로
         // val alramRef = database.getReference("alarms")
@@ -82,7 +91,7 @@ class AddAlramActivity : AppCompatActivity() {
 
         //알람 설정 후 추가적이 동작
         // 알람이 설정되었다라는 메세지 표시
-    }
+//    }
     //private fun saveAlarmToFirebase(userId:String?, hour:Int, minute:Int, mediName:String) {
         // 파이어베이스에 알람 정보 저장
         //userId?.let {

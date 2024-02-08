@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchPost"
             android:layout_width="335dp"
             android:layout_height="50dp"
             android:layout_marginLeft="37dp"

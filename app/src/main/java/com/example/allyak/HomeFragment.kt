@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kakao.sdk.user.UserApiClient
 
 class HomeFragment : Fragment() {
     lateinit var searchSymptom: CardView
@@ -49,13 +50,23 @@ class HomeFragment : Fragment() {
                     item.docId=document.id
                     itemList.add(item)
                 }
-                TodayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                //adapter = MyAdapter(requireContext(), itemList) copilot에서 자동완성으로 추가 밑코드는 내 코드
-                TodayRecyclerView.adapter = TodayAdapter(requireContext(), itemList)
+                //TodayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                //TodayRecyclerView.adapter = TodayAdapter(requireContext(), itemList)
             }
             .addOnFailureListener{exception ->
                 Log.d("Allyak", "error.. getting document..", exception)
             }
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("Allyak", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i("Allyak", "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n닉네임: ${user.kakaoAccount?.profile?.nickname}")
+            }
+        }
     }
     private fun loadActivity(activity: Activity) {
         val intent = Intent(this.requireContext(), activity::class.java)

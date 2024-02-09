@@ -26,21 +26,25 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginTop="40dp">
-            <Button
+            <ToggleButton
                 android:id="@+id/medinow"
+                android:checked="false"
                 android:layout_width="120dp"
                 android:layout_height="48dp"
-                android:text="현재 복용 약"
-                android:background="@drawable/emptyround"
+                android:textOn="현재 복용 약"
+                android:textOff="현재 복용 약"
+                android:background="@drawable/toggle_background"
                 android:fontFamily="@font/notobold"
                 android:layout_margin="3dp"/>
 
-            <Button
+            <ToggleButton
                 android:id="@+id/medinot"
+                android:checked="false"
                 android:layout_width="120dp"
                 android:layout_height="48dp"
-                android:background="@drawable/emptyround"
-                android:text="부작용이 있는 약"
+                android:background="@drawable/toggle_background"
+                android:textOn="부작용이 있는 약"
+                android:textOff="부작용이 있는 약"
                 android:layout_marginLeft="8dp"
                 android:fontFamily="@font/notobold"
                 android:layout_marginBottom="3dp"

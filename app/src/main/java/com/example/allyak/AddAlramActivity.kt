@@ -2,25 +2,27 @@ package com.example.allyak
 
 //import com.google.firebase.auth.FirebaseAuth
 //import com.google.firebase.database.FirebaseDatabase
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.FirebaseDatabase
+import com.kakao.sdk.user.UserApiClient
+import java.util.Calendar
+
 //import android.app.AlarmManager
 //import android.app.PendingIntent
 //import android.content.Intent
 
 class AddAlramActivity : AppCompatActivity() {
-
+    private lateinit var userId :String
     lateinit var timePicker: TimePicker
     lateinit var alramMediName: EditText
     lateinit var add: Button
     lateinit var cancel2: Button
-
-    //lateinit var firebaseAuth: FirebaseAuth
-    //lateinit var database: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,42 +35,63 @@ class AddAlramActivity : AppCompatActivity() {
 
         add.setOnClickListener {
             //알람설정 정보 저장
-            val hour = timePicker.hour
-            val minute = timePicker.minute
-            val mediName = alramMediName.text.toString()
-
-            //알람정보를 알람리스트액티비티로 전달
-            val alarmIntent = Intent(this, PillListActivity::class.java).apply {
-                putExtra("hour", hour)
-                putExtra("minute", minute)
-                putExtra("mediName", mediName)
+            // setAlarm()
+            UserApiClient.instance.me { user, error ->
+                if (error != null) {
+                    //사용자 정보 요청 실패
+                    Log.d("alarm", "사용자 정보 요청 실패", error)
+                } else if (user != null) {
+                    userId = user.id.toString()
+                    if (alramMediName.text.isNotEmpty()) {
+                        //파이어베이스에 저장
+                        setAlarm()
+                        finish()
+                    } else {
+                        Toast.makeText(this, "약이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-            startActivity(alarmIntent)
         }
         cancel2.setOnClickListener {
             // AddAlarmActivity 종료
             finish()
         }
 
-        //firebaseAuth = FirebaseAuth.getInstance()
-        //database = FirebaseDatabase.getInstance()
-
     }
-//    private fun setAlram() {
-//        val hour = timePicker.hour
-//        val minute = timePicker.minute
-//        val mediName = alramMediName.text.toString()
-//
-//        //알람 시간 설정
-//        val calender = Calendar.getInstance()
-//        calender.set(Calendar.HOUR_OF_DAY, hour)
-//        calender.set(Calendar.MINUTE, minute)
-//        calender.set(Calendar.SECOND, 0)
+    private fun setAlarm() {
+        //firebase데이터베이스 레퍼런스
+        val database = FirebaseDatabase.getInstance()
+        val alarmRef = database.getReference("alarms")
 
-        //알람 정보를 저장할 경로
-        // val alramRef = database.getReference("alarms")
-        // val alram = Alram(hour, minute, mediName)
-        // alramRef.push().setValue(alram)
+        val hour = timePicker.hour
+        val minute = timePicker.minute
+        val mediName = alramMediName.text.toString()
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        calendar.set(Calendar.SECOND, 0)
+
+        //데이터 베이스에 저장할 데이터 맵 생성
+        val alarms = hashMapOf(
+            "userId" to userId,
+            "hour" to hour,
+            "minute" to minute,
+            "mediName" to mediName,
+            "calendarYear" to calendar.get(Calendar.YEAR),
+            "calendarMonth" to calendar.get(Calendar.MONTH),
+            "calendarDay" to calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        //데이터 베이스에 데이터 쓰기
+        alarmRef.push().setValue(alarms)
+            .addOnSuccessListener {
+                Log.d("alarm", "알람 정보 저장 성공")
+            }
+            .addOnFailureListener {
+                Log.d("alarm", "알람 정보 저장 실패")
+            }
+
 
         // 알람이 울릴 때 실행될 동작을 수행할 BroadcastReceiver지정
         //val alarmIntent = Intent(this, AlarmReceiver::class.java)
@@ -86,18 +109,7 @@ class AddAlramActivity : AppCompatActivity() {
 //            pendingIntent
 //        )
 
-        // 알람정보를 Firebase에 저장
-        //saveAlarmToFirebase(firebaseAuth.currentUser!!.uid, hour, minute, mediName)
 
-        //알람 설정 후 추가적이 동작
-        // 알람이 설정되었다라는 메세지 표시
-//    }
-    //private fun saveAlarmToFirebase(userId:String?, hour:Int, minute:Int, mediName:String) {
-        // 파이어베이스에 알람 정보 저장
-        //userId?.let {
-        //    val alramInfo = AlramInfo(hour, minute, mediName)
-        //    val alramRef = database.getReference("alarms").child(it)
-        //    alramRef.push().setValue(alramInfo)
-        //}
+    }
 
 }

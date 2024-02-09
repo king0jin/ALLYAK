@@ -2,6 +2,7 @@ package com.example.allyak
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,12 +10,20 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
+import android.widget.CheckBox
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class PillFragment : Fragment() {
     lateinit var tb : Toolbar
+    lateinit var calendar : CalendarView
+    lateinit var allyakschedule : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,17 +34,68 @@ class PillFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_pill, container, false)
-        val calendarView = view.findViewById<CalendarView>(R.id.calendar)
+        calendar = view.findViewById(R.id.calendar)
+        allyakschedule = view.findViewById(R.id.pillnAlramcheck)
+        val database = FirebaseDatabase.getInstance()
+        val alarmRef = database.getReference("alarms")
 
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            // 선택한 날짜 정보를 처리합니다.
-            // 여기서 year, month, dayOfMonth는 선택한 날짜에 대한 정보입니다.
-            // 이 정보를 원하는 방식으로 활용할 수 있습니다.
-            // 예를 들어, 텍스트뷰에 출력하거나 다른 기능에 활용할 수 있습니다.
+        var ClickTime : Long = 0
+        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val now = System.currentTimeMillis()
+            if(now - ClickTime < 200) {
+                //캘린더에서 날짜를 더블터치하면 알람액티비티로 넘어가서 알람 설정을 함
+                val intent = Intent(requireContext(), AddAlramActivity::class.java)
+                intent.putExtra("selectedYear", year)
+                intent.putExtra("selectedMonth", month)
+                intent.putExtra("selectedDayOfMonth", dayOfMonth)
+                startActivity(intent)
+            }
+            //선택한 날짜 정보
             val selectedDate = "$year-${month + 1}-$dayOfMonth"
-            // 여기서는 예시로 선택한 날짜를 로그로 출력합니다.
-            println("Selected date: $selectedDate")
+            Log.d("Calendar", "Selected date: $selectedDate")
         }
+        //데이터 베이스에서 데이터 읽기
+        alarmRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val alarmname = postSnapshot.child("mediName").getValue(String::class.java)
+                    val alarmhour = postSnapshot.child("hour").getValue(String::class.java)
+                    val alarmminute = postSnapshot.child("minute").getValue(String::class.java)
+                    val alarmYear = postSnapshot.child("year").getValue(String::class.java)
+                    val alarmMonth = postSnapshot.child("month").getValue(String::class.java)
+                    val alarmDay = postSnapshot.child("day").getValue(String::class.java)
+                    if (alarmname != null && alarmhour != null && alarmminute != null &&
+                        alarmYear != null && alarmMonth != null && alarmDay != null) {
+                        // 알람 이름 표시
+                        allyakschedule = TextView(requireContext())
+                        allyakschedule.text = "$alarmname $alarmhour:$alarmminute"
+                        // 캘린더에 작은 점으로 표시
+                        //allyakschedule.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dot, 0, 0, 0)
+                        // 체크박스 추가
+                        val checkBox = CheckBox(requireContext())
+                        // 체크박스에 체크 이벤트 리스너 추가
+                        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                            if (isChecked) {
+                                // 체크되면 캘린더에 작은 점으로 표시
+
+                            } else {
+                                // 체크가 해제되면 작은 점 삭제
+
+                            }
+                        }
+                        // 레이아웃에 추가
+                        //calendarLayout.addView(checkBox)
+                        //calendarLayout.addView(textView)
+                    }
+
+                }
+
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("TAG", "Failed to read value.", databaseError.toException())
+            }
+        })
+
         return view
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -56,15 +116,6 @@ class PillFragment : Fragment() {
 
             else -> return true
         }
-    }
-
-    private fun updateCalendarWithAlarms() {
-        //파이어베이스에서 알람 정보 가져오기
-        //val UserId = FirebaseAuth.getInstance().currentUser?.uid
-        //val database = FirebaseDatabase.getInstance()
-        //val alramRef = database.getReference("alarms").child(UserId)
-
-
     }
 
 }

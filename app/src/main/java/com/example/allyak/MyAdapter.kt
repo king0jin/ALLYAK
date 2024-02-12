@@ -1,6 +1,7 @@
 package com.example.allyak
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +22,23 @@ class MyAdapter(val context: Context, val itemList: MutableList<ItemData>): Recy
 
         holder.binding.run {   //커뮤니티 뷰
             communityTitle.text = data.title
-            communityTime.text = data.date
-            communityLike.text = data.like.toString()
-            communityCmt.text = data.comment.toString()
+            communityTime.text = data.viewdate
+            communityLike.text = data.likeCnt.toString()
+            communityCmt.text = data.commentCnt.toString()
+        }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ViewpostActivity::class.java)
+            //근데 굳이 데이터를 전송해야되는지 ... ?
+            //그냥 키를 갖고 가서 해당 페이지에서 데이터를 불러오는게 더 효율적일 수도 있음
+            intent.putExtra("key", data.docId)
+            intent.putExtra("uid", data.UID)
+            intent.putExtra("title", data.title)
+            intent.putExtra("content", data.content)
+            intent.putExtra("date", data.date)
+            intent.putExtra("viewdate", data.viewdate)
+            intent.putExtra("likeCnt", data.likeCnt.toString())
+            intent.putExtra("commentCnt", data.commentCnt.toString())
+            context.startActivity(intent)
         }
     }
 }

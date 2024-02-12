@@ -1,5 +1,6 @@
 package com.example.allyak
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -8,20 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.allyak.databinding.ActivityAddpostBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.user.UserApiClient
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-class AddpostActivity : AppCompatActivity() {
-    //add post를 하면 프래그먼트가 업데이트 되어야 됨
-    //누르면 바로 업데이트가 안되고, 프래그먼트를 다시 불러와야 됨
+class EditpostActivity : AppCompatActivity() {
     lateinit var tb: Toolbar
     lateinit var binding: ActivityAddpostBinding
-    private lateinit var userId :String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddpostBinding.inflate(layoutInflater)
@@ -29,29 +21,33 @@ class AddpostActivity : AppCompatActivity() {
         tb = findViewById(R.id.toolbar)
         tb.setTitle("")   //delete toolbar title
         setSupportActionBar(tb)
+        //intent로 받아온 데이터를 뷰에 띄워준다.
+        //여기서는 intent.getStringExtra 해도 될 듯 ..?
+        binding.postTitle.setText(intent.getStringExtra("title"))
+        binding.postContent.setText(intent.getStringExtra("content"))
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.addpost_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val postkey = intent.getStringExtra("key")
+        val userId = intent.getStringExtra("uid").toString()
+        val date = intent.getStringExtra("date").toString()
+        Log.d("Allyakk", "userId : $userId, date : $date")
         when (item.itemId) {
             R.id.saveBtn -> {
-                //saveBtn 클릭 시 동작
-                //데이터 파이어 베이스에 저장 후 액티비티 종료
-                //제목, 사용자, 시간, 내용 저장
                 UserApiClient.instance.me { user, error ->
                     if (error != null) {
                         Log.e("Allyakk", "사용자 정보 요청 실패", error)
                     }
-                    else if (user != null) {
-                        userId = user.id.toString()
+                    else if (user != null && postkey != null){
                         if (binding.postTitle.text.isNotEmpty() && binding.postContent.text.isNotEmpty()) {
-                            //파이어베이스에 저장
-                            saveStore()
-                            finish()
+                            //파이어베이스에 업데이트
+                            editStore(postkey, userId, date)
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("destination", "community")
+                            startActivity(intent)
                         } else {
                             Toast.makeText(this, "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
                         }
@@ -62,18 +58,11 @@ class AddpostActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    private fun saveStore() {
+    private fun editStore(key : String,userId : String, date : String) {
         val title = binding.postTitle.text.toString()
         val content = binding.postContent.text.toString()
-        val date = dateToString(Date())
         // setValue() 메서드를 사용하여 값을 저장
         // realtime database에 저장
-        val key = PostRef.contentRef.push().key.toString()   //랜덤한 문자열, 타임스탬프
-        PostRef.contentRef.child(key).setValue(ItemData(key, userId, title, content, date,""))
-    }
-    private fun dateToString(date: Date): String {
-        val format = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale("ko", "KR"))
-        return format.format(date)
+        PostRef.contentRef.child(key).setValue(ItemData(key, userId, title, content,date,"")) //기존 like, comment도 유지해주게 수정
     }
 }

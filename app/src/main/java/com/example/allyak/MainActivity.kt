@@ -6,9 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.example.allyak.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.kakao.sdk.common.util.Utility
 
 class MainActivity : AppCompatActivity() {
     lateinit var bottomNav: BottomNavigationView
@@ -28,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         //bottomNav code
         bottomNav = findViewById(R.id.bottomNav) as BottomNavigationView
         bottomNav.setSelectedItemId(R.id.home)
+        if (intent.getStringExtra("destination") == "community") {
+            bottomNav.setSelectedItemId(R.id.community)
+            loadFragment(CommunityFragment())
+        }
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.pill -> {

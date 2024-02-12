@@ -54,19 +54,8 @@ class HomeFragment : Fragment() {
                 //TodayRecyclerView.adapter = TodayAdapter(requireContext(), itemList)
             }
             .addOnFailureListener{exception ->
-                Log.d("Allyak", "error.. getting document..", exception)
+                Log.d("Allyakk ", "error.. getting document..", exception)
             }
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e("Allyak", "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
-                Log.i("Allyak", "사용자 정보 요청 성공" +
-                        "\n회원번호: ${user.id}" +
-                        "\n이메일: ${user.kakaoAccount?.email}" +
-                        "\n닉네임: ${user.kakaoAccount?.profile?.nickname}")
-            }
-        }
     }
     private fun loadActivity(activity: Activity) {
         val intent = Intent(this.requireContext(), activity::class.java)

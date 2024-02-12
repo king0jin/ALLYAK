@@ -50,7 +50,7 @@ class PillFragment : Fragment() {
                 intent.putExtra("selectedDayOfMonth", dayOfMonth)
                 startActivity(intent)
             }
-            //선택한 날짜 정보
+            //선택한 날짜 정보 로그로 확인
             val selectedDate = "$year-${month + 1}-$dayOfMonth"
             Log.d("Calendar", "Selected date: $selectedDate")
         }

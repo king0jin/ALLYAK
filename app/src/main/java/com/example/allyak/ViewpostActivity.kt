@@ -68,8 +68,6 @@ class ViewpostActivity : AppCompatActivity()  {
         binding.viewContent.text = intent.getStringExtra("content")
         binding.viewLikeCount.text = intent.getStringExtra("likeCnt")
         binding.viewCommentCount.text = intent.getStringExtra("commentCnt")
-        //*************
-
         binding.viewLike.setOnClickListener {
             //클릭 시 like 데이터베이스에 유저 아이디 저장
             var existId1 = false

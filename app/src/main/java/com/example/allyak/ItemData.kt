@@ -10,7 +10,8 @@ data class ItemData (
     var viewdate: String? = null,
     var likeCnt: Int = 0,
     var commentCnt: Int = 0,
-    var comment: Map<String, Comments> = emptyMap()
+    var comment: Map<String, Comments> = emptyMap(),
+    var like: Map<String, LikeData> = emptyMap()
 )
 data class Comments(
     var postId:String? = null,
@@ -18,4 +19,7 @@ data class Comments(
     var userId: String? = null, // 댓글 작성자의 고유 ID
     var content: String? = null,   // 댓글 내용
     var time: String? = null  // 댓글 작성 시간
+)
+data class LikeData(
+    var userId: String? = null
 )

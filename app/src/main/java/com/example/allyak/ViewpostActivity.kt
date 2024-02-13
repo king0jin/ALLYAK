@@ -29,30 +29,94 @@ class ViewpostActivity : AppCompatActivity()  {
         tb = findViewById(R.id.toolbar)
         tb.setTitle("")   //delete toolbar title
         setSupportActionBar(tb)
+        val postkey = intent.getStringExtra("key").toString()
+        val likeRef = PostRef.contentRef.child(postkey).child("like")
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("Allyakk", "사용자 정보 요청 실패", error)
             }
             else if (user != null) {
                 userId = user.id.toString()
+                var existId = false
+                likeRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            for(data in dataSnapshot.children){
+                                val item = data.getValue(LikeData::class.java)
+                                if(userId == item?.userId) existId = true
+                            }
+                            if (existId) { //이미 누른 경우
+                                binding.viewLike.setImageResource(R.drawable.ic_fillheart)
+                            } else { //누른 적이 없는 경우
+                                binding.viewLike.setImageResource(R.drawable.ic_heart)
+                            }
+                        }
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            Log.e(
+                                "Firebase",
+                                "Error updating comment count",
+                                databaseError.toException()
+                            )
+                        }
+                    })
             }
         }
-        val postkey = intent.getStringExtra("key").toString()
         binding.commentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.commentRecyclerView.adapter = CmtAdapter(this, itemList)
         getCmtData(postkey)
         binding.viewTitle.text = intent.getStringExtra("title")
-        binding.viewTime.text = intent.getStringExtra("viewdate")
+        binding.viewTime.text = intent.getStringExtra("date")
         binding.viewContent.text = intent.getStringExtra("content")
         binding.viewLikeCount.text = intent.getStringExtra("likeCnt")
         binding.viewCommentCount.text = intent.getStringExtra("commentCnt")
-        //if click viewLike, likeCount + 1 and image change to ic_fillheart
+        //*************
+
         binding.viewLike.setOnClickListener {
-            // 여기 수정 필요
-            var likeCount = binding.viewLikeCount.text.toString().toInt()
-            likeCount ++
-            binding.viewLike.setImageResource(R.drawable.ic_fillheart)
-            binding.viewLikeCount.text = likeCount.toString()
+            //클릭 시 like 데이터베이스에 유저 아이디 저장
+            var existId1 = false
+            likeRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for(data in dataSnapshot.children){
+                            val item = data.getValue(LikeData::class.java)
+                            if(userId == item?.userId) existId1 = true
+                        }
+                        if(existId1){
+                            likeRef.child(userId).removeValue()
+                        }else{
+                            likeRef.child(userId!!).setValue(LikeData(userId))
+                        }
+
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.e(
+                            "Firebase",
+                            "Error updating comment count",
+                            databaseError.toException()
+                        )
+                    }
+                })
+            //좋아요 개수 변경
+            PostRef.contentRef.child(postkey).child("likeCnt")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val currentLikeCnt = dataSnapshot.getValue(Int::class.java) ?: 0
+                        if (existId1) { //이미 누른 경우
+                            binding.viewLikeCount.text = (binding.viewLikeCount.text.toString().toInt() - 1).toString()
+                            binding.viewLike.setImageResource(R.drawable.ic_heart)
+                            PostRef.contentRef.child(postkey).child("likeCnt").setValue(currentLikeCnt - 1)
+                        } else { //누른 적이 없는 경우
+                            binding.viewLikeCount.text = (binding.viewLikeCount.text.toString().toInt() + 1).toString()
+                            binding.viewLike.setImageResource(R.drawable.ic_fillheart)
+                            PostRef.contentRef.child(postkey).child("likeCnt").setValue(currentLikeCnt + 1)
+                        }
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.e(
+                            "Firebase",
+                            "Error updating comment count",
+                            databaseError.toException()
+                        )
+                    }
+                })
         }
         binding.viewEdit.setOnClickListener{
             val bundle = Bundle().apply {
@@ -71,6 +135,7 @@ class ViewpostActivity : AppCompatActivity()  {
                 val cmt = binding.writeComment.text.toString()
                 val date = dateToString(Date())
                 // Firebase Realtime Database의 경로 설정
+                // ********
                 val commentsRef = FirebaseDatabase.getInstance().getReference("posts/$postkey/comments")
                 // 댓글의 고유 ID를 생성
                 val newCommentId = commentsRef.push().key
@@ -84,8 +149,7 @@ class ViewpostActivity : AppCompatActivity()  {
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val currentCommentCnt = dataSnapshot.getValue(Int::class.java) ?: 0
-                            PostRef.contentRef.child(postkey).child("commentCnt")
-                                .setValue(currentCommentCnt + 1)
+                            PostRef.contentRef.child(postkey).child("commentCnt").setValue(currentCommentCnt + 1)
                         }
                         override fun onCancelled(databaseError: DatabaseError) {
                             Log.e(

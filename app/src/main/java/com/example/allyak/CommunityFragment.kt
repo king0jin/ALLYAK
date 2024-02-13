@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,7 @@ import java.util.Locale
 class CommunityFragment : Fragment() {
     // Access a Cloud Firestore instance from your Activity
     lateinit var addPost: FloatingActionButton
+    lateinit var searchPost : SearchView
     private lateinit var communityRecyclerView: RecyclerView
     private val itemList = mutableListOf<ItemData>()
 
@@ -37,6 +40,16 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addPost = view.findViewById(R.id.addPost)
+        searchPost = view.findViewById(R.id.searchPost)
+        searchPost.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                (communityRecyclerView.adapter as MyAdapter).filter.filter(newText)
+                return false
+            }
+        })
         addPost.setOnClickListener {
             val intent = Intent(this.requireContext(), AddpostActivity::class.java)
             startActivity(intent)
@@ -54,7 +67,6 @@ class CommunityFragment : Fragment() {
 
                 for (data in snapshot.children) {
                     val item = data.getValue(ItemData::class.java)
-                    Log.d("Allyakk", "item: ${item}")
                     // 리스트에 읽어 온 데이터를 넣어준다.
                     if (item != null) {
                         val currentDate = Date()

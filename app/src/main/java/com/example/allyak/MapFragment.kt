@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.naver.maps.map.MapFragment
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -30,19 +29,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        //return inflater.inflate(R.layout.fragment_map, container, false)
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         mapView = view.findViewById(R.id.map_view)
         mapView.onCreate(savedInstanceState)
+        //map이 보입니다.
         return view
-        //return inflater.inflate(R.layout.fragment_map, container, false)
+
     }
     override fun onViewCreated(view: View, davedInstanceState: Bundle?) {
         super.onViewCreated(view, davedInstanceState)
         //pharmacyViewModel = ViewModelProvider(this).get(PharmacyLocationTaskViewModel::class.java)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as MapView?
         if (mapFragment != null) {
-            val newMapFragmenrt = MapFragment.newInstance()
-                childFragmentManager.beginTransaction().add(R.id.map_view, newMapFragmenrt).commit()
+            //val newMapFragmenrt = MapFragment.newInstance()
+                //childFragmentManager.beginTransaction().add(R.id.map_view, newMapFragmenrt).commit()
         }
         mapFragment?.getMapAsync(this)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)

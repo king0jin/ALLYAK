@@ -39,6 +39,9 @@
             android:name=".AddAlramActivity"
             android:exported="false" />
         <activity
+            android:name=".ViewpillActivity"
+            android:exported="false" />
+        <activity
             android:name=".PillListActivity"
             android:exported="false" />
         <activity

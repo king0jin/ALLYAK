@@ -47,12 +47,12 @@ class SearchnameActivity: AppCompatActivity() {
         //2. 서비스 객체 생성
         val pillService:PillService = retrofit.create(PillService::class.java)
         //3. Call 객체 생성
-        //val apiKey = "Cf%2FfmKfKPh4xVEzDeyvrjXkWpf3w%2BBEWgMkulFHU4JDbTxGMJYlzDH1QeKWI%2FAqtRIib8w02NBybR0vZXHgUPA%3D%3D"
         val apiKey = BuildConfig.MY_KEY
-        val pillCall = pillService.getInfo(pillName,"","","","1","50","",apiKey)
+        val pillCall = pillService.getInfo(apiKey, "1","50",pillName,"")
         if (dataList.isNotEmpty()) {
             dataList.clear()
         }
+        Log.d("API_Request", "URL: ${pillCall.request().url}")
         currentCall = pillCall
         pillCall.enqueue(object : Callback<PillInfo>{
             override fun onResponse(call: Call<PillInfo>, response: Response<PillInfo>) {
@@ -70,7 +70,7 @@ class SearchnameActivity: AppCompatActivity() {
             }
             override fun onFailure(call: Call<PillInfo>, t: Throwable) {
                 currentCall = null
-                Log.d("Allyakk", t.message.toString())
+                Log.e("API_Request_Failure", "Error: ${t.message}", t)
             }
         })
     }

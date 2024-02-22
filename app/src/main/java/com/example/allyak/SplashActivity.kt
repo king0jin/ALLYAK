@@ -11,9 +11,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, kakaoLogin::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             //Splash 화면은 앱 처음 시작에 딱 1번만 보여지는 화면

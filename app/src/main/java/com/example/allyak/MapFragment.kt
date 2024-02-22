@@ -61,7 +61,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
 //    private fun loadNearbyPharmacies() {
-//        파싱한 약국 위치 지도에 표시
+//        파싱한 약국 위치 지도에 표시할 예정
 //
 //    }
 

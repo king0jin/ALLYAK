@@ -1,6 +1,7 @@
 package com.example.allyak
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -29,6 +30,11 @@ class ViewpostActivity : AppCompatActivity()  {
         tb = findViewById(R.id.toolbar)
         tb.setTitle("")   //delete toolbar title
         setSupportActionBar(tb)
+        tb.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
         val postkey = intent.getStringExtra("key").toString()
         val likeRef = PostRef.contentRef.child(postkey).child("like")
         UserApiClient.instance.me { user, error ->

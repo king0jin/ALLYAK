@@ -18,8 +18,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Allyak"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.naver.maps.map.Client_Id"
+            android:value="u3lhdtxvx3" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AddAlramActivity"
             android:exported="false" />
@@ -30,24 +45,11 @@
             android:name=".AddmyinfoActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"/>
-
-
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key" />
-        <meta-data
-            android:name="com.naver.maps.map.Client_Id"
-            android:value="u3lhdtxvx3" />
-
-        <activity
             android:name=".kakaoLogin"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
+        <activity
+            android:name=".SearchpillActivity"
+            android:exported="false" />
         <activity
             android:name=".AddpostActivity"
             android:windowSoftInputMode="adjustPan"

@@ -43,7 +43,7 @@
             android:hint="약에 적힌 글자 혹은 숫자"
             android:paddingStart="10dp"/>
     </LinearLayout>
-    <LinearLayout
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -56,80 +56,63 @@
             android:textSize="18sp"
             android:fontFamily="@font/notomedium"
             android:textColor="@color/black"/>
-        <LinearLayout
+        <ToggleButton
             android:id="@+id/type1"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="30dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="정제"/>
-        </LinearLayout>
-        <LinearLayout
+            android:textOn="정제"
+            android:textOff="정제"
+            android:textSize="13sp"
+            android:background="@drawable/shape_button_selector"/>
+        <ToggleButton
             android:id="@+id/type2"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textColor="@color/black"
-                android:text="경질캡슐"/>
-        </LinearLayout>
-        <LinearLayout
+            android:textColor="@color/black"
+            android:textOn="경질캡슐"
+            android:textOff="경질캡슐"
+            android:textSize="13sp"
+            android:background="@drawable/shape_button_selector"/>
+        <ToggleButton
             android:id="@+id/type3"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:text="연질캡슐"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/typeEtc"
+            android:textColor="@color/black"
+            android:textOn="연질캡슐"
+            android:textOff="연질캡슐"
+            android:textSize="13sp"
+            android:background="@drawable/shape_button_selector"/>
+        <ToggleButton
+            android:id="@+id/type4"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="기타"/>
-        </LinearLayout>
-        <LinearLayout
+            android:textColor="@color/black"
+            android:textOn="기타"
+            android:textOff="기타"
+            android:textSize="13sp"
+            android:background="@drawable/shape_button_selector"/>
+        <ToggleButton
             android:id="@+id/typeAll"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="전체"/>
-        </LinearLayout>
-    </LinearLayout>
+            android:textColor="@color/black"
+            android:textOn="전체"
+            android:textOff="전체"
+            android:textSize="13sp"
+            android:background="@drawable/shape_button_selector"/>
+    </RadioGroup>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp"
-        android:orientation="horizontal">
+        android:layout_marginLeft="40dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,7 +120,7 @@
             android:textSize="18sp"
             android:fontFamily="@font/notomedium"
             android:textColor="@color/black"/>
-        <LinearLayout
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -145,145 +128,114 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-        <LinearLayout
-            android:id="@+id/shape1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
+                <ToggleButton
+                    android:id="@+id/shape1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/black"
+                    android:textOn="원형"
+                    android:textOff="원형"
+                    android:textSize="13sp"
+                    android:background="@drawable/shape_button_selector"/>
+                <ToggleButton
+                    android:id="@+id/shape2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textOn="타원형"
+                    android:textOff="타원형"
+                    android:textSize="13sp"
+                    android:background="@drawable/shape_button_selector"/>
+                <ToggleButton
+                    android:id="@+id/shape3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textOn="장방형"
+                    android:textOff="장방형"
+                    android:textSize="13sp"
+                    android:background="@drawable/shape_button_selector"/>
+                <ToggleButton
+                    android:id="@+id/shape4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textOn="삼각형"
+                    android:textOff="삼각형"
+                    android:textSize="13sp"
+                    android:background="@drawable/shape_button_selector"/>
+                <ToggleButton
+                    android:id="@+id/shape5"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textOn="사각형"
+                    android:textOff="사각형"
+                    android:textSize="13sp"
+                    android:background="@drawable/shape_button_selector"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="원형"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/shape2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="타원형"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/shape3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="장방형"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/shape4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:background="@drawable/rect3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="삼각형"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/shape5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:background="@drawable/rect3">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="사각형"/>
-            </LinearLayout>
-            </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:id="@+id/shape6"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="30dp"
-                android:gravity="center"
-                android:background="@drawable/rect3">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="오각형"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/shape7"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:background="@drawable/rect3">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="육각형"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/shape8"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:background="@drawable/rect3">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="팔각형"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/shapeEtc"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:background="@drawable/rect3">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="기타"/>
-                <!--반원형, 마름모형-->
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/shapeAll"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:background="@drawable/rect3">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="전체"/>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+                    <ToggleButton
+                        android:id="@+id/shape6"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="30dp"
+                        android:textColor="@color/black"
+                        android:textOn="오각형"
+                        android:textOff="오각형"
+                        android:textSize="13sp"
+                        android:background="@drawable/shape_button_selector"/>
+                    <ToggleButton
+                        android:id="@+id/shape7"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textOn="육각형"
+                        android:textOff="육각형"
+                        android:textSize="13sp"
+                        android:background="@drawable/shape_button_selector"/>
+                    <ToggleButton
+                        android:id="@+id/shape8"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textOn="팔각형"
+                        android:textOff="팔각형"
+                        android:textSize="13sp"
+                        android:background="@drawable/shape_button_selector"/>
+                    <ToggleButton
+                        android:id="@+id/shapeEtc"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textOn="기타"
+                        android:textOff="기타"
+                        android:textSize="13sp"
+                        android:background="@drawable/shape_button_selector"/>
+                    <ToggleButton
+                        android:id="@+id/shapeAll"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textOn="전체"
+                        android:textOff="전체"
+                        android:textSize="13sp"
+                        android:background="@drawable/shape_button_selector"/>
+                </LinearLayout>
+        </RadioGroup>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -298,117 +250,150 @@
             android:textSize="18sp"
             android:fontFamily="@font/notomedium"
             android:textColor="@color/black"/>
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/color_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="30dp">
+            android:layout_marginLeft="30dp"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <ImageView
+                <ToggleButton
                     android:id="@+id/c_white"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
-                    android:src="@drawable/c_white"/>
-                <ImageView
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/c_white1"/>
+                <ToggleButton
                     android:id="@+id/c_yellow"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_yellow"/>
-                <ImageView
+                    android:background="@drawable/c_yellow1"/>
+                <ToggleButton
                     android:id="@+id/c_orange"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_orange"/>
-                <ImageView
+                    android:background="@drawable/c_orange1"/>
+                <ToggleButton
                     android:id="@+id/c_pink"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_pink"/>
-                <ImageView
+                    android:background="@drawable/c_pink1"/>
+                <ToggleButton
                     android:id="@+id/c_red"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_red"/>
-                <ImageView
+                    android:background="@drawable/c_red1"/>
+                <ToggleButton
                     android:id="@+id/c_brown"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_brown"/>
-                <ImageView
+                    android:background="@drawable/c_brown1"/>
+                <ToggleButton
                     android:id="@+id/c_ygreen"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_ygreen"/>
-                <ImageView
+                    android:background="@drawable/c_ygreen1"/>
+                <ToggleButton
                     android:id="@+id/c_green"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_green"/>
+                    android:background="@drawable/c_green1"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
-                <ImageView
+                <ToggleButton
                     android:id="@+id/c_bgreen"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
-                    android:src="@drawable/c_bgreen"/>
-                <ImageView
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/c_bgreen1"/>
+                <ToggleButton
                     android:id="@+id/c_blue"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_blue"/>
-                <ImageView
+                    android:background="@drawable/c_blue1"/>
+                <ToggleButton
                     android:id="@+id/c_navy"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_navy"/>
-                <ImageView
+                    android:background="@drawable/c_navy1"/>
+                <ToggleButton
                     android:id="@+id/c_violet"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_violet"/>
-                <ImageView
+                    android:background="@drawable/c_violet1"/>
+                <ToggleButton
                     android:id="@+id/c_purple"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_purple"/>
-                <ImageView
+                    android:background="@drawable/c_purple1"/>
+                <ToggleButton
                     android:id="@+id/c_gray"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_gray"/>
-                <ImageView
+                    android:background="@drawable/c_gray1"/>
+                <ToggleButton
                     android:id="@+id/c_black"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_black"/>
-                <ImageView
+                    android:background="@drawable/c_black1"/>
+                <ToggleButton
                     android:id="@+id/c_none"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:textOn=""
+                    android:textOff=""
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/c_none"/>
+                    android:background="@drawable/c_none1"/>
             </LinearLayout>
-        </LinearLayout>
+        </RadioGroup>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -416,88 +401,72 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="40dp"
         android:orientation="horizontal">
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="분할선"
+                android:textSize="18sp"
+                android:fontFamily="@font/notomedium"
+                android:textColor="@color/black"/>
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="분할선"
-            android:textSize="18sp"
-            android:fontFamily="@font/notomedium"
-            android:textColor="@color/black"/>
-        <LinearLayout
-            android:id="@+id/l_none"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="14dp"
-            android:orientation="vertical"
-            android:background="@drawable/rect3"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/c_white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="없음"
+            android:orientation="horizontal">
+            <ToggleButton
+                android:id="@+id/lineNone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="14dp"
                 android:textColor="@color/black"
-                android:textSize="11dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/l_plus"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical"
-            android:background="@drawable/rect3"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/c_plus"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(+)"
+                android:textOn="없음"
+                android:textOff="없음"
+                android:textSize="13sp"
+                android:background="@drawable/shape_button_selector" />
+            <ToggleButton
+                android:id="@+id/linePlus"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/black"
-                android:textSize="11dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/l_minus"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical"
-            android:background="@drawable/rect3"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/c_minus"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(-)"
+                android:textOn="+"
+                android:textOff="+"
+                android:textSize="15sp"
+                android:background="@drawable/shape_button_selector" />
+            <ToggleButton
+                android:id="@+id/lineMinus"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/black"
-                android:textSize="11dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/l_all"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical"
-            android:background="@drawable/rect3"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="전체"
+                android:textOn="-"
+                android:textOff="-"
+                android:textSize="15sp"
+                android:background="@drawable/shape_button_selector" />
+            <ToggleButton
+                android:id="@+id/lineEtc"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="13dp"/>
-        </LinearLayout>
+                android:textOn="기타"
+                android:textOff="기타"
+                android:textSize="13sp"
+                android:background="@drawable/shape_button_selector" />
+            <ToggleButton
+                android:id="@+id/lineAll"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"
+                android:textOn="전체"
+                android:textOff="전체"
+                android:textSize="13sp"
+                android:background="@drawable/shape_button_selector" />
+        </RadioGroup>
     </LinearLayout>
     <Button
-        android:id="@+id/oK"
+        android:id="@+id/pillSearchBtn"
         android:layout_width="80dp"
         android:layout_height="48dp"
         android:text="검색"

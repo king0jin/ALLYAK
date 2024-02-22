@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         loadFragment(HomeFragment())
+        //val key = "Cf%2FfmKfKPh4xVEzDeyvrjXkWpf3w%2BBEWgMkulFHU4JDbTxGMJYlzDH1QeKWI%2FAqtRIib8w02NBybR0vZXHgUPA%3D%3D"
+        //val url = "http://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01?serviceKey=$key&numOfRows=3&pageNo=1&type=json"
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)

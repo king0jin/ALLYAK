@@ -43,7 +43,7 @@ class AddmyinfoActivity : AppCompatActivity() {
             //확인 버튼 클릭 시 동작
             //데이터 파이어 베이스에 저장 후 액티비티 종료
             //토글정보, 약이름, 메모 파이어베이스에 저장
-            userId = "testtesttest223stetesttesttesttest223stetest"
+            //userId = "testtesttest223stetesttesttesttest223stetest"
             saveStore()
             finish()
         }

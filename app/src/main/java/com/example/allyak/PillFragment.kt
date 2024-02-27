@@ -145,8 +145,6 @@ class PillFragment : Fragment() {
                                 "오늘은 복용해야 할 약이 없습니다"
                             )
                         }
-
-
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     } catch (e: IOException) {
@@ -203,10 +201,9 @@ class PillFragment : Fragment() {
                         }
                     }
                 }
-
                 checkPillChecked()
 
-                // 아이탬이 있을 경우 알림을 보냄
+                // 아이템이 있을 경우 알림을 보냄
                 if (pillsList.isNotEmpty()) {
                     sendNotificationFCM(pillsList)
                 }
@@ -224,7 +221,6 @@ class PillFragment : Fragment() {
                 Log.e("TAG", "Failed to read value.", databaseError.toException())
             }
         })
-
     }
 
     //알림을 체크한 경우 달력에 체크한 날짜를 표시하는 함수
@@ -234,14 +230,12 @@ class PillFragment : Fragment() {
             val itemMonth = it.calendarMonth
             val itemDay = it.calendarDay
             val checked = it.checked
-
             val date = CalendarDay.from(itemYear, itemMonth, itemDay)
             if (checked) {
                 val newDecorator = object : DayViewDecorator {
                     override fun shouldDecorate(day: CalendarDay?): Boolean {
                         return day == date
                     }
-
                     override fun decorate(view: DayViewFacade?) {
                         view?.addSpan(DotSpan(5f, Color.BLUE))
                     }

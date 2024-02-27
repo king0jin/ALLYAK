@@ -8,15 +8,13 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PillListAdapter(var pills : ArrayList<PillListInfo>, var callback :
-OnItemClickListener) : RecyclerView.Adapter<PillListAdapter.PillListViewHolder>() {
+class PillListAdapter(var pills : ArrayList<PillListInfo>, val callback : OnItemClickListener) : RecyclerView.Adapter<PillListAdapter.PillListViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): PillListViewHolder {
         return PillListViewHolder(View.inflate(parent.context, R.layout.item_pill, null))
-
     }
 
     override fun onBindViewHolder(holder: PillListViewHolder, position: Int) {
@@ -26,19 +24,18 @@ OnItemClickListener) : RecyclerView.Adapter<PillListAdapter.PillListViewHolder>(
 
         holder.check.setOnCheckedChangeListener { buttonView, isChecked ->
             Log.i("##INFO", "ischecked = ${isChecked}")
-//            if(isChecked) {
-//                // 체크박스가 체크되면 isCheck를 true로 변경
-//                pills[position].checked = true
-//            } else {
-//                // 체크박스가 해제되면 isCheck를 false로 변경
-//                pills[position].checked = false
-//            }
-            pills[position].checked = isChecked
-
+            if(isChecked) {
+                // 체크박스가 체크되면 isCheck를 true로 변경
+                pills[position].checked = true
+            } else {
+                // 체크박스가 해제되면 isCheck를 false로 변경
+                pills[position].checked = false
+            }
+            //pills[position].checked = isChecked
             callback.onItemClick(pills[position], position)
         }
-
     }
+
     override fun getItemCount(): Int {
         return pills.size
     }

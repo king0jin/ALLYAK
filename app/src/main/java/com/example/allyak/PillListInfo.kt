@@ -10,7 +10,7 @@ data class PillListInfo(
     val calendarDay: Int,
     var checked: Boolean
 ) {
-    constructor() : this("", "", 0, 0, 0, 0, 0, false)
+    constructor() : this("", "", 0, 0, 0, 0, 0, true)
 }
 data class Pill(
     val mediName: String,
@@ -21,5 +21,5 @@ data class Pill(
     val calendarDay: Int,
     var checked: Boolean
 ) {
-    constructor() : this("", 0, 0, 0, 0, 0, false)
+    constructor() : this("", 0, 0, 0, 0, 0, true)
 }

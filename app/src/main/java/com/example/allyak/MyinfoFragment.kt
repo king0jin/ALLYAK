@@ -124,7 +124,7 @@ class MyinfoFragment : Fragment() {
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 //취소된 경우
-                Log.w("Firebase", "onCancelled", databaseError.toException())
+                Log.e("Firebase", "onCancelled", databaseError.toException())
             }
         })
     }

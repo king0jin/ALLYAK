@@ -20,7 +20,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         if(message.notification != null) {
             val intent = Intent()
-            intent.action = "com.example.notification"
+            intent.action = "com.package.notification"
             sendBroadcast(intent)
         }
         sendNotfication(message)

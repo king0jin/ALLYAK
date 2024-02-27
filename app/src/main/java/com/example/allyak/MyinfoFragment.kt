@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
@@ -25,6 +26,7 @@ class MyinfoFragment : Fragment() {
     lateinit var medicineList : LinearLayout
     //부작용 약 리스트
     lateinit var sideEffectList : LinearLayout
+    private lateinit var userId: String
 
     //lateinit var auth: FirebaseAuth
 //    lateinit var adapter: InfoAdapter
@@ -41,42 +43,24 @@ class MyinfoFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_myinfo, container, false)
         medicineList = view.findViewById(R.id.medicineList)
         sideEffectList = view.findViewById(R.id.sideeffectList)
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("myinfo")
-
-        //데이터베이스에서 데이터 읽기
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //데이터를 가져와서 토글 상태에 따라 분류하여 각 리스트화면에 표시
-                for (postSnapshot in dataSnapshot.children) {
-                    val medinow = dataSnapshot.child("medinow").getValue(String::class.java)
-                    val medinot = dataSnapshot.child("medinot").getValue(String::class.java)
-                    val mediname = postSnapshot.child("mediname").getValue(String::class.java)
-                    val memo = postSnapshot.child("memo").getValue(String::class.java)
-                    if (medinow == "복용중") {
-                        //medicineList에 약이름과 약메모 내용 표시
-                        addTextViewToLinearLayout("$mediname - $memo\n", medicineList)
-
-                    }
-                    if (medinot == "부작용") {
-                        //sideEffectList에 약이름과 약메모 내용 표시
-                        addTextViewToLinearLayout("$mediname - $memo\n", sideEffectList)
-                    }
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // 취소된 경우의 처리
-                Log.e("Firebase", "onCancelled", databaseError.toException())
-            }
-        })
         return view
-
     }
     // LinearLayout에 TextView 추가하는 함수
     private fun addTextViewToLinearLayout(text: String, linearLayout: LinearLayout) {
         val textView = TextView(requireContext())
+        textView.setBackgroundResource(R.drawable.background_bottom_line)
         textView.text = text
+        //set margine
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(10, 10, 10, 0)
+        textView.layoutParams = params
+
         linearLayout.addView(textView)
+
+        Log.i("##INFO", "addTextViewToLinearLayout() : ${linearLayout.size}")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -109,5 +93,39 @@ class MyinfoFragment : Fragment() {
             val intent = Intent(this.requireContext(), AddmyinfoActivity::class.java)
             startActivity(intent)
         }
+
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("myinfo")
+
+        UserApiClient.instance.me { user, error ->
+            userId = user?.id.toString()
+        }
+
+        //데이터베이스에서 데이터 읽기
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //데이터를 가져와서 토글 상태에 따라 분류하여 각 리스트 화면에 표시
+                medicineList.removeAllViews()
+                sideEffectList.removeAllViews()
+                for(postSnapshot in dataSnapshot.children) {
+                    val userid = postSnapshot.child("userId").getValue(String::class.java)
+                    val medinow = postSnapshot.child("medinow").getValue(String::class.java)
+                    val medinot = postSnapshot.child("medinot").getValue(String::class.java)
+                    val mediname = postSnapshot.child("mediname").getValue(String::class.java)
+                    val memo = postSnapshot.child("memo").getValue(String::class.java)
+                    if (medinow == "복용중") {
+                        addTextViewToLinearLayout("$mediname - $memo\n", medicineList)
+                    }
+                    if (medinot == "부작용") {
+                        addTextViewToLinearLayout("$mediname - $memo\n", sideEffectList)
+                    }
+
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                //취소된 경우
+                Log.w("Firebase", "onCancelled", databaseError.toException())
+            }
+        })
     }
 }

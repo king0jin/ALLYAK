@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.database.FirebaseDatabase
-import com.kakao.sdk.user.UserApiClient
 
 class AddmyinfoActivity : AppCompatActivity() {
     private lateinit var userId :String
@@ -45,22 +43,9 @@ class AddmyinfoActivity : AppCompatActivity() {
             //확인 버튼 클릭 시 동작
             //데이터 파이어 베이스에 저장 후 액티비티 종료
             //토글정보, 약이름, 메모 파이어베이스에 저장
-            //saveStore()
-            UserApiClient.instance.me { user, error ->
-                if (error != null) {
-                    //사용자 정보 요청 실패
-                    Log.d("myinfo", "사용자 정보 요청 실패", error)
-                } else if (user != null) {
-                    userId = user.id.toString()
-                    if (mediname.text.isNotEmpty() && memo.text.isNotEmpty()) {
-                        //파이어베이스에 저장
-                        saveStore()
-                        finish()
-                    } else {
-                        Toast.makeText(this, "약 이름과 메모를 입력해주세요", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+            userId = "testtesttest223stetesttesttesttest223stetest"
+            saveStore()
+            finish()
         }
         cancel1.setOnClickListener {
             //취소 버튼 클릭 시 동작
@@ -91,7 +76,7 @@ class AddmyinfoActivity : AppCompatActivity() {
         //데이터 베이스에 데이터 쓰기
         InfoRef.push().setValue(myinfo)
             .addOnSuccessListener {
-                Log.d("myinfo", "데이터베이스에 저장 실패")
+                Log.d("myinfo", "데이터베이스에 저장 성공")
             }
             .addOnFailureListener {
                 Log.d("myinfo", "데이터베이스에 저장 실패")

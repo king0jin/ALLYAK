@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+//import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.naver.maps.geometry.LatLng
@@ -24,7 +25,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     lateinit var pharmacyApiData: PharmacyApiData
     lateinit var locationSource: FusedLocationSource
     private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
-    lateinit var searchView: SearchView
+    private lateinit var searchView: SearchView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

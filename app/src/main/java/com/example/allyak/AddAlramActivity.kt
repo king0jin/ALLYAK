@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
 import com.kakao.sdk.user.UserApiClient
-import java.util.Calendar
 
 //import android.app.AlarmManager
 //import android.app.PendingIntent
@@ -35,7 +34,10 @@ class AddAlramActivity : AppCompatActivity() {
 
         add.setOnClickListener {
             //알람설정 정보 저장
-            // setAlarm()
+            val year = intent.getIntExtra("selectedYear", 0)
+            val month = intent.getIntExtra("selectedMonth", 0)
+            val dayOfMonth = intent.getIntExtra("selectedDayOfMonth", 0)
+
             UserApiClient.instance.me { user, error ->
                 if (error != null) {
                     //사용자 정보 요청 실패
@@ -44,10 +46,10 @@ class AddAlramActivity : AppCompatActivity() {
                     userId = user.id.toString()
                     if (alramMediName.text.isNotEmpty()) {
                         //파이어베이스에 저장
-                        setAlarm()
+                        setAlarm(year, month, dayOfMonth)
                         finish()
                     } else {
-                        Toast.makeText(this, "약이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "약 이름을 입력해주세요", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -56,9 +58,9 @@ class AddAlramActivity : AppCompatActivity() {
             // AddAlarmActivity 종료
             finish()
         }
-
     }
-    private fun setAlarm() {
+
+    private fun setAlarm(year: Int, month: Int, dayOfMonth: Int) {
         //firebase데이터베이스 레퍼런스
         val database = FirebaseDatabase.getInstance()
         val alarmRef = database.getReference("alarms")
@@ -67,20 +69,16 @@ class AddAlramActivity : AppCompatActivity() {
         val minute = timePicker.minute
         val mediName = alramMediName.text.toString()
 
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, hour)
-        calendar.set(Calendar.MINUTE, minute)
-        calendar.set(Calendar.SECOND, 0)
-
         //데이터 베이스에 저장할 데이터 맵 생성
         val alarms = hashMapOf(
             "userId" to userId,
             "hour" to hour,
             "minute" to minute,
             "mediName" to mediName,
-            "calendarYear" to calendar.get(Calendar.YEAR),
-            "calendarMonth" to calendar.get(Calendar.MONTH),
-            "calendarDay" to calendar.get(Calendar.DAY_OF_MONTH)
+            "calendarYear" to year,
+            "calendarMonth" to month,
+            "calendarDay" to dayOfMonth,
+            "checked" to false
         )
 
         //데이터 베이스에 데이터 쓰기
@@ -91,25 +89,6 @@ class AddAlramActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Log.d("alarm", "알람 정보 저장 실패")
             }
-
-
-        // 알람이 울릴 때 실행될 동작을 수행할 BroadcastReceiver지정
-        //val alarmIntent = Intent(this, AlarmReceiver::class.java)
-        //약이름도 전달
-        //alarmIntent.putExtra("mediName", mediName)
-
-        //val pendingIntent = PendingIntent.getBroadcast(
-    //        this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        //알람매니저를 사용하여 알람 설정
-//        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-//        alarmManager.set(
-//            AlarmManager.RTC_WAKEUP,
-//            calender.timeInMillis,
-//            pendingIntent
-//        )
-
-
     }
 
 }

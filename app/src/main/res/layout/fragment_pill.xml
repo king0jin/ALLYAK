@@ -8,24 +8,26 @@
     tools:context=".PillFragment"
     android:orientation="vertical">
 
-    <CalendarView
-        android:id="@+id/calendar"
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/cal_calendar"
         android:layout_width="match_parent"
-        android:layout_height="305dp"
-        android:firstDayOfWeek="1"/>
-    <LinearLayout
+        android:layout_height="350dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mcv_showOtherDates="all" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/pillnAlramcheck"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="30dp"
-            android:textSize="23dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:id="@+id/re_pill_list"
+        android:layout_marginTop="20dp"
+        tools:listitem="@layout/item_pill"/>
 
 
 </LinearLayout>

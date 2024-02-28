@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="163dp"
+            android:layout_height="150dp"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
@@ -42,35 +42,37 @@
                 android:layout_marginLeft="5dp"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="horizontal"
+            android:layout_marginTop="1dp"
             android:gravity="center"
-            android:layout_marginTop="16dp">
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/add"
                 android:layout_width="100dp"
                 android:layout_height="55dp"
-                android:text="추가"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/notobold"
-                android:background="@drawable/buttonround2"
                 android:layout_marginTop="1dp"
-                />
+                android:background="@drawable/buttonround2"
+                android:fontFamily="@font/notobold"
+                android:text="추가"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
             <Button
                 android:id="@+id/cancel2"
                 android:layout_width="100dp"
                 android:layout_height="55dp"
-                android:text="취소"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/notobold"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/buttonround1"
                 android:layout_marginTop="1dp"
-                android:layout_marginBottom="1dp"/>
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/buttonround1"
+                android:fontFamily="@font/notobold"
+                android:text="취소"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
 
         </LinearLayout>
     </LinearLayout>

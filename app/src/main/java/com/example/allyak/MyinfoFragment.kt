@@ -4,9 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -56,34 +53,6 @@ class MyinfoFragment : Fragment() {
                 }
             }
         }
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("myinfo")
-
-        //데이터베이스에서 데이터 읽기
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //데이터를 가져와서 토글 상태에 따라 분류하여 각 리스트화면에 표시
-                for (postSnapshot in dataSnapshot.children) {
-                    val medinow = dataSnapshot.child("medinow").getValue(String::class.java)
-                    val medinot = dataSnapshot.child("medinot").getValue(String::class.java)
-                    val mediname = postSnapshot.child("mediname").getValue(String::class.java)
-                    val memo = postSnapshot.child("memo").getValue(String::class.java)
-                    if (medinow == "복용중") {
-                        //medicineList에 약이름과 약메모 내용 표시
-                        addTextViewToLinearLayout("$mediname - $memo\n", medicineList)
-
-                    }
-                    if (medinot == "부작용") {
-                        //sideEffectList에 약이름과 약메모 내용 표시
-                        addTextViewToLinearLayout("$mediname - $memo\n", sideEffectList)
-                    }
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // 취소된 경우의 처리
-                Log.e("Firebase", "onCancelled", databaseError.toException())
-            }
-        })
         return view
     }
     // LinearLayout에 TextView 추가하는 함수

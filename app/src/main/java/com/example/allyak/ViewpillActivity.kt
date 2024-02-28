@@ -37,8 +37,12 @@ class ViewpillActivity:AppCompatActivity() {
         binding.useWarning.text = intent.getStringExtra("atpnQesitm")
         binding.depositMethod.text = intent.getStringExtra("deposit")
         binding.sideEffect.text = intent.getStringExtra("seQesitm")
-        binding.testText.text = intent.getStringExtra("atpnWarnQesitm")
-        //binding.pillReviewCnt.text =
+        if(intent.getStringExtra("atpnWarnQesitm") == "null"){
+            binding.warningPill.text = ""
+        } else {
+            binding.warningPill.text = intent.getStringExtra("atpnWarnQesitm")
+        }
+        //binding.warningPill.text = intent.getStringExtra("atpnWarnQesitm")
         binding.pillReviewBtn.setOnClickListener {
             //다이얼로그 ? 아니면 새 액티비티 ?
             Toast.makeText(this, "리뷰 작성하기", Toast.LENGTH_SHORT).show()

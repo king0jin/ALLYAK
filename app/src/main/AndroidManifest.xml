@@ -30,15 +30,13 @@
             android:name="com.naver.maps.map.Client_Id"
             android:value="u3lhdtxvx3" />
         <activity
-            android:name=".SplashActivity"/>
-<!--        <activity-->
-<!--            android:name=".SplashActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AddAlramActivity"
             android:exported="false" />
@@ -48,17 +46,17 @@
         <activity
             android:name=".AddmyinfoActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".kakaoLogin"-->
-<!--            android:exported="false"/>-->
         <activity
+            android:name=".kakaoLogin"
+            android:exported="false"/>
+<!--        <activity
             android:name=".kakaoLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity
             android:name=".SearchpillActivity"
             android:exported="false" />

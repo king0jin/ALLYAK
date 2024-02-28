@@ -71,6 +71,7 @@ class SearchnameActivity: AppCompatActivity() {
                     }
                     adapter.notifyDataSetChanged()
                 }
+                Log.d("API_Request_Success", "Success: $data")
             }
             override fun onFailure(call: Call<PillInfo>, t: Throwable) {
                 currentCall = null

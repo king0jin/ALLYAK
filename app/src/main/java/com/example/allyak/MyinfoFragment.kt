@@ -25,7 +25,7 @@ class MyinfoFragment : Fragment() {
     lateinit var medicineList : LinearLayout
     //부작용 약 리스트
     lateinit var sideEffectList : LinearLayout
-
+    lateinit var logout: TextView
     //lateinit var auth: FirebaseAuth
 //    lateinit var adapter: InfoAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +41,19 @@ class MyinfoFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_myinfo, container, false)
         medicineList = view.findViewById(R.id.medicineList)
         sideEffectList = view.findViewById(R.id.sideeffectList)
+        logout = view.findViewById(R.id.logoutBtn)
+        logout.setOnClickListener {
+            UserApiClient.instance.logout { error ->
+                if (error != null) {
+                    Log.d("카카오", "카카오 로그아웃 실패")
+                } else {
+                    Log.d("카카오", "카카오 로그아웃 성공!")
+//                  auth.signOut()
+                    val intent = Intent(this.requireContext(), kakaoLogin::class.java)
+                    startActivity(intent)
+                }
+            }
+        }
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("myinfo")
 
@@ -78,30 +91,6 @@ class MyinfoFragment : Fragment() {
         textView.text = text
         linearLayout.addView(textView)
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.logout_menu, menu)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.logout_action -> {
-                //카카오 로그아웃
-                UserApiClient.instance.logout { error ->
-                    if (error != null) {
-                        Log.d("카카오", "카카오 로그아웃 실패")
-                    } else {
-                        Log.d("카카오", "카카오 로그아웃 성공!")
-//                        auth.signOut()
-                        val intent = Intent(this.requireContext(), kakaoLogin::class.java)
-                        startActivity(intent)
-                    }
-                }
-                return true
-            }
-            else -> return true
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addInfo = view.findViewById(R.id.addInfo)

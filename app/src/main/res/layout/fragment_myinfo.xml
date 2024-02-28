@@ -48,8 +48,17 @@
             android:background="@drawable/rect1"
             android:orientation="vertical">
         </LinearLayout>
-
     </LinearLayout>
+    <TextView
+        android:id="@+id/logoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그아웃"
+        android:textColor="@color/black"
+        android:fontFamily="@font/notomedium"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="20dp"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addInfo"
         android:layout_width="wrap_content"

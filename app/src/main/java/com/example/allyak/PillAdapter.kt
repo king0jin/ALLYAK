@@ -53,7 +53,6 @@ class PillAdapter(val items:MutableList<Item?>): RecyclerView.Adapter<PillAdapte
                     Glide.with(binding.root.context)
                         .load(item?.itemImage)
                         .into(binding.pillImg)
-                    Log.d("Allyak", "bitmap")
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Log.d("Allyak", "error: $e")

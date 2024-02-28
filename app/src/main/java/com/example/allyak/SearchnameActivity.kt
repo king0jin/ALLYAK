@@ -1,5 +1,6 @@
 package com.example.allyak
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -27,6 +28,9 @@ class SearchnameActivity: AppCompatActivity() {
         binding.pillSearchRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.toolbar.setOnClickListener{
             finish()
+        }
+        binding.test.setOnClickListener {
+            startActivity(Intent(this, ViewpillActivity::class.java))
         }
         binding.pillSearchBtn.setOnClickListener {
             if (currentCall == null) {

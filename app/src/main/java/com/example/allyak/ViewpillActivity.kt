@@ -1,6 +1,7 @@
 package com.example.allyak
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +31,7 @@ class ViewpillActivity:AppCompatActivity() {
                 Log.d("Allyak", "error: $e")
             }
         }
+        val itemNum = intent.getStringExtra("itemSeq") //품목 일련번호
         binding.pillName.text = intent.getStringExtra("itemName")
         binding.entpName.text = intent.getStringExtra("entpName")
         binding.efcyQesitm.text = intent.getStringExtra("efcyQesitm")
@@ -44,8 +46,9 @@ class ViewpillActivity:AppCompatActivity() {
         }
         //binding.warningPill.text = intent.getStringExtra("atpnWarnQesitm")
         binding.pillReviewBtn.setOnClickListener {
-            //다이얼로그 ? 아니면 새 액티비티 ?
-            Toast.makeText(this, "리뷰 작성하기", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AddreviewActivity::class.java)
+            intent.putExtra("itemSeq", itemNum) //품목 일련번호
+            startActivity(intent)
         }
         binding.mvPillinfo.setOnTouchListener { v, event ->
             when (event.action) {

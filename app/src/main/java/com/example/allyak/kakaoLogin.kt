@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -17,7 +19,11 @@ class kakaoLogin : AppCompatActivity(){
     companion object {
         private const val TAG = "KakaoAuth"
     }
-
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            finishAffinity()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)
@@ -25,9 +31,9 @@ class kakaoLogin : AppCompatActivity(){
         //auth = FirebaseAuth.getInstance()
         //파이어베이스 함수 초기화
         //functions = FirebaseFunctions.getInstance()
-
         val loginButton: ImageButton = findViewById(R.id.kakaobtn)
-
+        // pressed back button
+        this.onBackPressedDispatcher.addCallback(this, callback)
         // 로그인 정보 확인
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             if (error != null) {
@@ -85,6 +91,9 @@ class kakaoLogin : AppCompatActivity(){
         }
 
     }
+
+
+
 //    private fun sendTokenToServer(kakakoAccessToken: String) {
 //        //firebase functions를 사용하여 카카오 토큰을 서버로 전송하고 CustonToken을 받아옴
 //        val data = hashMapOf(

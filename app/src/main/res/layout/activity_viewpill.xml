@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notomedium"
-            android:text="알약정보"
+            android:text="약정보"
             android:textColor="@color/black"
             android:textSize="20sp" />
         <TextView

@@ -77,6 +77,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     // Kakao Login
+    //
     implementation "com.kakao.sdk:v2-all:2.19.0"
     implementation 'com.kakao.sdk:v2-user:2.19.0'
     // naver map

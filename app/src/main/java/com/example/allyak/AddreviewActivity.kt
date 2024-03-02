@@ -24,15 +24,14 @@ class AddreviewActivity: AppCompatActivity() {
             }
         }
         binding.symbad.setOnClickListener {
-            if(binding.symbad.isChecked){ symsgone() }
-            else {
+            binding.symgood.isChecked = false
+            if(binding.symbad.isChecked){
                 ObjectAnimator.ofFloat(binding.sym0, "translationY", -330f).apply { start() }
                 val animator = ObjectAnimator.ofFloat(binding.syms, "alpha", 0f, 1f)
                 animator.duration = 300 // 애니메이션 지속 시간 (300ms로 설정)
                 animator.start()
-                binding.symgood.isChecked = false
-                binding.syms.visibility = View.VISIBLE
-            }
+                binding.syms.visibility = View.VISIBLE }
+            else {      symsgone()      }
         }
         binding.addBtn.setOnClickListener {
             //데이터 저장

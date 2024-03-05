@@ -90,26 +90,30 @@ class MyinfoFragment : Fragment() {
         //데이터베이스에서 데이터 읽기
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //데이터를 가져와서 토글 상태에 따라 분류하여 각 리스트 화면에 표시
+                //데이터를 가져와서 토글 상태에 따라 분류하여 각 리스트화면에 표시
                 medicineList.removeAllViews()
                 sideEffectList.removeAllViews()
-                for(postSnapshot in dataSnapshot.children) {
+                for (postSnapshot in dataSnapshot.children) {
                     val userid = postSnapshot.child("userId").getValue(String::class.java)
+//                    if (userid == userId) {
                     val medinow = postSnapshot.child("medinow").getValue(String::class.java)
                     val medinot = postSnapshot.child("medinot").getValue(String::class.java)
                     val mediname = postSnapshot.child("mediname").getValue(String::class.java)
                     val memo = postSnapshot.child("memo").getValue(String::class.java)
                     if (medinow == "복용중") {
+                        //medicineList에 약이름과 약메모 내용 표시
                         addTextViewToLinearLayout("$mediname - $memo\n", medicineList)
+
                     }
                     if (medinot == "부작용") {
+                        //sideEffectList에 약이름과 약메모 내용 표시
                         addTextViewToLinearLayout("$mediname - $memo\n", sideEffectList)
                     }
-
+//                    }
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                //취소된 경우
+                // 취소된 경우의 처리
                 Log.e("Firebase", "onCancelled", databaseError.toException())
             }
         })

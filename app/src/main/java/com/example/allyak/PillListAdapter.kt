@@ -24,14 +24,14 @@ class PillListAdapter(var pills : ArrayList<PillListInfo>, val callback : OnItem
 
         holder.check.setOnCheckedChangeListener { buttonView, isChecked ->
             Log.i("##INFO", "ischecked = ${isChecked}")
-            if(isChecked) {
-                // 체크박스가 체크되면 isCheck를 true로 변경
-                pills[position].checked = true
-            } else {
-                // 체크박스가 해제되면 isCheck를 false로 변경
-                pills[position].checked = false
-            }
-            //pills[position].checked = isChecked
+//            if(isChecked) {
+//                // 체크박스가 체크되면 isCheck를 true로 변경
+//                pills[position].checked = true
+//            } else {
+//                // 체크박스가 해제되면 isCheck를 false로 변경
+//                pills[position].checked = false
+//            }
+            pills[position].checked = isChecked
             callback.onItemClick(pills[position], position)
         }
     }

@@ -32,7 +32,7 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         val uniId = (Math.random() * 100).toInt()
 
         // 일회용 PendingIntent
-        // PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임한다.
+        // PendingIntent : Intent의 실행 권한을 외부의 어플리케이션에게 위임한다.
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남긴다. A-B-C-D-B => A-B
         val pendingIntent =

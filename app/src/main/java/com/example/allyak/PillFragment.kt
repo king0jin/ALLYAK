@@ -45,7 +45,7 @@ class PillFragment : Fragment() {
     lateinit var pillListAdapter: PillListAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var pillsList: ArrayList<PillListInfo> //서버에서 가져온 모든 알략 정보를 담은 리스트
-    lateinit var userId: String
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -296,7 +296,7 @@ class PillFragment : Fragment() {
     var allSelected = false
     private val decoratedDates = HashMap<CalendarDay, DayViewDecorator>()
 
-    //선택한 날짜에 해당하는 알림 데이터를 가져와서 리사이클러 뷰에 표시
+    //선택한 날짜에 해당하는 알림 데이터를 가져와서 리사이클러 뷰에 표시하기
     private fun comparePillData() {
 
         val selectedDate = calendar.selectedDate

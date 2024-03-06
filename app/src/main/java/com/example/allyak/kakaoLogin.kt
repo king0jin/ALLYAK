@@ -135,7 +135,7 @@ class kakaoLogin : AppCompatActivity(){
 //            }
 //    }
 //    private fun updateUI(user: FirebaseUser?) {
-//        //로그인 후 홈으로 이동
+//        //로그인 후 홈으로 이동ㅇㅇ
 //        if(user != null) {
 //            val intent = Intent(this, MainActivity::class.java)
 //            startActivity(intent)

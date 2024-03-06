@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.allyak.databinding.ActivityViewpillBinding
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +17,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ViewpillActivity:AppCompatActivity() {
+    private val dataList = mutableListOf<Item?>() //얘는 수정해야됨
+    //private val adapter by lazy {ReviewAdapter(dataList)}
     private val binding by lazy{ ActivityViewpillBinding.inflate(layoutInflater)}
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,5 +82,11 @@ class ViewpillActivity:AppCompatActivity() {
             }
             true
         }
+/*        val symptoms = listOf("잘맞아요", "우울감", "졸음", "두드러기", "발진", "메스꺼움", "구토", "소화장애", "체중증가", "불면", "부정출혈", "기타")
+        val recyclerView: RecyclerView = findViewById(R.id.ReviewRecyclerview)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val adapter = ReviewAdapter(symptoms)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter*/
     }
 }

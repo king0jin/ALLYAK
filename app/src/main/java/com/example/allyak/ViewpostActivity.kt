@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -37,6 +39,10 @@ class ViewpostActivity : AppCompatActivity()  {
         }
         val postkey = intent.getStringExtra("key").toString()
         val likeRef = PostRef.contentRef.child(postkey).child("like")
+        val cmtRef =  PostRef.contentRef.child(postkey).child("comments")
+        val uid = intent.getStringExtra("uid").toString()
+        val title = intent.getStringExtra("title").toString()
+        val content = intent.getStringExtra("content").toString()
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("Allyakk", "사용자 정보 요청 실패", error)
@@ -69,14 +75,17 @@ class ViewpostActivity : AppCompatActivity()  {
         binding.commentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.commentRecyclerView.adapter = CmtAdapter(this, itemList)
         getCmtData(postkey)
-        binding.viewTitle.text = intent.getStringExtra("title")
+        binding.viewTitle.text = title
         binding.viewTime.text = intent.getStringExtra("date")
-        binding.viewContent.text = intent.getStringExtra("content")
+        binding.viewContent.text = content
         binding.viewLikeCount.text = intent.getStringExtra("likeCnt")
         binding.viewCommentCount.text = intent.getStringExtra("commentCnt")
+        binding.viewEdit.setOnClickListener{
+            showPopupMenu(binding.viewEdit, postkey, uid, title, content)
+        }
         binding.viewLike.setOnClickListener {
-            //클릭 시 like 데이터베이스에 유저 아이디 저장
             var existId1 = false
+            //likeData map
             likeRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for(data in dataSnapshot.children){
@@ -122,30 +131,15 @@ class ViewpostActivity : AppCompatActivity()  {
                     }
                 })
         }
-        binding.viewEdit.setOnClickListener{
-            val bundle = Bundle().apply {
-                putString("key", postkey)
-                putString("uid", intent.getStringExtra("uid"))
-                putString("title", intent.getStringExtra("title"))
-                putString("content", intent.getStringExtra("content"))
-                putString("date", intent.getStringExtra("date"))
-            }
-            val bottomSheet = BottomSheetDialog(this)
-            bottomSheet.arguments = bundle
-            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
-        }
         binding.writeCommentBtn.setOnClickListener{
             if (binding.writeComment.text.isNotEmpty()) {
                 val cmt = binding.writeComment.text.toString()
                 val date = dateToString(Date())
-                // Firebase Realtime Database의 경로 설정
-                // ********
-                val commentsRef = FirebaseDatabase.getInstance().getReference("posts/$postkey/comments")
                 // 댓글의 고유 ID를 생성
-                val newCommentId = commentsRef.push().key
+                val newCommentId = cmtRef.push().key
                 // 새로운 댓글 객체 생성
                 val newComment = Comments(postkey, newCommentId, userId, cmt, date)
-                commentsRef.child(newCommentId!!).setValue(newComment)
+                cmtRef.child(newCommentId!!).setValue(newComment)
                 binding.viewCommentCount.text = (binding.viewCommentCount.text.toString().toInt() + 1).toString()
                 binding.writeComment.text.clear()
                 // 기존 포스트의 commentCnt 증가
@@ -176,7 +170,7 @@ class ViewpostActivity : AppCompatActivity()  {
                 for (data in snapshot.children) {
                     val item = data.getValue(Comments::class.java)
                     itemList.add(item!!)
-                    Log.d("Allyakk", "item: ${item}")
+                    Log.d("Allyakk", "CmtItem: ${item}")
                 }
                 // notifyDataSetChanged()를 호출하여 adapter에게 값이 변경 되었음을 알려준다.
                 (binding.commentRecyclerView.adapter as CmtAdapter).notifyDataSetChanged()
@@ -191,5 +185,55 @@ class ViewpostActivity : AppCompatActivity()  {
     private fun dateToString(date: Date): String {
         val format = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale("ko", "KR"))
         return format.format(date)
+    }
+    private fun showPopupMenu(view: View, postkey: String, uid: String, title: String, content: String) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.inflate(R.menu.popup_menu)
+        // 팝업 메뉴의 아이템을 클릭했을 때의 동작을 정의
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.popUpdate -> {
+                    val intent = Intent(this, EditpostActivity::class.java)
+                    intent.putExtra("title", title)
+                    intent.putExtra("content", content)
+                    intent.putExtra("key", postkey)
+                    intent.putExtra("uid", uid)
+                    startActivity(intent)
+                    true
+                }
+                R.id.popDel -> {
+                    PostRef.contentRef.child(postkey).removeValue()
+                    // MainActivity로 이동하여 CommunityFragment로 전환
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("destination", "community")
+                    startActivity(intent)
+                    true
+                }
+                R.id.popClose -> {
+                    popupMenu.dismiss()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // 팝업 메뉴를 표시
+        popupMenu.show()
+
+        // 유저 정보를 통해 팝업 메뉴의 항목을 제어
+        UserApiClient.instance.me { user, error ->
+            if (error == null && user != null) {
+                val myUid = user.id.toString()
+
+                // 버튼을 누른 사용자의 uid와 내 uid를 비교하여 팝업 메뉴의 항목을 제어
+                if (myUid == uid) {
+                    // 내 uid와 같으면 item1, item2, item3 모두 표시
+                } else {
+                    // 내 uid와 다르면 item3만 표시
+                    popupMenu.menu.removeItem(R.id.popUpdate)
+                    popupMenu.menu.removeItem(R.id.popDel)
+                }
+            }
+        }
     }
 }

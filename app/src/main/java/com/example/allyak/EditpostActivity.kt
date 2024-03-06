@@ -9,6 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.allyak.databinding.ActivityAddpostBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
 
 class EditpostActivity : AppCompatActivity() {
@@ -32,9 +35,6 @@ class EditpostActivity : AppCompatActivity() {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val postkey = intent.getStringExtra("key")
-        val userId = intent.getStringExtra("uid").toString()
-        val date = intent.getStringExtra("date").toString()
-        Log.d("Allyakk", "userId : $userId, date : $date")
         when (item.itemId) {
             R.id.saveBtn -> {
                 UserApiClient.instance.me { user, error ->
@@ -44,7 +44,7 @@ class EditpostActivity : AppCompatActivity() {
                     else if (user != null && postkey != null){
                         if (binding.postTitle.text.isNotEmpty() && binding.postContent.text.isNotEmpty()) {
                             //파이어베이스에 업데이트
-                            editStore(postkey, userId, date)
+                            editStore(postkey)
                             val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("destination", "community")
                             startActivity(intent)
@@ -59,11 +59,27 @@ class EditpostActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-    private fun editStore(key : String,userId : String, date : String) {
+    private fun editStore(key : String) {
         val title = binding.postTitle.text.toString()
         val content = binding.postContent.text.toString()
-        // setValue() 메서드를 사용하여 값을 저장
         // realtime database에 저장
-        PostRef.contentRef.child(key).setValue(ItemData(key, userId, title, content,date,"")) //기존 like, comment도 유지해주게 수정
+        // 해당 게시물의 기존 데이터를 불러오기
+        val postRef = PostRef.contentRef.child(key)
+        postRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // 기존 데이터를 가져와서 ItemData 객체로 매핑
+                val existingData = snapshot.getValue(ItemData::class.java)
+                // 기존 데이터가 null이 아니라면 업데이트 수행
+                existingData?.let {
+                    it.title = title
+                    it.content = content
+                    // 기존 데이터를 다시 저장
+                    postRef.setValue(it)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Firebase", "Error fetching existing data", error.toException())
+            }
+        })
     }
 }

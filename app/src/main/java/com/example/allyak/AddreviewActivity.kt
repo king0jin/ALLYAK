@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.allyak.databinding.ActivityAddreviewBinding
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class AddreviewActivity: AppCompatActivity() {
@@ -39,10 +41,12 @@ class AddreviewActivity: AppCompatActivity() {
             if(binding.symgood.isChecked == false && binding.symbad.isChecked == false){
                 Toast.makeText(this, "증상을 추가해주세요", Toast.LENGTH_SHORT).show()
             }
-            else{
-                val itemNum = intent.getStringExtra("itemSeq")
+            else{  //데이터에 저장
+                val itemNum = intent.getStringExtra("itemSeq").toString()
+                PostRef.reviewRef.child(itemNum).setValue(ReviewData(itemNum))
                 if(binding.symgood.isChecked == true){
                     //잘맞아요 추가
+
                 }
                 else{
                     //부작용이 있는 경우

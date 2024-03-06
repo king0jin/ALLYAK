@@ -10,7 +10,7 @@ data class ItemData (
     var viewdate: String? = null,
     var likeCnt: Int = 0,
     var commentCnt: Int = 0,
-    var comment: Map<String, Comments> = emptyMap(),
+    var comments: Map<String, Comments> = emptyMap(),
     var like: Map<String, LikeData> = emptyMap()
 )
 data class Comments(

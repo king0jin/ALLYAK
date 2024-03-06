@@ -36,7 +36,7 @@
             android:id="@+id/pillSearchBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#FBFBFB"
             android:src="@drawable/ic_search"/>
     </LinearLayout>
     <ScrollView

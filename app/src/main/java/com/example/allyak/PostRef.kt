@@ -7,5 +7,6 @@ class PostRef {
     companion object {
         private val database = Firebase.database
         val contentRef = database.getReference("posts")
+        val reviewRef = database.getReference("reviews")
     }
 }

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.allyak.databinding.ActivitySearchpillBinding
-import com.example.allyak.databinding.ActivitySearchshapeBinding
 //모양 검색 후 뜨는 액티비티
 class SearchpillActivity: AppCompatActivity() {
     lateinit var binding: ActivitySearchpillBinding

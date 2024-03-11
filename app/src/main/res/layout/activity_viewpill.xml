@@ -73,7 +73,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <Button
+<!--    <Button
         android:id="@+id/pillReviewBtn"
         android:layout_width="100dp"
         android:layout_height="48dp"
@@ -82,7 +82,7 @@
         android:background="@drawable/buttonround2"
         android:textColor="#FFFFFF"
         android:layout_marginBottom="10dp"
-        android:layout_gravity="center|bottom" />
+        android:layout_gravity="center|bottom" />-->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -197,31 +197,32 @@
                 android:text="보관방법 상세"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
-            <TextView
+            <LinearLayout
                 android:id="@+id/pillReview"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/notobold"
-                android:text="• 후기"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:layout_height="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"/>
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/ReviewRecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                app:justifyContent="center"
                 app:flexWrap="wrap">
                 <LinearLayout
                     android:id="@+id/sym0"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym0n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="잘맞아요"
@@ -242,12 +243,14 @@
                     android:id="@+id/sym1"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym1n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="우울감"
@@ -268,12 +271,14 @@
                     android:id="@+id/sym2"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym2n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="졸음"
@@ -294,12 +299,14 @@
                     android:id="@+id/sym3"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym3n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="두드러기"
@@ -320,12 +327,14 @@
                     android:id="@+id/sym4"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym4n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="발진"
@@ -346,12 +355,14 @@
                     android:id="@+id/sym5"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym5n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="메스꺼움"
@@ -372,12 +383,14 @@
                     android:id="@+id/sym6"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym6n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="구토"
@@ -398,12 +411,14 @@
                     android:id="@+id/sym7"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym7n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="소화장애"
@@ -424,12 +439,14 @@
                     android:id="@+id/sym8"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym8n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="체중증가"
@@ -450,12 +467,14 @@
                     android:id="@+id/sym9"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym9n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="불면"
@@ -476,12 +495,14 @@
                     android:id="@+id/sym10"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym10n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="부정출혈"
@@ -502,12 +523,14 @@
                     android:id="@+id/sym11"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:minWidth="90dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_margin="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/tag_rect">
                     <TextView
+                        android:id="@+id/sym11n"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="기타"

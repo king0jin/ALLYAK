@@ -38,9 +38,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddreviewActivity"
-            android:exported="false" />
-        <activity
             android:name=".AddAlramActivity"
             android:exported="false" />
         <activity

@@ -13,17 +13,17 @@
         android:id="@+id/symtag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="잘맞아요"
         android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="17sp"
         android:paddingLeft="4dp"/>
     <TextView
         android:id="@+id/symtagCnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="6"
         android:textColor="@color/black"
         android:textSize="17sp"
+        android:textStyle="bold"
         android:paddingLeft="2dp"
         android:paddingRight="4dp"/>
 </LinearLayout>

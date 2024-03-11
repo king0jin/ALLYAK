@@ -12,10 +12,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,16 +33,17 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import java.io.IOException
+import java.lang.Thread.sleep
 import kotlin.system.exitProcess
 
 class PillFragment : Fragment() {
-    lateinit var tb : Toolbar
     lateinit var calendar : MaterialCalendarView
-    lateinit var allyakschedule : TextView
     lateinit var pillListAdapter: PillListAdapter
+    lateinit var progress : ProgressBar
     lateinit var recyclerView: RecyclerView
     lateinit var pillsList: ArrayList<PillListInfo> //서버에서 가져온 모든 알략 정보를 담은 리스트
     private lateinit var userId: String
@@ -111,9 +111,13 @@ class PillFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // progress 초기화
+        progress = view.findViewById(R.id.pr_loading)
+        progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정
 
         requestPillData()
         setEvent()
+        sendFCM()
     }
 
     //FCM을 통해 알림을 보내는 함수
@@ -172,8 +176,7 @@ class PillFragment : Fragment() {
 
     //파이어베이스에서 알림 데이터를 가져오는 함수
     private fun requestPillData() {
-        //기존 데이터 삭제
-        pillsList.clear()
+        progress.visibility = View.VISIBLE
 
         val database = FirebaseDatabase.getInstance()
         val alarmRef = database.getReference("alarms")
@@ -181,6 +184,9 @@ class PillFragment : Fragment() {
         alarmRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
+                    //기존 데이터 삭제
+                    pillsList.clear()
+
                     val id = postSnapshot.child("userId").getValue(String::class.java)
                     if (userId == id) {
                         val key = postSnapshot.key.toString()
@@ -214,7 +220,10 @@ class PillFragment : Fragment() {
 
                 // 아이템이 있을 경우 알림을 보냄
                 if (pillsList.isNotEmpty()) {
-                    sendNotificationFCM(pillsList)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        delay(2000)
+                        progress.visibility = View.GONE
+                    }
                 }
 
                 // 알림 데이터를 리사이클러뷰에 표시
@@ -231,6 +240,13 @@ class PillFragment : Fragment() {
                 Log.e("TAG", "Failed to read value.", databaseError.toException())
             }
         })
+    }
+
+    private fun sendFCM() {
+        Thread {
+            sleep(3000)
+            sendNotificationFCM(pillsList)
+        }.start()
     }
 
     //알림을 체크한 경우 달력에 체크한 날짜를 표시하는 함수
@@ -323,7 +339,6 @@ class PillFragment : Fragment() {
             }
         }
 
-
         pillListAdapter = PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
             override fun onItemClick(data: PillListInfo, position: Int) {
                 //기존 데이터의 데이터를 변경해주기 위한 for문
@@ -403,7 +418,6 @@ class PillFragment : Fragment() {
                             decoratedDates.remove(date)
                         }
                     }
-
                 }
                 dialog.setNegativeButton("취소") { dialog, which ->
                     dialog.dismiss()
@@ -420,10 +434,5 @@ class PillFragment : Fragment() {
         if (::pillsList.isInitialized) {
             requestPillData()
         }
-
     }
-
-
-
-
 }

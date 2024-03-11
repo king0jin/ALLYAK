@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -34,6 +35,9 @@ class PillListAdapter(var pills : ArrayList<PillListInfo>, val callback : OnItem
             pills[position].checked = isChecked
             callback.onItemClick(pills[position], position)
         }
+        holder.deleteView.setOnClickListener {
+            callback.onItemDelete(pills[position], position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -49,10 +53,12 @@ class PillListAdapter(var pills : ArrayList<PillListInfo>, val callback : OnItem
         val mediName = itemView.findViewById<TextView>(R.id.tv_pill)
         val time = itemView.findViewById<TextView>(R.id.tv_time)
         val check = itemView.findViewById<CheckBox>(R.id.check_pill)
+        val deleteView = itemView.findViewById<ImageView>(R.id.im_delete)
     }
 
     interface OnItemClickListener {
         fun onItemClick(data: PillListInfo, position: Int)
+        fun onItemDelete(data: PillListInfo, position: Int)
     }
 
 }

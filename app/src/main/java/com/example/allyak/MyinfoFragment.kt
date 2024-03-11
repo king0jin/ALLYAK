@@ -1,5 +1,6 @@
 package com.example.allyak
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -53,8 +54,14 @@ class MyinfoFragment : Fragment() {
                 }
             }
         }
+        setEvent()
         return view
     }
+
+    private fun setEvent() {
+        //선택한 특정 textview 아이템 삭제
+    }
+
     // LinearLayout에 TextView 추가하는 함수
     private fun addTextViewToLinearLayout(text: String, linearLayout: LinearLayout) {
         val textView = TextView(requireContext())
@@ -69,6 +76,35 @@ class MyinfoFragment : Fragment() {
         textView.layoutParams = params
 
         linearLayout.addView(textView)
+
+        textView.setOnClickListener {
+            val dlg = AlertDialog.Builder(requireContext())
+            dlg.setTitle("약 삭제")
+            dlg.setMessage("삭제하시겠습니까?")
+            dlg.setPositiveButton("삭제") { dialog, which ->
+                linearLayout.removeView(textView)
+                // firebase 삭제
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("myinfo")
+                myRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (postSnapshot in dataSnapshot.children) {
+                            val mediname = postSnapshot.child("mediname").getValue(String::class.java)
+                            val memo = postSnapshot.child("memo").getValue(String::class.java)
+                            if (text.contains(mediname.toString()) && text.contains(memo.toString())) {
+                                postSnapshot.ref.removeValue()
+                            }
+                        }
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // 취소된 경우의 처리
+                        Log.e("Firebase", "onCancelled", databaseError.toException())
+                    }
+                })
+            }
+            dlg.setNegativeButton("취소", null)
+            dlg.show()
+        }
 
         Log.i("##INFO", "addTextViewToLinearLayout() : ${linearLayout.size}")
     }

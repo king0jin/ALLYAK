@@ -16,7 +16,10 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
-    //메세지가 왔을 때 onMessageReceived에서 받음
+    /**
+     * 메시지가 왔을때 onMessageReceived 에서 받음.
+     * @param message
+     */
     override fun onMessageReceived(message: RemoteMessage) {
         if(message.notification != null) {
             val intent = Intent()
@@ -26,13 +29,17 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         sendNotfication(message)
     }
 
-    //fcm알림이 왔을때 벨소리,아이콘 설정할 수 있음
+    /**
+     *
+     * fcm 알림이 왔을때 벨소리,아이콘,등을 설정할 수 있음.
+     * @param remoteMessage
+     */
     private fun sendNotfication(remoteMessage: RemoteMessage) {
         //RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시되도록
         val uniId = (Math.random() * 100).toInt()
 
         // 일회용 PendingIntent
-        // PendingIntent : Intent의 실행 권한을 외부의 어플리케이션에게 위임한다.
+        // PendingIntent : Intent의 실행 권한을 외부의 어플리케이션에게 위임
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남긴다. A-B-C-D-B => A-B
         val pendingIntent =

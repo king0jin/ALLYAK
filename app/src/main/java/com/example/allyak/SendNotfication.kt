@@ -15,6 +15,15 @@ import java.io.IOException
 class SendNotfication {
     var JSON: MediaType? = "application/json; charset=utf-8".toMediaTypeOrNull()
 
+    /**
+     *
+     * okhttp통신을 통해서 앱이 백그라운드에 가도 푸시가 울릴 수 있다
+     * @param token
+     * @param title
+     * @param message
+     * @throws JSONException
+     * @throws IOException
+     */
     @Throws(JSONException::class, IOException::class)
     fun sendTopicNotification(token: String?, title: String?, message: String?) {
         val client = OkHttpClient()

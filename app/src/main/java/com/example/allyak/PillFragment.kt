@@ -1,5 +1,6 @@
 package com.example.allyak
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -61,11 +62,19 @@ class PillFragment : Fragment() {
     //알람 권한을 요청하는 함수
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext().applicationContext, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), android.Manifest.permission.POST_NOTIFICATIONS)) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext().applicationContext,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(),
+                        android.Manifest.permission.POST_NOTIFICATIONS
+                )) {
                     // 이미 권한을 거절한 경우 권한 설정 화면으로 이동
-                    val intent: Intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
-                        Uri.parse("package:" + requireActivity().packageName))
+                    val intent: Intent =
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
+                            Uri.parse("package:" + requireActivity().packageName)
+                        )
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
@@ -213,6 +222,7 @@ class PillFragment : Fragment() {
                     if (::pillListAdapter.isInitialized) {
                         recyclerView.adapter = pillListAdapter
                         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                        comparePillData()
                     }
                 }
             }
@@ -230,6 +240,7 @@ class PillFragment : Fragment() {
             val itemMonth = it.calendarMonth
             val itemDay = it.calendarDay
             val checked = it.checked
+
             val date = CalendarDay.from(itemYear, itemMonth, itemDay)
             if (checked) {
                 val newDecorator = object : DayViewDecorator {
@@ -256,6 +267,7 @@ class PillFragment : Fragment() {
             }
         }
     }
+
     var clickCount = 0
     var clickTime = 0L
     var selectedDate = ""
@@ -313,7 +325,7 @@ class PillFragment : Fragment() {
 
 
         pillListAdapter = PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
-            override fun onItemClick(data: PillListInfo, pos: Int) {
+            override fun onItemClick(data: PillListInfo, position: Int) {
                 //기존 데이터의 데이터를 변경해주기 위한 for문
                 pillsList.forEach {
                     if (it.mediName == data.mediName) {
@@ -321,7 +333,7 @@ class PillFragment : Fragment() {
                     }
                 }
 
-                // check한 아이탬을 다시 파이어베이스에 업로드
+                // check한 아이템을 다시 파이어베이스에 업로드
                 val database = FirebaseDatabase.getInstance()
                 val alarmRef = database.getReference("alarms")
                 val key = data.key
@@ -337,14 +349,14 @@ class PillFragment : Fragment() {
                 )
                 alarmRef.child(key).setValue(pill)
 
-                // 모든 아이탬이 체크되었는지 확인
+                // 모든 아이템이 체크되었는지 확인
                 selectedPillList.forEach {
                     allSelected = it.checked == true
                 }
-                // 체크한 아이탬을 달력에 표시
+                // 체크한 아이템을 달력에 표시
                 val date = CalendarDay.from(data.calendarYear, data.calendarMonth, data.calendarDay)
 
-                // 모든 아이탬이 체크되었을 때
+                // 모든 아이템이 체크되었을 때
                 if (allSelected == true) {
                     // 새로운 장식 생성
                     val newDecorator = object : DayViewDecorator {
@@ -369,6 +381,35 @@ class PillFragment : Fragment() {
                     }
                 }
             }
+            //아이템을 삭제하는 함수
+            override fun onItemDelete(data: PillListInfo, position: Int) {
+                val dialog = AlertDialog.Builder(requireContext())
+                dialog.setTitle("알림 삭제")
+                dialog.setMessage("${data.mediName}의 알림을 삭제하시겠습니까?")
+                dialog.setPositiveButton("삭제") { dialog, which ->
+                    val database = FirebaseDatabase.getInstance()
+                    val alarmRef = database.getReference("alarms")
+                    val key = data.key
+                    alarmRef.child(key).removeValue()
+                    selectedPillList.removeAt(position)
+                    pillListAdapter.updateItems(selectedPillList)
+                    pillsList.remove(data)
+
+                    // 그날의 데이터가 비었을때 dotSpan 제거
+                    if(selectedPillList.isEmpty()) {
+                        val date = CalendarDay.from(data.calendarYear, data.calendarMonth, data.calendarDay)
+                        decoratedDates[date]?.let {
+                            calendar.removeDecorator(it)
+                            decoratedDates.remove(date)
+                        }
+                    }
+
+                }
+                dialog.setNegativeButton("취소") { dialog, which ->
+                    dialog.dismiss()
+                }
+                dialog.show()
+            }
         })
         //리사이클러뷰에 어댑터 설정
         recyclerView.adapter = pillListAdapter
@@ -376,7 +417,7 @@ class PillFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        if (pillsList.isNotEmpty()) {
+        if (::pillsList.isInitialized) {
             requestPillData()
         }
 

@@ -34,11 +34,18 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
         <CheckBox
             android:id="@+id/check_pill"
             android:layout_width="48dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="48dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/im_delete"
+            android:src="@drawable/round_delete_forever_24"
+            android:layout_marginStart="50dp"
+            android:padding="10dp"/>
     </LinearLayout>
 
 </LinearLayout>

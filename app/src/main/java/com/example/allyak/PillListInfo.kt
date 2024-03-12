@@ -13,6 +13,7 @@ data class PillListInfo(
     constructor() : this("", "", 0, 0, 0, 0, 0, true)
 }
 data class Pill(
+    val key: String,
     val mediName: String,
     val hour: Int,
     val minute: Int,
@@ -21,5 +22,5 @@ data class Pill(
     val calendarDay: Int,
     var checked: Boolean
 ) {
-    constructor() : this("", 0, 0, 0, 0, 0, true)
+    constructor() : this("","", 0, 0, 0, 0, 0, true)
 }

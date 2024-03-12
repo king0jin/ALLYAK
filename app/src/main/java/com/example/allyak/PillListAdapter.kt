@@ -19,19 +19,18 @@ class PillListAdapter(var pills : ArrayList<PillListInfo>, val callback : OnItem
     }
 
     override fun onBindViewHolder(holder: PillListViewHolder, position: Int) {
+        lateinit var newhour: String
+        lateinit var newminute: String
+        if(pills[position].hour < 10) newhour="0${pills[position].hour}"
+        else newhour="${pills[position].hour}"
+        if(pills[position].minute < 10) newminute="0${pills[position].minute}"
+        else newminute = "${pills[position].minute}"
         holder.mediName.text = pills[position].mediName
-        holder.time.text = "${pills[position].hour} : ${pills[position].minute}"
+        holder.time.text = "${newhour} : ${newminute}"
         holder.check.isChecked = pills[position].checked
 
         holder.check.setOnCheckedChangeListener { buttonView, isChecked ->
             Log.i("##INFO", "ischecked = ${isChecked}")
-//            if(isChecked) {
-//                // 체크박스가 체크되면 isCheck를 true로 변경
-//                pills[position].checked = true
-//            } else {
-//                // 체크박스가 해제되면 isCheck를 false로 변경
-//                pills[position].checked = false
-//            }
             pills[position].checked = isChecked
             callback.onItemClick(pills[position], position)
         }

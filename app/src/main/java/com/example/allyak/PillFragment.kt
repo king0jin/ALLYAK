@@ -354,6 +354,7 @@ class PillFragment : Fragment() {
                 val key = data.key
 
                 val pill = Pill(
+                    data.key,
                     data.mediName,
                     data.hour,
                     data.minute,
@@ -362,7 +363,6 @@ class PillFragment : Fragment() {
                     data.calendarDay,
                     data.checked
                 )
-                //수수정
                 MyRef.alarmRef.child(userId).child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}").child(key).setValue(pill)
 
                 // 모든 아이템이 체크되었는지 확인

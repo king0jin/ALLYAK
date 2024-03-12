@@ -12,8 +12,6 @@ import com.kakao.sdk.user.UserApiClient
 
 class TodayViewHolder(val binding: ItemTodayBinding) : RecyclerView.ViewHolder(binding.root)
 class TodayAdapter(val context: Context, val itemList: MutableList<PillListInfo>): RecyclerView.Adapter<TodayViewHolder>() {
-    //데이터 구조를 이용해 보내야 되는건지 .. 알람이 요일을 고려하는지 ? 안했던거 같음
-    //맞다면 시간 데이터와 약 이름 데이터를 리스트로 받기
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return TodayViewHolder(ItemTodayBinding.inflate(layoutInflater))
@@ -61,7 +59,13 @@ class TodayAdapter(val context: Context, val itemList: MutableList<PillListInfo>
         }
         holder.binding.run {
             todayPill.text = data.mediName
-            todayTime.text = "${data.hour} : ${data.minute}"
+            lateinit var newhour: String
+            lateinit var newminute: String
+            if(data.hour < 10) newhour="0${data.hour}"
+            else newhour="${data.hour}"
+            if(data.minute < 10) newminute="0${data.minute}"
+            else newminute = "${data.minute}"
+            todayTime.text = "${newhour} : ${newminute}"
             todayCheck.isChecked = data.checked
         }
     }

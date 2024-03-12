@@ -1,19 +1,13 @@
 package com.example.allyak
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.allyak.databinding.ActivityViewpillBinding
 import com.google.firebase.database.DataSnapshot
@@ -27,7 +21,7 @@ import kotlinx.coroutines.launch
 class ViewpillActivity:AppCompatActivity() {
     private val binding by lazy{ ActivityViewpillBinding.inflate(layoutInflater)}
     lateinit var userId :String
-    private val reviewsReference = PostRef.reviewRef
+    private val reviewsReference = MyRef.reviewRef
     private val symptoms = listOf("sym0","sym1","sym2","sym3","sym4","sym5","sym6","sym7","sym8","sym9","sym10","sym11")
 
     @SuppressLint("ClickableViewAccessibility")
@@ -100,35 +94,34 @@ class ViewpillActivity:AppCompatActivity() {
                     } else if (user != null) {
                         userId = user.id.toString()
                         var existId1 = false
-                            reviewsReference.child(itemNum).child(symptom)  //symptom 이름으로 데이터 저장
-                                .addListenerForSingleValueEvent(object : ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                        for (data in dataSnapshot.children) {
-                                            val item = data.getValue(ReviewData::class.java) //uid 형식만 빌리는 것
-                                            if (userId == item?.uid) existId1 = true
-                                        }
-                                        if (existId1) { //이미 누른 경우
-                                            reviewsReference.child(itemNum).child(symptom).child(userId).removeValue()
-                                            symptomTag.setBackgroundResource(R.drawable.tag_rect)
-                                            symptomName.setTextColor(Color.BLACK)
-                                            symptomCnt.setTextColor(Color.BLACK)
-                                            symptomCnt.text = (symptomCnt.text.toString().toInt() - 1).toString()
-                                        } else {
-                                            reviewsReference.child(itemNum).child(symptom).child(userId!!).setValue(ReviewData(userId))
-                                            symptomTag.setBackgroundResource(R.drawable.tag_rect_on)
-                                            symptomName.setTextColor(Color.WHITE)
-                                            symptomCnt.setTextColor(Color.WHITE)
-                                            symptomCnt.text = (symptomCnt.text.toString().toInt() + 1).toString()
-                                        }
+                        reviewsReference.child(itemNum).child(symptom).addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    for (data in dataSnapshot.children) {
+                                        val item = data.getValue(ReviewData::class.java) //uid 형식만 빌리는 것
+                                        if (userId == item?.uid) existId1 = true
                                     }
-                                    override fun onCancelled(databaseError: DatabaseError) {
-                                        Log.e(
-                                            "Firebase",
-                                            "Error updating comment count",
-                                            databaseError.toException()
-                                        )
+                                    if (existId1) { //이미 누른 경우
+                                        reviewsReference.child(itemNum).child(symptom).child(userId).removeValue()
+                                        symptomTag.setBackgroundResource(R.drawable.tag_rect)
+                                        symptomName.setTextColor(Color.BLACK)
+                                        symptomCnt.setTextColor(Color.BLACK)
+                                        symptomCnt.text = (symptomCnt.text.toString().toInt() - 1).toString()
+                                    } else {
+                                        reviewsReference.child(itemNum).child(symptom).child(userId!!).setValue(ReviewData(userId))
+                                        symptomTag.setBackgroundResource(R.drawable.tag_rect_on)
+                                        symptomName.setTextColor(Color.WHITE)
+                                        symptomCnt.setTextColor(Color.WHITE)
+                                        symptomCnt.text = (symptomCnt.text.toString().toInt() + 1).toString()
                                     }
-                                })
+                                }
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                    Log.e(
+                                        "Firebase",
+                                        "Error updating comment count",
+                                        databaseError.toException()
+                                    )
+                                }
+                            })
 
                     }
                 }

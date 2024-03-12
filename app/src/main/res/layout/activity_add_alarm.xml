@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddAlramActivity">
+    tools:context=".AddAlarmActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +33,7 @@
                 android:fontFamily="@font/notoebold"/>
 
             <EditText
-                android:id="@+id/alrammediname"
+                android:id="@+id/alarmmediname"
                 android:layout_width="180dp"
                 android:layout_height="50dp"
                 android:layout_centerInParent="true"

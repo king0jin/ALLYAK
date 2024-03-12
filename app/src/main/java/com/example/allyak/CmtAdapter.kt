@@ -2,15 +2,12 @@ package com.example.allyak
 
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.allyak.databinding.ItemCmtBinding
 import com.google.firebase.database.DataSnapshot
@@ -49,12 +46,12 @@ class CmtAdapter(val context: Context, val itemList: MutableList<Comments>): Rec
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.popDel -> {
-                        PostRef.contentRef.child(postkey).child("comments").child(docId).removeValue()
-                        PostRef.contentRef.child(postkey).child("commentCnt")
+                        MyRef.contentRef.child(postkey).child("comments").child(docId).removeValue()
+                        MyRef.contentRef.child(postkey).child("commentCnt")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                                     val currentCommentCnt = dataSnapshot.getValue(Int::class.java) ?: 0
-                                    PostRef.contentRef.child(postkey).child("commentCnt")
+                                    MyRef.contentRef.child(postkey).child("commentCnt")
                                         .setValue(currentCommentCnt - 1)
                                 }
                                 override fun onCancelled(databaseError: DatabaseError) {

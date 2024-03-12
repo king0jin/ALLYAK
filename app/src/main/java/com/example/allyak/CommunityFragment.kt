@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -95,7 +94,7 @@ class CommunityFragment : Fragment() {
             }
         }
         // addValueEventListener() 메서드로 DatabaseReference에 ValueEventListener를 추가한다.
-        PostRef.contentRef.addValueEventListener(postListener)
+        MyRef.contentRef.addValueEventListener(postListener)
     }
     private fun isSameDate(date1: Date, date2: Date): Boolean {
         val cal1 = Calendar.getInstance().apply { time = date1 }

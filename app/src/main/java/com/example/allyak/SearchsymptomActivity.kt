@@ -18,7 +18,6 @@ class SearchsymptomActivity : AppCompatActivity() {
     private val binding by lazy{ ActivitySearchsymptomBinding.inflate(layoutInflater)}
     private val adapter by lazy {PillAdapter(dataList)}
     private val dataList = mutableListOf<Item?>()
-    private var currentCall: Call<PillInfo>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -28,11 +27,9 @@ class SearchsymptomActivity : AppCompatActivity() {
             finish()
         }
         binding.pillSearchBtn.setOnClickListener {
-            if (currentCall == null) {
-                val mySymptom = binding.searchSymptomText.text.toString()
-                Toast.makeText(this, "$mySymptom 정보 불러오는 중", Toast.LENGTH_SHORT).show()
-                pillRequest(mySymptom)
-            }
+            val mySymptom = binding.searchSymptomText.text.toString()
+            Toast.makeText(this, "$mySymptom 정보 불러오는 중", Toast.LENGTH_SHORT).show()
+            pillRequest(mySymptom)
         }
     }
     fun pillRequest(mySymptom: String) {
@@ -41,7 +38,7 @@ class SearchsymptomActivity : AppCompatActivity() {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://apis.data.go.kr/")
             .addConverterFactory(ScalarsConverterFactory.create()) // 스칼라 변환기 추가
-            .addConverterFactory(GsonConverterFactory.create(gson)) //gson 넣을지 말지
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         //2. 서비스 객체 생성
         val pillService:PillService = retrofit.create(PillService::class.java)
@@ -52,10 +49,8 @@ class SearchsymptomActivity : AppCompatActivity() {
             dataList.clear()
         }
         Log.d("API_Request", "URL: ${pillCall.request().url}")
-        currentCall = pillCall
         pillCall.enqueue(object : Callback<PillInfo>{
             override fun onResponse(call: Call<PillInfo>, response: Response<PillInfo>) {
-                currentCall = null
                 val data = response.body()
                 val pillList = data?.body?.items
                 if (!pillList.isNullOrEmpty()) {
@@ -68,7 +63,6 @@ class SearchsymptomActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<PillInfo>, t: Throwable) {
-                currentCall = null
                 Log.e("API_Request_Failure", "Error: ${t.message}", t)
             }
         })

@@ -64,7 +64,7 @@ class EditpostActivity : AppCompatActivity() {
         val content = binding.postContent.text.toString()
         // realtime database에 저장
         // 해당 게시물의 기존 데이터를 불러오기
-        val postRef = PostRef.contentRef.child(key)
+        val postRef = MyRef.contentRef.child(key)
         postRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // 기존 데이터를 가져와서 ItemData 객체로 매핑

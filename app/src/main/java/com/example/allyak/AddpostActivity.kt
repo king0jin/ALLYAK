@@ -8,9 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.allyak.databinding.ActivityAddpostBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.user.UserApiClient
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -69,8 +66,8 @@ class AddpostActivity : AppCompatActivity() {
         val date = dateToString(Date())
         // setValue() 메서드를 사용하여 값을 저장
         // realtime database에 저장
-        val key = PostRef.contentRef.push().key.toString()   //랜덤한 문자열, 타임스탬프
-        PostRef.contentRef.child(key).setValue(ItemData(key, userId, title, content, date,""))
+        val key = MyRef.contentRef.push().key.toString()   //랜덤한 문자열, 타임스탬프
+        MyRef.contentRef.child(key).setValue(ItemData(key, userId, title, content, date,""))
     }
     private fun dateToString(date: Date): String {
         val format = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale("ko", "KR"))

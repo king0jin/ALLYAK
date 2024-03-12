@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.allyak.databinding.ActivityViewpostBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
 import java.text.SimpleDateFormat
@@ -38,8 +37,8 @@ class ViewpostActivity : AppCompatActivity()  {
             startActivity(intent)
         }
         val postkey = intent.getStringExtra("key").toString()
-        val likeRef = PostRef.contentRef.child(postkey).child("like")
-        val cmtRef =  PostRef.contentRef.child(postkey).child("comments")
+        val likeRef = MyRef.contentRef.child(postkey).child("like")
+        val cmtRef =  MyRef.contentRef.child(postkey).child("comments")
         val uid = intent.getStringExtra("uid").toString()
         val title = intent.getStringExtra("title").toString()
         val content = intent.getStringExtra("content").toString()
@@ -108,18 +107,18 @@ class ViewpostActivity : AppCompatActivity()  {
                     }
                 })
             //좋아요 개수 변경
-            PostRef.contentRef.child(postkey).child("likeCnt")
+            MyRef.contentRef.child(postkey).child("likeCnt")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val currentLikeCnt = dataSnapshot.getValue(Int::class.java) ?: 0
                         if (existId1) { //이미 누른 경우
                             binding.viewLikeCount.text = (binding.viewLikeCount.text.toString().toInt() - 1).toString()
                             binding.viewLike.setImageResource(R.drawable.ic_heart)
-                            PostRef.contentRef.child(postkey).child("likeCnt").setValue(currentLikeCnt - 1)
+                            MyRef.contentRef.child(postkey).child("likeCnt").setValue(currentLikeCnt - 1)
                         } else { //누른 적이 없는 경우
                             binding.viewLikeCount.text = (binding.viewLikeCount.text.toString().toInt() + 1).toString()
                             binding.viewLike.setImageResource(R.drawable.ic_fillheart)
-                            PostRef.contentRef.child(postkey).child("likeCnt").setValue(currentLikeCnt + 1)
+                            MyRef.contentRef.child(postkey).child("likeCnt").setValue(currentLikeCnt + 1)
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -143,11 +142,11 @@ class ViewpostActivity : AppCompatActivity()  {
                 binding.viewCommentCount.text = (binding.viewCommentCount.text.toString().toInt() + 1).toString()
                 binding.writeComment.text.clear()
                 // 기존 포스트의 commentCnt 증가
-                PostRef.contentRef.child(postkey).child("commentCnt")
+                MyRef.contentRef.child(postkey).child("commentCnt")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val currentCommentCnt = dataSnapshot.getValue(Int::class.java) ?: 0
-                            PostRef.contentRef.child(postkey).child("commentCnt").setValue(currentCommentCnt + 1)
+                            MyRef.contentRef.child(postkey).child("commentCnt").setValue(currentCommentCnt + 1)
                         }
                         override fun onCancelled(databaseError: DatabaseError) {
                             Log.e(
@@ -180,7 +179,7 @@ class ViewpostActivity : AppCompatActivity()  {
             }
         }
         // addValueEventListener() 메서드로 DatabaseReference에 ValueEventListener를 추가한다.
-        PostRef.contentRef.child(postkey).child("comments").addValueEventListener(postListener)
+        MyRef.contentRef.child(postkey).child("comments").addValueEventListener(postListener)
     }
     private fun dateToString(date: Date): String {
         val format = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale("ko", "KR"))
@@ -202,7 +201,7 @@ class ViewpostActivity : AppCompatActivity()  {
                     true
                 }
                 R.id.popDel -> {
-                    PostRef.contentRef.child(postkey).removeValue()
+                    MyRef.contentRef.child(postkey).removeValue()
                     // MainActivity로 이동하여 CommunityFragment로 전환
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("destination", "community")

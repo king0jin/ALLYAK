@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddAlramActivity"
+            android:name=".AddAlarmActivity"
             android:exported="false" />
         <activity
             android:name=".ViewpillActivity"

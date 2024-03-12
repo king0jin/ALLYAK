@@ -45,7 +45,7 @@ class PillFragment : Fragment() {
     lateinit var pillListAdapter: PillListAdapter
     lateinit var progress : ProgressBar
     lateinit var recyclerView: RecyclerView
-    lateinit var pillsList: ArrayList<PillListInfo> //서버에서 가져온 모든 알략 정보를 담은 리스트
+    lateinit var pillsList: ArrayList<PillListInfo> //서버에서 가져온 모든 알약 정보를 담은 리스트
     private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,11 +103,9 @@ class PillFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_pill, container, false)
         calendar = view.findViewById(R.id.cal_calendar)
         calendar.selectedDate = CalendarDay.today() // 오늘 날짜로 초기화
-
         recyclerView = view.findViewById(R.id.re_pill_list)
         //progress = view.findViewById(R.id.pr_loading)
         pillsList = ArrayList()
-
         return view
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,8 +113,14 @@ class PillFragment : Fragment() {
         // progress 초기화
         progress = view.findViewById(R.id.pr_loading)
         progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정
-
-        requestPillData()
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("##INFO", "사용자 정보 요청 실패", error)
+            } else if (user != null) {
+                userId = user.id.toString()
+                requestPillData(userId)
+            }
+        }
         setEvent()
         sendFCM()
     }
@@ -176,46 +180,41 @@ class PillFragment : Fragment() {
     }
 
     //파이어베이스에서 알림 데이터를 가져오는 함수
-    private fun requestPillData() {
+    private fun requestPillData(userId : String) {
         progress = requireView().findViewById(R.id.pr_loading)
         progress.visibility = View.VISIBLE
-
-        val database = FirebaseDatabase.getInstance()
-        val alarmRef = database.getReference("alarms")
         //데이터 베이스에서 데이터 읽기
-        alarmRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        val selectedDate = calendar.selectedDate
+        val date = "${selectedDate?.year}${selectedDate?.month}${selectedDate?.day}"
+        MyRef.alarmRef.child(userId).child(date).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //기존 데이터 삭제
                 pillsList.clear()
                 for (postSnapshot in dataSnapshot.children) {
-
-                    val id = postSnapshot.child("userId").getValue(String::class.java)
-                    if (userId == id) {
-                        val key = postSnapshot.key.toString()
-                        val alarmname = postSnapshot.child("mediName").getValue(String::class.java)
-                        val alarmhour = postSnapshot.child("hour").getValue(Int::class.java)
-                        val alarmminute = postSnapshot.child("minute").getValue(Int::class.java)
-                        val alarmYear = postSnapshot.child("calendarYear").getValue(Int::class.java)
-                        val alarmMonth = postSnapshot.child("calendarMonth").getValue(Int::class.java)
-                        val alarmDay = postSnapshot.child("calendarDay").getValue(Int::class.java)
-                        val isChecked = postSnapshot.child("checked").getValue(Boolean::class.java)
-                        if (alarmname != null && alarmhour != null && alarmminute != null &&
-                            alarmYear != null && alarmMonth != null && alarmDay != null && isChecked != null
-                        ) {
-                            // 서버에서 가져온 알약 정보를 리스트에 추가
-                            pillsList.add(
-                                PillListInfo(
-                                    key,
-                                    alarmname,
-                                    alarmhour,
-                                    alarmminute,
-                                    alarmYear,
-                                    alarmMonth,
-                                    alarmDay,
-                                    isChecked
-                                )
+                    val key = postSnapshot.key.toString()
+                    val alarmname = postSnapshot.child("mediName").getValue(String::class.java)
+                    val alarmhour = postSnapshot.child("hour").getValue(Int::class.java)
+                    val alarmminute = postSnapshot.child("minute").getValue(Int::class.java)
+                    val alarmYear = postSnapshot.child("calendarYear").getValue(Int::class.java)
+                    val alarmMonth = postSnapshot.child("calendarMonth").getValue(Int::class.java)
+                    val alarmDay = postSnapshot.child("calendarDay").getValue(Int::class.java)
+                    val isChecked = postSnapshot.child("checked").getValue(Boolean::class.java)
+                    if (alarmname != null && alarmhour != null && alarmminute != null &&
+                        alarmYear != null && alarmMonth != null && alarmDay != null && isChecked != null
+                    ) {
+                        // 서버에서 가져온 알약 정보를 리스트에 추가
+                        pillsList.add(
+                            PillListInfo(
+                                key,
+                                alarmname,
+                                alarmhour,
+                                alarmminute,
+                                alarmYear,
+                                alarmMonth,
+                                alarmDay,
+                                isChecked
                             )
-                        }
+                        )
                     }
                 }
                 checkPillChecked()
@@ -316,9 +315,8 @@ class PillFragment : Fragment() {
                 val diff = currentTime - clickTime
                 if (diff < 1000) {
                     clickCount = 0
-                    val selectedDate = "${date.year}-${date.month}-${date.day}"
-
-                    val i = Intent(requireContext(), AddAlramActivity::class.java)
+                    //val selectedDate = "${date.year}-${date.month}-${date.day}"
+                    val i = Intent(requireContext(), AddAlarmActivity::class.java)
                     i.putExtra("selectedYear", date.year)
                     i.putExtra("selectedMonth", date.month)
                     i.putExtra("selectedDayOfMonth", date.day)
@@ -335,7 +333,6 @@ class PillFragment : Fragment() {
 
     //선택한 날짜에 해당하는 알림 데이터를 가져와서 리사이클러 뷰에 표시하기
     private fun comparePillData() {
-
         val selectedDate = calendar.selectedDate
         val selectedYear = selectedDate?.year
         val selectedMonth = selectedDate?.month
@@ -356,10 +353,6 @@ class PillFragment : Fragment() {
                         it.checked = data.checked
                     }
                 }
-
-                // check한 아이템을 다시 파이어베이스에 업로드
-                val database = FirebaseDatabase.getInstance()
-                val alarmRef = database.getReference("alarms")
                 val key = data.key
 
                 val pill = Pill(
@@ -371,7 +364,8 @@ class PillFragment : Fragment() {
                     data.calendarDay,
                     data.checked
                 )
-                alarmRef.child(key).setValue(pill)
+                //수수정
+                MyRef.alarmRef.child(key).setValue(pill)
 
                 // 모든 아이템이 체크되었는지 확인
                 selectedPillList.forEach {
@@ -411,10 +405,9 @@ class PillFragment : Fragment() {
                 dialog.setTitle("알림 삭제")
                 dialog.setMessage("${data.mediName}의 알림을 삭제하시겠습니까?")
                 dialog.setPositiveButton("삭제") { dialog, which ->
-                    val database = FirebaseDatabase.getInstance()
-                    val alarmRef = database.getReference("alarms")
                     val key = data.key
-                    alarmRef.child(key).removeValue()
+                    //date - key - 알람 정보
+                    MyRef.alarmRef.child(key).removeValue()
                     selectedPillList.removeAt(position)
                     pillListAdapter.updateItems(selectedPillList)
                     pillsList.remove(data)
@@ -446,7 +439,14 @@ class PillFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (::pillsList.isInitialized) {
-            requestPillData()
+            UserApiClient.instance.me { user, error ->
+                if (error != null) {
+                    Log.e("##INFO", "사용자 정보 요청 실패", error)
+                } else if (user != null) {
+                    userId = user.id.toString()
+                    requestPillData(userId)
+                }
+            }
         }
     }
 }

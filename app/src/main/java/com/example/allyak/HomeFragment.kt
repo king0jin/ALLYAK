@@ -16,7 +16,7 @@ import com.kakao.sdk.user.UserApiClient
 class HomeFragment : Fragment() {
     lateinit var searchSymptom: CardView
     lateinit var searchName: CardView
-    lateinit var searchShape: CardView
+    //lateinit var searchShape: CardView
     private lateinit var TodayRecyclerView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,16 +28,16 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         searchSymptom = view.findViewById(R.id.searchSymptom)
         searchName = view.findViewById(R.id.searchName)
-        searchShape = view.findViewById(R.id.searchShape)
+        //searchShape = view.findViewById(R.id.searchShape)
         searchSymptom.setOnClickListener {
             loadActivity(SearchsymptomActivity())
         }
         searchName.setOnClickListener {
             loadActivity(SearchnameActivity())
         }
-        searchShape.setOnClickListener {
+/*        searchShape.setOnClickListener {
             loadActivity(SearchshapeActivity())
-        }
+        }*/
         TodayRecyclerView = view.findViewById(R.id.todayRecyclerView)
         //약 정보 데이터 가져오기
         //이게 최선 ...?

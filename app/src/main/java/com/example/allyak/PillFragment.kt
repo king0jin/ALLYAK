@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.user.UserApiClient
@@ -309,7 +308,6 @@ class PillFragment : Fragment() {
             if (clickCount == 1) {
                 clickTime = currentTime
                 selectedDate = calendar.selectedDate.toString()
-
                 comparePillData()
             } else if (clickCount >= 2 && selectedDate == calendar.selectedDate.toString()) {
                 val diff = currentTime - clickTime
@@ -344,7 +342,6 @@ class PillFragment : Fragment() {
                 selectedPillList.add(i)
             }
         }
-
         pillListAdapter = PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
             override fun onItemClick(data: PillListInfo, position: Int) {
                 //기존 데이터의 데이터를 변경해주기 위한 for문
@@ -353,6 +350,7 @@ class PillFragment : Fragment() {
                         it.checked = data.checked
                     }
                 }
+                pillsList.reverse()
                 val key = data.key
 
                 val pill = Pill(
@@ -433,7 +431,6 @@ class PillFragment : Fragment() {
             }
         })
         //리사이클러뷰에 어댑터 설정
-        pillsList.reverse()
         recyclerView.adapter = pillListAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }

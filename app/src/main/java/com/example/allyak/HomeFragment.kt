@@ -1,5 +1,6 @@
 package com.example.allyak
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -8,16 +9,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     lateinit var searchSymptom: CardView
     lateinit var searchName: CardView
-    //lateinit var searchShape: CardView
     private lateinit var TodayRecyclerView: RecyclerView
+    private val pillList = ArrayList<PillListInfo>()
+    private lateinit var userId: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,34 +39,43 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         searchSymptom = view.findViewById(R.id.searchSymptom)
         searchName = view.findViewById(R.id.searchName)
-        //searchShape = view.findViewById(R.id.searchShape)
         searchSymptom.setOnClickListener {
             loadActivity(SearchsymptomActivity())
         }
         searchName.setOnClickListener {
             loadActivity(SearchnameActivity())
         }
-/*        searchShape.setOnClickListener {
-            loadActivity(SearchshapeActivity())
-        }*/
         TodayRecyclerView = view.findViewById(R.id.todayRecyclerView)
-        //약 정보 데이터 가져오기
-        //이게 최선 ...?
-        MyApplication.db.collection("pill")
-            .get()
-            .addOnSuccessListener {result ->
-                val itemList = mutableListOf<TodayData>()
-                for(document in result){
-                    val item = document.toObject(TodayData::class.java)
-                    item.docId=document.id
-                    itemList.add(item)
+        TodayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        TodayRecyclerView.adapter = TodayAdapter(requireContext(), pillList)
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("##INFO", "사용자 정보 요청 실패", error)
+            } else if (user != null) {
+                userId = user.id.toString()
+                getPillData(userId)
+            }
+        }
+    }
+    private fun getPillData(userId : String){
+        val todayListener = object : ValueEventListener { //realtime database 가져오기
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                pillList.clear()
+                for (data in snapshot.children) {
+                    val item = data.getValue(PillListInfo::class.java)
+                    // 리스트에 읽어 온 데이터를 넣어준다.
+                    pillList.add(item!!)
                 }
-                //TodayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                //TodayRecyclerView.adapter = TodayAdapter(requireContext(), itemList)
+                (TodayRecyclerView.adapter as TodayAdapter).notifyDataSetChanged()
             }
-            .addOnFailureListener{exception ->
-                Log.d("Allyakk ", "error.. getting document..", exception)
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Allyakk", "loadPost:onCancelled", error.toException())
             }
+        }
+        // addValueEventListener() 메서드로 DatabaseReference에 ValueEventListener를 추가한다.
+        MyRef.alarmRef.child(userId).child("${CalendarDay.today().year}${CalendarDay.today().month}${CalendarDay.today().day}").addValueEventListener(todayListener)
     }
     private fun loadActivity(activity: Activity) {
         val intent = Intent(this.requireContext(), activity::class.java)

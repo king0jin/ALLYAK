@@ -58,9 +58,17 @@ class AddAlarmActivity : AppCompatActivity() {
         val hour = timePicker.hour
         val minute = timePicker.minute
         val mediName = alarmMediName.text.toString()
-
+        //
+        lateinit var newhour: String
+        lateinit var newminute: String
+        if(hour < 10) newhour="0$hour"
+        else newhour="$hour"
+        if(minute < 10) newminute="0$minute"
+        else newminute = "$minute"
+        val key = "$newhour$newminute"+MyRef.alarmRef.push().key.toString() //알람을 정렬하기 위한 키 설정
         //데이터 베이스에 저장할 데이터 맵 생성
         val alarms = hashMapOf(
+            "key" to key,
             "hour" to hour,
             "minute" to minute,
             "mediName" to mediName,
@@ -70,11 +78,7 @@ class AddAlarmActivity : AppCompatActivity() {
             "checked" to false
         )
         //데이터 베이스에 데이터 쓰기
-        //수수정
-        //alarms - key - alarmsMap
-        val key = "$hour$minute"+MyRef.alarmRef.push().key.toString() //알람을 정렬하기 위한 키 설정
         MyRef.alarmRef.child(userId).child("$year$month$dayOfMonth").child(key).setValue(alarms)
-        //MyRef.alarmRef.push().setValue(alarms)
             .addOnSuccessListener {
                 Log.d("alarm", "알람 정보 저장 성공")
             }

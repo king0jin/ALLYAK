@@ -50,9 +50,6 @@
             android:name=".kakaoLogin"
             android:exported="false"/>
         <activity
-            android:name=".SearchpillActivity"
-            android:exported="false" />
-        <activity
             android:name=".AddpostActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
@@ -69,9 +66,6 @@
             android:exported="false" />
         <activity
             android:name=".SearchnameActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SearchshapeActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

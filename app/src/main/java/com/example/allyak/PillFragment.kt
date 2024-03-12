@@ -105,6 +105,7 @@ class PillFragment : Fragment() {
         calendar.selectedDate = CalendarDay.today() // 오늘 날짜로 초기화
 
         recyclerView = view.findViewById(R.id.re_pill_list)
+        //progress = view.findViewById(R.id.pr_loading)
         pillsList = ArrayList()
 
         return view
@@ -176,6 +177,7 @@ class PillFragment : Fragment() {
 
     //파이어베이스에서 알림 데이터를 가져오는 함수
     private fun requestPillData() {
+        progress = requireView().findViewById(R.id.pr_loading)
         progress.visibility = View.VISIBLE
 
         val database = FirebaseDatabase.getInstance()
@@ -183,9 +185,9 @@ class PillFragment : Fragment() {
         //데이터 베이스에서 데이터 읽기
         alarmRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //기존 데이터 삭제
+                pillsList.clear()
                 for (postSnapshot in dataSnapshot.children) {
-                    //기존 데이터 삭제
-                    pillsList.clear()
 
                     val id = postSnapshot.child("userId").getValue(String::class.java)
                     if (userId == id) {
@@ -218,22 +220,29 @@ class PillFragment : Fragment() {
                 }
                 checkPillChecked()
 
-                // 아이템이 있을 경우 알림을 보냄
-                if (pillsList.isNotEmpty()) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(2000)
-                        progress.visibility = View.GONE
-                    }
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(2000)
+                    progress.visibility = View.GONE
                 }
 
+                comparePillData()
+
+                // 아이템이 있을 경우 알림을 보냄
+//                if (pillsList.isNotEmpty()) {
+//                    CoroutineScope(Dispatchers.Main).launch {
+//                        delay(2000)
+//                        progress.visibility = View.GONE
+//                    }
+//                }
+
                 // 알림 데이터를 리사이클러뷰에 표시
-                CoroutineScope(Dispatchers.Main).launch {
-                    if (::pillListAdapter.isInitialized) {
-                        recyclerView.adapter = pillListAdapter
-                        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                        comparePillData()
-                    }
-                }
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    if (::pillListAdapter.isInitialized) {
+//                        recyclerView.adapter = pillListAdapter
+//                        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//                        comparePillData()
+//                    }
+//                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -411,13 +420,18 @@ class PillFragment : Fragment() {
                     pillsList.remove(data)
 
                     // 그날의 데이터가 비었을때 dotSpan 제거
-                    if(selectedPillList.isEmpty()) {
-                        val date = CalendarDay.from(data.calendarYear, data.calendarMonth, data.calendarDay)
+                    if (selectedPillList.isEmpty()) {
+                        val date = CalendarDay.from(
+                            data.calendarYear,
+                            data.calendarMonth,
+                            data.calendarDay
+                        )
                         decoratedDates[date]?.let {
                             calendar.removeDecorator(it)
                             decoratedDates.remove(date)
                         }
                     }
+
                 }
                 dialog.setNegativeButton("취소") { dialog, which ->
                     dialog.dismiss()

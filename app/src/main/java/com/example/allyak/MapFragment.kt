@@ -1,31 +1,42 @@
 package com.example.allyak
 
+//import android.widget.SearchView
 import android.Manifest
+import android.app.Dialog
 import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-//import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.MapView
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
+import java.io.IOException
+import java.util.Locale
 
-
+private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
 class MapFragment : Fragment(), OnMapReadyCallback {
-    lateinit var naverMap: NaverMap
-    lateinit var mapView: MapView
-    lateinit var pharmacyApiData: PharmacyApiData
-    lateinit var locationSource: FusedLocationSource
-    private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
+    private lateinit var naverMap: NaverMap
+    private lateinit var mapView: MapFragment
+    private lateinit var locationSource: FusedLocationSource
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private lateinit var searchView: SearchView
+
+    private val pharmacyViewModel by lazy { PharmacyLocationTaskViewModel() }
+    private val markers = mutableListOf<Marker>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,114 +46,141 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        //return inflater.inflate(R.layout.fragment_map, container, false)
         val view = inflater.inflate(R.layout.fragment_map, container, false)
-        mapView = view.findViewById(R.id.map_view)
-        mapView.onCreate(savedInstanceState)
-        mapView.onResume()
-
-        searchView = view.findViewById(R.id.parmseach)
-        //setHasOptionsMenu(true)아오 개빡치네.. 잘래
-        //map이 보입니다.
-        return view
-
-    }
-    override fun onViewCreated(view: View, davedInstanceState: Bundle?) {
-        super.onViewCreated(view, davedInstanceState)
-        mapView.getMapAsync(this)
+        //mapView = childFragmentManager.findFragmentById(R.id.layout_map) as MapFragment
+        //mapView.getMapAsync(this)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-        registerForContextMenu(mapView)
-
+        return view
     }
-
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getCurrentLocation()
+    }
     override fun onMapReady(naverMap: NaverMap) {
-       // naverMap.setLocationSource(locationSource)
-        this.naverMap = naverMap
-        moveCameraToCurrentLocation()
-        //사용자의 현재 위치를 가져와서 지도 중심으로 설정
+       this.naverMap = naverMap
+        naverMap.uiSettings.isLocationButtonEnabled = true
+        naverMap.locationSource = locationSource
         enableMyLocation()
-        // 약국 위치를 가져와서 지도에 표시하는 함수 호출
-        loadNearbyPharmacies()
-        //마커리스너 설정
-        naverMap.setOnMapClickListener { point, coord ->
-            val marker = Marker()
-            marker.position = LatLng(coord.latitude, coord.longitude)
-            marker.map = naverMap
-            val pharmacy = findPharmacyByMarker(marker)
-            if (pharmacy != null) {
-                showPharmacyInfoWindow(marker, pharmacy)
+
+        // 약국 데이터 변경 감지 및 처리
+        pharmacyViewModel.pharmacyLocationData.observe(viewLifecycleOwner, Observer { pharmacyLocations ->
+
+            // 약국 데이터를 사용하여 지도에 표시하는 코드 작성
+            pharmacyLocations.forEach { pharmacyLocation ->
+                Log.i("##INFO", "pharmacyLocation = ${pharmacyLocation.wgs84Lat} // ${pharmacyLocation.wgs84Lon}")
+                // 약국 위치를 받아와서 지도에 마커로 표시하는 코드 작성
+                val marker = Marker()
+                marker.position = LatLng(pharmacyLocation.wgs84Lat.toDouble(), pharmacyLocation.wgs84Lon.toDouble())
+                marker.map = naverMap
+                marker.setOnClickListener {
+                    val dlg = Dialog(requireContext(), R.style.theme_dialog)
+                    dlg.setContentView(R.layout.bottomdialog)
+                    val pharmacyName = dlg.findViewById<TextView>(R.id.tv_title)
+                    val pharmacyAddress = dlg.findViewById<TextView>(R.id.tv_location)
+                    val pharmacyTime = dlg.findViewById<TextView>(R.id.tv_time)
+                    val pharmacyPhone = dlg.findViewById<TextView>(R.id.tv_phone)
+                    val checkButton = dlg.findViewById<TextView>(R.id.bt_check)
+
+                    checkButton.setOnClickListener {
+                        dlg.dismiss()
+                    }
+
+                    pharmacyName.text = pharmacyLocation.dutyName
+                    pharmacyAddress.text = "주소 : ${pharmacyLocation.dutyAddr}"
+                    pharmacyTime.text = "운영시간 : ${pharmacyLocation.dutyTime1s} ~ ${pharmacyLocation.dutyTime1c}"
+                    pharmacyPhone.text = "전화번호 : ${pharmacyLocation.dutyTel1}"
+                    dlg.show()
+
+                    false
+                }
+                markers.add(marker)
             }
-        }
+        })
+
+        val mLocationSource = FusedLocationSource(this, 100)
+        naverMap.locationSource = mLocationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        naverMap.maxZoom = 18.0
+        naverMap.minZoom = 10.5
     }
 
-    private fun moveCameraToCurrentLocation() {
-        locationSource.lastLocation?.let {
-            val latitude = it.latitude
-            val longitude = it.longitude
-            val cameraUpdate = com.naver.maps.map.CameraUpdate.scrollTo(LatLng(latitude, longitude))
-            naverMap.moveCamera(cameraUpdate)
-        }
-    }
-
-    //여기도 먼가 부족해.. 근데 너무 잠와..
     private fun enableMyLocation() {
-        //위치 권한이 부여되어 있는지 확인
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ){
-            //권한이 없는 경우 권한 요청
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // 권한이 없는 경우 권한 요청
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                 LOCATION_PERMISSION_REQUEST_CODE
             )
             return
         }
-        // 현재 위치 버튼 활성화
+        // 위치 권한이 있을 경우 현재 위치 버튼 활성화
         naverMap.uiSettings.isLocationButtonEnabled = true
-        // 위치 소스 설정
-        naverMap.locationSource = locationSource
-    }
-    private fun loadNearbyPharmacies() {
-        // 현재 지도 화면의 영역을 구합니다.
-        //
-
-        //파싱한 약국 위치 지도에 표시할 예정
-        pharmacyApiData = PharmacyApiData()
-        val pharmacyList = pharmacyApiData.getData()
-        for (pharmacy in pharmacyList) {
-            val marker = Marker()
-            marker.position = LatLng(pharmacy.wgs84Lat, pharmacy.wgs84Lon)
-            marker.map = naverMap
+        // 현재 위치로 카메라 이동
+        val location = locationSource.getLastLocation()
+        val cameraUpdate = location?.let { LatLng(it.latitude, location.longitude) }
+            ?.let { CameraUpdate.scrollTo(it) }
+        if (cameraUpdate != null) {
+            naverMap.moveCamera(cameraUpdate)
         }
     }
-    private fun findPharmacyByMarker(marker: Marker): Pharmacy? {
-        val pharmacyList = pharmacyApiData.getData()
-        return pharmacyList.find { it.wgs84Lat == marker.position.latitude && it.wgs84Lon == marker.position.longitude }
-    }
+    private fun getCurrentLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // 권한이 없는 경우 권한 요청
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
 
-    private fun showPharmacyInfoWindow(marker: Marker, pharmacy: Pharmacy) {
-        marker.infoWindow?.close()
-
-        val infoWindow = InfoWindow()
-        infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(requireContext()) {
-            override fun getText(infoWindow: InfoWindow): CharSequence {
-                return "약국 이름: ${pharmacy.dutyName}\n주소: ${pharmacy.dutyAddr}\n전화번호: ${pharmacy.dutyTel1}" +
-                        "\n진료시간\n 월요일: ${pharmacy.dutyTime1c} ~ ${pharmacy.dutyTime1s}\n" +
-                        "화요일: ${pharmacy.dutyTime2c} ~ ${pharmacy.dutyTime2s}\n 수요일: ${pharmacy.dutyTime3c} ~ ${pharmacy.dutyTime3s}\n 목요일: ${pharmacy.dutyTime4c} ~ ${pharmacy.dutyTime4s}" +
-                        "\n 금요일: ${pharmacy.dutyTime5c} ~ ${pharmacy.dutyTime5s}\n 토요일: ${pharmacy.dutyTime6c} ~ ${pharmacy.dutyTime6s}\n 일요일: ${pharmacy.dutyTime7c} ~ ${pharmacy.dutyTime7s}" +
-                        "\n 공휴일: ${pharmacy.dutyTime8c} ~ ${pharmacy.dutyTime8s}"
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    // 위치 좌표를 주소로 변환
+                    getAddressFromLocation(location.latitude, location.longitude)
+                }
             }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+                Log.e("Location", "Failed to get location: ${e.message}")
+            }
+    }
+
+    private fun getAddressFromLocation(latitude: Double, longitude: Double) {
+        val geocoder = Geocoder(requireContext(), Locale.KOREAN)
+        try {
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (addresses!!.isNotEmpty()) {
+                val address = addresses[0].getAddressLine(0).substringAfter(" ")
+
+                val cameraUpdate = CameraUpdate.scrollTo(LatLng(latitude, longitude))
+                naverMap.moveCamera(cameraUpdate)
+
+                val convertAddress = address.split(" ")
+                pharmacyViewModel.getPharmacyLocationData(convertAddress[0].trim(), convertAddress[1].trim())
+
+            } else {
+                Log.e("Location", "No address found")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        infoWindow.open(marker)
     }
 }
 

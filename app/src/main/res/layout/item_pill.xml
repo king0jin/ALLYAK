@@ -6,12 +6,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
             android:text="08:00"
             android:id="@+id/tv_time"
             android:textColor="@color/black"
@@ -19,11 +19,11 @@
             android:fontFamily="@font/notobold"/>
         <TextView
             android:id="@+id/tv_pill"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="pill name"
-            android:textSize="20sp"
+            android:textSize="18sp"
+            android:layout_marginRight="8dp"
+            android:gravity="right"
             android:textColor="@color/black"
             android:fontFamily="@font/notomedium"/>
 
@@ -32,21 +32,21 @@
             android:layout_height="wrap_content"
             android:text="복용"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:fontFamily="@font/notomedium"/>
 
         <CheckBox
             android:id="@+id/check_pill"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginLeft="40dp"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/im_delete"
-            android:src="@drawable/ic_edit"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:src="@drawable/ic_edit"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

@@ -365,7 +365,7 @@ class PillFragment : Fragment() {
                     data.checked
                 )
                 //수수정
-                MyRef.alarmRef.child(key).setValue(pill)
+                MyRef.alarmRef.child(userId).child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}").child(key).setValue(pill)
 
                 // 모든 아이템이 체크되었는지 확인
                 selectedPillList.forEach {
@@ -407,7 +407,7 @@ class PillFragment : Fragment() {
                 dialog.setPositiveButton("삭제") { dialog, which ->
                     val key = data.key
                     //date - key - 알람 정보
-                    MyRef.alarmRef.child(key).removeValue()
+                    MyRef.alarmRef.child(userId).child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}").child(key).removeValue()
                     selectedPillList.removeAt(position)
                     pillListAdapter.updateItems(selectedPillList)
                     pillsList.remove(data)
@@ -433,6 +433,7 @@ class PillFragment : Fragment() {
             }
         })
         //리사이클러뷰에 어댑터 설정
+        pillsList.reverse()
         recyclerView.adapter = pillListAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }

@@ -72,7 +72,7 @@ class AddAlarmActivity : AppCompatActivity() {
         //데이터 베이스에 데이터 쓰기
         //수수정
         //alarms - key - alarmsMap
-        val key = MyRef.alarmRef.push().key.toString()+"$hour$minute" //알람을 정렬하기 위한 키 설정
+        val key = "$hour$minute"+MyRef.alarmRef.push().key.toString() //알람을 정렬하기 위한 키 설정
         MyRef.alarmRef.child(userId).child("$year$month$dayOfMonth").child(key).setValue(alarms)
         //MyRef.alarmRef.push().setValue(alarms)
             .addOnSuccessListener {

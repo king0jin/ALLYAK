@@ -103,7 +103,7 @@ class PillFragment : Fragment() {
         calendar = view.findViewById(R.id.cal_calendar)
         calendar.selectedDate = CalendarDay.today() // 오늘 날짜로 초기화
         recyclerView = view.findViewById(R.id.re_pill_list)
-        //progress = view.findViewById(R.id.pr_loading)
+        progress = view.findViewById(R.id.pr_loading)
         pillsList = ArrayList()
         return view
     }
@@ -190,32 +190,33 @@ class PillFragment : Fragment() {
                 //기존 데이터 삭제
                 pillsList.clear()
                 for (postSnapshot in dataSnapshot.children) {
-                    val key = postSnapshot.key.toString()
-                    val alarmname = postSnapshot.child("mediName").getValue(String::class.java)
-                    val alarmhour = postSnapshot.child("hour").getValue(Int::class.java)
-                    val alarmminute = postSnapshot.child("minute").getValue(Int::class.java)
-                    val alarmYear = postSnapshot.child("calendarYear").getValue(Int::class.java)
-                    val alarmMonth = postSnapshot.child("calendarMonth").getValue(Int::class.java)
-                    val alarmDay = postSnapshot.child("calendarDay").getValue(Int::class.java)
-                    val isChecked = postSnapshot.child("checked").getValue(Boolean::class.java)
-                    if (alarmname != null && alarmhour != null && alarmminute != null &&
-                        alarmYear != null && alarmMonth != null && alarmDay != null && isChecked != null
-                    ) {
-                        // 서버에서 가져온 알약 정보를 리스트에 추가
-                        pillsList.add(
-                            PillListInfo(
-                                key,
-                                alarmname,
-                                alarmhour,
-                                alarmminute,
-                                alarmYear,
-                                alarmMonth,
-                                alarmDay,
-                                isChecked
+                        val key = postSnapshot.key.toString()
+                        val alarmname = postSnapshot.child("mediName").getValue(String::class.java)
+                        val alarmhour = postSnapshot.child("hour").getValue(Int::class.java)
+                        val alarmminute = postSnapshot.child("minute").getValue(Int::class.java)
+                        val alarmYear = postSnapshot.child("calendarYear").getValue(Int::class.java)
+                        val alarmMonth =
+                            postSnapshot.child("calendarMonth").getValue(Int::class.java)
+                        val alarmDay = postSnapshot.child("calendarDay").getValue(Int::class.java)
+                        val isChecked = postSnapshot.child("checked").getValue(Boolean::class.java)
+                        if (alarmname != null && alarmhour != null && alarmminute != null &&
+                            alarmYear != null && alarmMonth != null && alarmDay != null && isChecked != null
+                        ) {
+                            // 서버에서 가져온 알약 정보를 리스트에 추가
+                            pillsList.add(
+                                PillListInfo(
+                                    key,
+                                    alarmname,
+                                    alarmhour,
+                                    alarmminute,
+                                    alarmYear,
+                                    alarmMonth,
+                                    alarmDay,
+                                    isChecked
+                                )
                             )
-                        )
+                        }
                     }
-                }
                 checkPillChecked()
 
                 CoroutineScope(Dispatchers.Main).launch {

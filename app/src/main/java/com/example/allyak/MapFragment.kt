@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -27,13 +26,13 @@ import com.naver.maps.map.util.FusedLocationSource
 import java.io.IOException
 import java.util.Locale
 
-private val LOCATION_PERMISSION_REQUEST_CODE : Int = 1000
+private val LOCATION_PERMISSION_REQUEST_CODE : Int = 5000
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
-    private lateinit var mapView: MapFragment
     private lateinit var locationSource: FusedLocationSource
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    private lateinit var searchView: SearchView
+    private val LOCATION_PERMISSION_REQUEST_CODE = 5000
+    //private lateinit var searchView: SearchView
+    var isMapReady: Boolean = false
 
     private val pharmacyViewModel by lazy { PharmacyLocationTaskViewModel() }
     private val markers = mutableListOf<Marker>()
@@ -41,14 +40,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //getCurrentLocation()
 
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
-        //mapView = childFragmentManager.findFragmentById(R.id.layout_map) as MapFragment
-        //mapView.getMapAsync(this)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         return view
     }
@@ -56,52 +54,55 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         getCurrentLocation()
     }
+
     override fun onMapReady(naverMap: NaverMap) {
-       this.naverMap = naverMap
-        naverMap.uiSettings.isLocationButtonEnabled = true
+        this.naverMap = naverMap
+        isMapReady = true
+        //현재 위치
         naverMap.locationSource = locationSource
+
         enableMyLocation()
 
-        // 약국 데이터 변경 감지 및 처리
-        pharmacyViewModel.pharmacyLocationData.observe(viewLifecycleOwner, Observer { pharmacyLocations ->
+        if(isMapReady) {
+            // 약국 데이터 변경 감지 및 처리
+            pharmacyViewModel.pharmacyLocationData.observe(viewLifecycleOwner, Observer { pharmacyLocations ->
 
-            // 약국 데이터를 사용하여 지도에 표시하는 코드 작성
-            pharmacyLocations.forEach { pharmacyLocation ->
-                Log.i("##INFO", "pharmacyLocation = ${pharmacyLocation.wgs84Lat} // ${pharmacyLocation.wgs84Lon}")
-                // 약국 위치를 받아와서 지도에 마커로 표시하는 코드 작성
-                val marker = Marker()
-                marker.position = LatLng(pharmacyLocation.wgs84Lat.toDouble(), pharmacyLocation.wgs84Lon.toDouble())
-                marker.map = naverMap
-                marker.setOnClickListener {
-                    val dlg = Dialog(requireContext(), R.style.theme_dialog)
-                    dlg.setContentView(R.layout.bottomdialog)
-                    val pharmacyName = dlg.findViewById<TextView>(R.id.tv_title)
-                    val pharmacyAddress = dlg.findViewById<TextView>(R.id.tv_location)
-                    val pharmacyTime = dlg.findViewById<TextView>(R.id.tv_time)
-                    val pharmacyPhone = dlg.findViewById<TextView>(R.id.tv_phone)
-                    val checkButton = dlg.findViewById<TextView>(R.id.bt_check)
+                // 약국 데이터를 사용하여 지도에 표시하는 코드 작성
+                pharmacyLocations.forEach { pharmacyLocation ->
+                    Log.i("##INFO", "pharmacyLocation = ${pharmacyLocation.wgs84Lat} // ${pharmacyLocation.wgs84Lon}")
+                    // 약국 위치를 받아와서 지도에 마커로 표시하는 코드 작성
+                    val marker = Marker()
+                    marker.position = LatLng(pharmacyLocation.wgs84Lat.toDouble(), pharmacyLocation.wgs84Lon.toDouble())
+                    marker.map = naverMap
+                    marker.setOnClickListener {
+                        val dlg = Dialog(requireContext(), R.style.theme_dialog)
+                        dlg.setContentView(R.layout.bottomdialog)
+                        val pharmacyName = dlg.findViewById<TextView>(R.id.tv_title)
+                        val pharmacyAddress = dlg.findViewById<TextView>(R.id.tv_location)
+                        val pharmacyTime = dlg.findViewById<TextView>(R.id.tv_time)
+                        val pharmacyPhone = dlg.findViewById<TextView>(R.id.tv_phone)
+                        val checkButton = dlg.findViewById<TextView>(R.id.bt_check)
 
-                    checkButton.setOnClickListener {
-                        dlg.dismiss()
+                        checkButton.setOnClickListener {
+                            dlg.dismiss()
+                        }
+
+                        pharmacyName.text = pharmacyLocation.dutyName
+                        pharmacyAddress.text = "주소 : ${pharmacyLocation.dutyAddr}"
+                        pharmacyTime.text = "운영시간 : ${pharmacyLocation.dutyTime1s} ~ ${pharmacyLocation.dutyTime1c}"
+                        pharmacyPhone.text = "전화번호 : ${pharmacyLocation.dutyTel1}"
+                        dlg.show()
+
+                        false
                     }
-
-                    pharmacyName.text = pharmacyLocation.dutyName
-                    pharmacyAddress.text = "주소 : ${pharmacyLocation.dutyAddr}"
-                    pharmacyTime.text = "운영시간 : ${pharmacyLocation.dutyTime1s} ~ ${pharmacyLocation.dutyTime1c}"
-                    pharmacyPhone.text = "전화번호 : ${pharmacyLocation.dutyTel1}"
-                    dlg.show()
-
-                    false
+                    markers.add(marker)
                 }
-                markers.add(marker)
-            }
-        })
+            })
 
-        val mLocationSource = FusedLocationSource(this, 100)
-        naverMap.locationSource = mLocationSource
-        naverMap.locationTrackingMode = LocationTrackingMode.Follow
-        naverMap.maxZoom = 18.0
-        naverMap.minZoom = 10.5
+        }
+
+
+
     }
 
     private fun enableMyLocation() {
@@ -118,7 +119,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 위치 권한이 있을 경우 현재 위치 버튼 활성화
         naverMap.uiSettings.isLocationButtonEnabled = true
         // 현재 위치로 카메라 이동
-        val location = locationSource.getLastLocation()
+        val location = locationSource.lastLocation
+        // 위치를 추적하면서 카메라도 따라 움직인다.
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
         val cameraUpdate = location?.let { LatLng(it.latitude, location.longitude) }
             ?.let { CameraUpdate.scrollTo(it) }
         if (cameraUpdate != null) {
@@ -126,6 +129,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
     private fun getCurrentLocation() {
+        // onMapReady()가 호출되지 않은 경우에는 getCurrentLocation()을 실행하지 않는다
+        if (!isMapReady) return
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),

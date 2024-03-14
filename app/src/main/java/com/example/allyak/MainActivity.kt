@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     lateinit var bottomNav: BottomNavigationView
+    private var mapFragment: MapFragment? = null // MapFragment 변수 추가
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,7 +41,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.map -> {
-                    loadFragment(MapFragment())
+                    if (mapFragment == null) {
+                        mapFragment = MapFragment()
+                    }
+                    loadFragment(mapFragment!!)
                     true
                 }
 

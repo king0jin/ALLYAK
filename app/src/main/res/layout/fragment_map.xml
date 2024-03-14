@@ -6,26 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FBFBFB"
     tools:context=".MapFragment">
+     <fragment
+         android:id="@+id/layout_map"
+         android:name="com.naver.maps.map.MapFragment"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/layout_map"
-        android:name="com.naver.maps.map.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 
-<!--    <androidx.appcompat.widget.SearchView-->
-<!--        android:id="@+id/parmseach"-->
-<!--        android:layout_width="335dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginLeft="37dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:background="@drawable/searchbar"-->
-<!--        android:iconifiedByDefault="false"-->
-<!--        android:queryBackground="@null"-->
-<!--        android:queryHint="검색" />-->
+<!--     <androidx.appcompat.widget.SearchView-->
+<!--         android:id="@+id/parmseach"-->
+<!--         android:layout_width="335dp"-->
+<!--         android:layout_height="50dp"-->
+<!--         android:layout_marginLeft="37dp"-->
+<!--         android:layout_marginTop="20dp"-->
+<!--         android:background="@drawable/searchbar"-->
+<!--         android:iconifiedByDefault="false"-->
+<!--         android:queryBackground="@null"-->
+<!--         android:queryHint="검색" />-->
 
 </RelativeLayout>

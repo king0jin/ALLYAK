@@ -185,11 +185,12 @@ class PillFragment : Fragment() {
         //데이터 베이스에서 데이터 읽기
         val selectedDate = calendar.selectedDate
         val date = "${selectedDate?.year}${selectedDate?.month}${selectedDate?.day}"
-        MyRef.alarmRef.child(userId).child(date).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //기존 데이터 삭제
-                pillsList.clear()
-                for (postSnapshot in dataSnapshot.children) {
+        MyRef.alarmRef.child(userId).child(date)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    //기존 데이터 삭제
+                    pillsList.clear()
+                    for (postSnapshot in dataSnapshot.children) {
                         val key = postSnapshot.key.toString()
                         val alarmname = postSnapshot.child("mediName").getValue(String::class.java)
                         val alarmhour = postSnapshot.child("hour").getValue(Int::class.java)
@@ -217,37 +218,22 @@ class PillFragment : Fragment() {
                             )
                         }
                     }
-                checkPillChecked()
+                    Log.i("##INFO", "pillList.size = ${pillsList.size}");
 
-                CoroutineScope(Dispatchers.Main).launch {
-                    delay(2000)
-                    progress.visibility = View.GONE
+                    checkPillChecked()
+                    comparePillData()
                 }
 
-                comparePillData()
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("TAG", "Failed to read value.", databaseError.toException())
+                }
+            })
 
-                // 아이템이 있을 경우 알림을 보냄
-//                if (pillsList.isNotEmpty()) {
-//                    CoroutineScope(Dispatchers.Main).launch {
-//                        delay(2000)
-//                        progress.visibility = View.GONE
-//                    }
-//                }
-
-                // 알림 데이터를 리사이클러뷰에 표시
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    if (::pillListAdapter.isInitialized) {
-//                        recyclerView.adapter = pillListAdapter
-//                        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//                        comparePillData()
-//                    }
-//                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e("TAG", "Failed to read value.", databaseError.toException())
-            }
-        })
+        // 프로그래스바 지정 시간 이후에 사라짐
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000)
+            progress.visibility = View.GONE
+        }
     }
 
     private fun sendFCM() {
@@ -310,6 +296,7 @@ class PillFragment : Fragment() {
                 clickTime = currentTime
                 selectedDate = calendar.selectedDate.toString()
                 comparePillData()
+                requestPillData(userId)
             } else if (clickCount >= 2 && selectedDate == calendar.selectedDate.toString()) {
                 val diff = currentTime - clickTime
                 if (diff < 1000) {
@@ -327,7 +314,7 @@ class PillFragment : Fragment() {
             }
         }
     }
-    var allSelected = false
+    //var allSelected = false
     private val decoratedDates = HashMap<CalendarDay, DayViewDecorator>()
 
     //선택한 날짜에 해당하는 알림 데이터를 가져와서 리사이클러 뷰에 표시하기
@@ -343,7 +330,8 @@ class PillFragment : Fragment() {
                 selectedPillList.add(i)
             }
         }
-        pillListAdapter = PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
+        pillListAdapter =
+            PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
             override fun onItemClick(data: PillListInfo, position: Int) {
                 //기존 데이터의 데이터를 변경해주기 위한 for문
                 pillsList.forEach {
@@ -364,17 +352,23 @@ class PillFragment : Fragment() {
                     data.calendarDay,
                     data.checked
                 )
-                MyRef.alarmRef.child(userId).child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}").child(key).setValue(pill)
+                MyRef.alarmRef.child(userId)
+                    .child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}")
+                    .child(key).setValue(pill)
 
+                var isAllChecked = true
                 // 모든 아이템이 체크되었는지 확인
                 selectedPillList.forEach {
-                    allSelected = it.checked == true
+                    if (it.checked == false) {
+                        isAllChecked = false
+                    }
                 }
                 // 체크한 아이템을 달력에 표시
-                val date = CalendarDay.from(data.calendarYear, data.calendarMonth, data.calendarDay)
+                val date =
+                    CalendarDay.from(data.calendarYear, data.calendarMonth, data.calendarDay)
 
                 // 모든 아이템이 체크되었을 때
-                if (allSelected == true) {
+                if (isAllChecked == true) {
                     // 새로운 장식 생성
                     val newDecorator = object : DayViewDecorator {
                         override fun shouldDecorate(day: CalendarDay?): Boolean {
@@ -406,7 +400,9 @@ class PillFragment : Fragment() {
                 dialog.setPositiveButton("삭제") { dialog, which ->
                     val key = data.key
                     //date - key - 알람 정보
-                    MyRef.alarmRef.child(userId).child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}").child(key).removeValue()
+                    MyRef.alarmRef.child(userId)
+                        .child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}")
+                        .child(key).removeValue()
                     selectedPillList.removeAt(position)
                     pillListAdapter.updateItems(selectedPillList)
                     pillsList.remove(data)

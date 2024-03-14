@@ -9,6 +9,6 @@ class MyRef {
         val contentRef = database.getReference("posts")
         val reviewRef = database.getReference("reviews")
         val alarmRef = database.getReference("alarms")
-
+        val infoRef = database.getReference("myinfo")
     }
 }

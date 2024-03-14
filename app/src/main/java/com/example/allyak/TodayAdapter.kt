@@ -38,12 +38,9 @@ class TodayAdapter(val context: Context, val itemList: MutableList<PillListInfo>
         val data = itemList.get(position)
         holder.binding.todayCheck.setOnCheckedChangeListener { buttonView, isChecked ->
             UserApiClient.instance.me { user, error ->
-                if (error != null) {
-                    Log.e("##INFO", "사용자 정보 요청 실패", error)
-                } else if (user != null) {
-                    val userId = user.id.toString()
-                    updatePillCheckStatus(position, userId, isChecked)
-                }
+                val userId = user?.id.toString()
+                updatePillCheckStatus(position, userId, isChecked)
+
             }
             val textCheck = ContextCompat.getColor(context, R.color.textgray)
             val textnCheck = ContextCompat.getColor(context, R.color.black)

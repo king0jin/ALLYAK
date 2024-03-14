@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FBFBFB"
     tools:context=".MyinfoFragment">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,23 +19,12 @@
             android:layout_marginLeft="55dp"
             android:layout_marginTop="25dp"
             android:textSize="25dp"/>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:contentDescription="스크롤뷰1">
-            <LinearLayout
-                android:id="@+id/medicineList"
-                android:layout_width="304dp"
-                android:layout_height="170dp"
-                android:layout_marginLeft="50dp"
-                android:background="@drawable/rect1"
-                android:minHeight="170dp"
-                android:orientation="vertical">
-            </LinearLayout>
-        </ScrollView>
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mediRecyclerView"
+            android:layout_width="304dp"
+            android:layout_height="180dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/rect1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="73dp"
@@ -46,28 +34,19 @@
             android:layout_marginLeft="55dp"
             android:layout_marginTop="20dp"
             android:textSize="25dp"/>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:contentDescription="스크롤뷰2">
-            <LinearLayout
-                android:id="@+id/sideeffectList"
-                android:layout_width="304dp"
-                android:layout_height="170dp"
-                android:layout_marginLeft="50dp"
-                android:minHeight="170dp"
-                android:background="@drawable/rect1"
-                android:orientation="vertical"/>
-        </ScrollView>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sideRecyclerView"
+            android:layout_width="304dp"
+            android:layout_height="180dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/rect1"/>
     </LinearLayout>
     <TextView
         android:id="@+id/logoutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="로그아웃"
-        android:textColor="@color/black"
+        android:textColor="#686868"
         android:fontFamily="@font/notomedium"
         android:layout_gravity="bottom"
         android:layout_marginLeft="30dp"

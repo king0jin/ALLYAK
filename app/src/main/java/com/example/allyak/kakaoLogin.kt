@@ -13,8 +13,6 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 
 class kakaoLogin : AppCompatActivity(){
-    //private lateinit var auth: FirebaseAuth
-    //private lateinit var functions: FirebaseFunctions
     companion object {
         private const val TAG = "KakaoAuth"
     }
@@ -26,18 +24,6 @@ class kakaoLogin : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_login)
-/*
-        //region ---- Test Section  ---
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-        //endregion
-*/
-
-        //파이어베이스 인증 객체 초기화
-        //auth = FirebaseAuth.getInstance()
-        //파이어베이스 함수 초기화
-        //functions = FirebaseFunctions.getInstance()
         val loginButton: ImageButton = findViewById(R.id.kakaobtn)
         // pressed back button
         this.onBackPressedDispatcher.addCallback(this, callback)
@@ -86,7 +72,6 @@ class kakaoLogin : AppCompatActivity(){
                         Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
                         //firebase functions를 사용하여 카카오 토큰을 서버로 전송
                         //CustomToken을 받아옴
-                        //sendTokenToServer(token.accessToken)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -98,53 +83,4 @@ class kakaoLogin : AppCompatActivity(){
         }
 
     }
-
-
-
-//    private fun sendTokenToServer(kakakoAccessToken: String) {
-//        //firebase functions를 사용하여 카카오 토큰을 서버로 전송하고 CustonToken을 받아옴
-//        val data = hashMapOf(
-//            "accessToken" to kakakoAccessToken
-//        )
-//        functions.getHttpsCallable("createFirebaseUser")
-//            .call(data)
-//            .continueWith { task ->
-//                //firebasefunctions가 반환한 customtoken받음
-//                val customToken = task.result?.data as String
-//                Log.d("customToken", "custom Token received : $customToken")
-//                //firebase custom token을 사용하여 firebase에 로그인
-//                //signInWithCustomToken(customToken)
-//            }
-//
-//    }
-//    private fun signInWithCustomToken(customToken: String) {
-//        auth.signInWithCustomToken(customToken)
-//            .addOnCompleteListener(this) { task ->
-//                if (task.isSuccessful) {
-//                    //로그인 성공
-//                    val user = auth.currentUser
-//                    Log.d("signInWithCustomToken", "signInWithCustomToken:success")
-//                    updateUI(user)
-//                } else {
-//                    //로그인 실패
-//                    Log.w("signInWithCustomToken", "signInWithCustomToken:failure", task.exception)
-//                    Toast.makeText(baseContext, "Authentication failed.",
-//                        Toast.LENGTH_SHORT).show()
-//                    updateUI(null)
-//                }
-//            }
-//    }
-//    private fun updateUI(user: FirebaseUser?) {
-//        //로그인 후 홈으로 이동
-//        if(user != null) {
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        } else {
-//            Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this, kakaoLogin::class.java)
-//            startActivity(intent)
-//        }
-//    }
-
 }

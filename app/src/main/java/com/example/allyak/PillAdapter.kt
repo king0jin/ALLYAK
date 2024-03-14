@@ -42,7 +42,6 @@ class PillAdapter(val items:MutableList<Item?>): RecyclerView.Adapter<PillAdapte
                 intent.putExtra("seQesitm", currentItem?.seQesitm) //부작용
                 intent.putExtra("deposit", currentItem?.depositMethodQesitm) //보관방법
                 intent.putExtra("image", currentItem?.itemImage) //이미지
-
                 // Intent를 사용하여 ViewpillActivity로 이동
                 binding.root.context.startActivity(intent)
             }

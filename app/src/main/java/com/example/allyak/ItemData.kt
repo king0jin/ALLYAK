@@ -23,3 +23,10 @@ data class Comments(
 data class LikeData(
     var userId: String? = null
 )
+data class MyInfo(
+    var key: String? = null,
+    var medinow: Boolean = false,
+    var medinot: Boolean = false,
+    var pillName: String? = null,
+    var pillMemo: String? = null
+)

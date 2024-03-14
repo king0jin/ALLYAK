@@ -77,10 +77,10 @@
                 android:layout_gravity="center"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="10dp">
                 <Button
                     android:id="@+id/oK"
                     android:layout_width="80dp"

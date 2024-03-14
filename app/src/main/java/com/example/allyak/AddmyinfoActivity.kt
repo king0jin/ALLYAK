@@ -51,50 +51,41 @@ class AddmyinfoActivity : AppCompatActivity() {
                     Log.d("myinfo", "사용자 정보 요청 실패", error)
                 } else if (user != null) {
                     userId = user.id.toString()
-                    if (mediname.text.isNotEmpty() && memo.text.isNotEmpty()) {
+                    if (mediname.text.isNotEmpty()) {  //메모는 선택사항
                         //파이어베이스에 저장
                         saveStore()
                         finish()
                     } else {
-                        Toast.makeText(this, "약 이름과 메모를 입력해주세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "약 이름을 입력해주세요", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
         cancel1.setOnClickListener {
             //취소 버튼 클릭 시 동작
-            //액티비티 종료
-            finish()
+            finish()  //액티비티 종료
         }
     }
     private fun saveStore() {
-        //firebase데이터베이스 레퍼런스
-        val database = FirebaseDatabase.getInstance()
-        val InfoRef = database.getReference("myinfo")
-
         //파이어베이스에 저장
-        val togglestate1 = if (medinow.isChecked) "복용중" else "복용중 아님"
-        val togglestate2 = if (medinot.isChecked) "부작용" else "부작용 없음"
         val mediname = mediname.text.toString()
         val memo = memo.text.toString()
-
+        val key = MyRef.infoRef.push().key.toString()
         //데이터 베이스에 저장할 데이터 맵생성
         val myinfo = hashMapOf(
-            "userId" to userId,
-            "medinow" to togglestate1,
-            "medinot" to togglestate2,
-            "mediname" to mediname,
-            "memo" to memo
+            "key" to key,
+            "medinow" to medinow.isChecked,
+            "medinot" to medinot.isChecked,
+            "pillName" to mediname,
+            "pillMemo" to memo
         )
-
         //데이터 베이스에 데이터 쓰기
-        InfoRef.push().setValue(myinfo)
+        MyRef.infoRef.child(userId).child(key).setValue(myinfo)
             .addOnSuccessListener {
                 Log.d("myinfo", "데이터베이스에 저장 성공")
             }
             .addOnFailureListener {
                 Log.d("myinfo", "데이터베이스에 저장 실패")
             }
-
     }
 }

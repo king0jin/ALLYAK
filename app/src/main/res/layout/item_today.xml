@@ -19,7 +19,7 @@
             android:fontFamily="@font/notobold"/>
         <TextView
             android:id="@+id/today_pill"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_marginRight="8dp"
@@ -40,7 +40,7 @@
             android:id="@+id/today_check"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="40dp"/>
+            android:layout_marginLeft="15dp"/>
     </LinearLayout>
     <View
         android:layout_width="294dp"

@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,12 +38,14 @@ import kotlinx.coroutines.launch
 import org.json.JSONException
 import java.io.IOException
 import java.lang.Thread.sleep
+import java.util.Calendar
 import kotlin.system.exitProcess
+//마지막 알람을 체크하면 true - 파란점이 생기는 문제
 
 class PillFragment : Fragment() {
     lateinit var calendar : MaterialCalendarView
     lateinit var pillListAdapter: PillListAdapter
-    lateinit var progress : ProgressBar
+    //lateinit var progress : ProgressBar
     lateinit var recyclerView: RecyclerView
     lateinit var pillsList: ArrayList<PillListInfo> //서버에서 가져온 모든 알약 정보를 담은 리스트
     private lateinit var userId: String
@@ -103,15 +106,15 @@ class PillFragment : Fragment() {
         calendar = view.findViewById(R.id.cal_calendar)
         calendar.selectedDate = CalendarDay.today() // 오늘 날짜로 초기화
         recyclerView = view.findViewById(R.id.re_pill_list)
-        progress = view.findViewById(R.id.pr_loading)
+        //progress = view.findViewById(R.id.pr_loading)
         pillsList = ArrayList()
         return view
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // progress 초기화
+/*        // progress 초기화
         progress = view.findViewById(R.id.pr_loading)
-        progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정
+        progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정*/
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("##INFO", "사용자 정보 요청 실패", error)
@@ -177,11 +180,10 @@ class PillFragment : Fragment() {
                 }
         }
     }
-
     //파이어베이스에서 알림 데이터를 가져오는 함수
     private fun requestPillData(userId : String) {
-        progress = requireView().findViewById(R.id.pr_loading)
-        progress.visibility = View.VISIBLE
+/*        progress = requireView().findViewById(R.id.pr_loading)
+        progress.visibility = View.VISIBLE*/
         //데이터 베이스에서 데이터 읽기
         val selectedDate = calendar.selectedDate
         val date = "${selectedDate?.year}${selectedDate?.month}${selectedDate?.day}"
@@ -196,8 +198,7 @@ class PillFragment : Fragment() {
                         val alarmhour = postSnapshot.child("hour").getValue(Int::class.java)
                         val alarmminute = postSnapshot.child("minute").getValue(Int::class.java)
                         val alarmYear = postSnapshot.child("calendarYear").getValue(Int::class.java)
-                        val alarmMonth =
-                            postSnapshot.child("calendarMonth").getValue(Int::class.java)
+                        val alarmMonth = postSnapshot.child("calendarMonth").getValue(Int::class.java)
                         val alarmDay = postSnapshot.child("calendarDay").getValue(Int::class.java)
                         val isChecked = postSnapshot.child("checked").getValue(Boolean::class.java)
                         if (alarmname != null && alarmhour != null && alarmminute != null &&
@@ -219,7 +220,6 @@ class PillFragment : Fragment() {
                         }
                     }
                     Log.i("##INFO", "pillList.size = ${pillsList.size}");
-
                     checkPillChecked()
                     comparePillData()
                 }
@@ -228,12 +228,6 @@ class PillFragment : Fragment() {
                     Log.e("TAG", "Failed to read value.", databaseError.toException())
                 }
             })
-
-        // 프로그래스바 지정 시간 이후에 사라짐
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(2000)
-            progress.visibility = View.GONE
-        }
     }
 
     private fun sendFCM() {
@@ -245,14 +239,24 @@ class PillFragment : Fragment() {
 
     //알림을 체크한 경우 달력에 체크한 날짜를 표시하는 함수
     private fun checkPillChecked() {
+        var allChecked = true
+        Log.d("Allyakkk", "list: $pillsList")
         pillsList.forEach {
             val itemYear = it.calendarYear
             val itemMonth = it.calendarMonth
             val itemDay = it.calendarDay
             val checked = it.checked
-
             val date = CalendarDay.from(itemYear, itemMonth, itemDay)
-            if (checked) {
+            if (!checked) {
+                allChecked = false
+            }
+            if(!allChecked){
+                // allSelected가 false일 때 장식 제거
+                decoratedDates[date]?.let {
+                    calendar.removeDecorator(it)
+                    decoratedDates.remove(date)
+                }
+            }else{
                 val newDecorator = object : DayViewDecorator {
                     override fun shouldDecorate(day: CalendarDay?): Boolean {
                         return day == date
@@ -261,19 +265,11 @@ class PillFragment : Fragment() {
                         view?.addSpan(DotSpan(5f, Color.BLUE))
                     }
                 }
-
                 // 이전에 추가된 장식이 있으면 제거
                 decoratedDates[date]?.let { calendar.removeDecorator(it) }
-
                 // 새로운 장식 추가
                 calendar.addDecorator(newDecorator)
                 decoratedDates[date] = newDecorator
-            } else {
-                // allSelected가 false일 때 장식 제거
-                decoratedDates[date]?.let {
-                    calendar.removeDecorator(it)
-                    decoratedDates.remove(date)
-                }
             }
         }
     }
@@ -314,9 +310,7 @@ class PillFragment : Fragment() {
             }
         }
     }
-    //var allSelected = false
     private val decoratedDates = HashMap<CalendarDay, DayViewDecorator>()
-
     //선택한 날짜에 해당하는 알림 데이터를 가져와서 리사이클러 뷰에 표시하기
     private fun comparePillData() {
         val selectedDate = calendar.selectedDate
@@ -330,8 +324,7 @@ class PillFragment : Fragment() {
                 selectedPillList.add(i)
             }
         }
-        pillListAdapter =
-            PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
+        pillListAdapter = PillListAdapter(selectedPillList, object : PillListAdapter.OnItemClickListener {
             override fun onItemClick(data: PillListInfo, position: Int) {
                 //기존 데이터의 데이터를 변경해주기 위한 for문
                 pillsList.forEach {
@@ -368,7 +361,7 @@ class PillFragment : Fragment() {
                     CalendarDay.from(data.calendarYear, data.calendarMonth, data.calendarDay)
 
                 // 모든 아이템이 체크되었을 때
-                if (isAllChecked == true) {
+                if (isAllChecked) {
                     // 새로운 장식 생성
                     val newDecorator = object : DayViewDecorator {
                         override fun shouldDecorate(day: CalendarDay?): Boolean {
@@ -376,7 +369,8 @@ class PillFragment : Fragment() {
                         }
 
                         override fun decorate(view: DayViewFacade?) {
-                            view?.addSpan(DotSpan(5f, Color.BLUE))
+                            view?.addSpan(DotSpan(5f, Color.BLUE)) //파란점
+                            //여기에 맵 추가 수수
                         }
                     }
                     // 이전에 추가된 장식이 있으면 제거
@@ -399,7 +393,6 @@ class PillFragment : Fragment() {
                 dialog.setMessage("${data.mediName}의 알림을 삭제하시겠습니까?")
                 dialog.setPositiveButton("삭제") { dialog, which ->
                     val key = data.key
-                    //date - key - 알람 정보
                     MyRef.alarmRef.child(userId)
                         .child("${data.calendarYear}${data.calendarMonth}${data.calendarDay}")
                         .child(key).removeValue()

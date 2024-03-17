@@ -1,26 +1,21 @@
 package com.example.allyak
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
-import com.prolificinteractive.materialcalendarview.CalendarDay
 
 class MyinfoFragment : Fragment() {
     private lateinit var userId: String
@@ -58,10 +53,10 @@ class MyinfoFragment : Fragment() {
             val intent = Intent(this.requireContext(), AddmyinfoActivity::class.java)
             startActivity(intent)
         }
-    //현재 복용약
+        //현재 복용약
         mediRecyclerView = view.findViewById(R.id.mediRecyclerView)
         mediRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    //부작용
+        //부작용
         sideRecyclerView = view.findViewById(R.id.sideRecyclerView)
         sideRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         UserApiClient.instance.me { user, error ->

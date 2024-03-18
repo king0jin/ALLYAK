@@ -81,8 +81,6 @@ class ViewpillActivity:AppCompatActivity() {
             }
             true
         }
-        //realtime 을 snapshot으로 다 보고 해당 일련번호가 있는지 확인. 없으면 생성, 있으면 count 불러오기
-        //가능하면 얘를 리스트로 동적 처리, selector되는지 확인, 텍컬 white로 변경
         for (symptom in symptoms){
             val symptomTag = findViewById<LinearLayout>(resources.getIdentifier(symptom, "id", packageName))
             val symptomName = findViewById<TextView>(resources.getIdentifier(symptom+"n", "id", packageName))

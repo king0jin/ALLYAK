@@ -15,7 +15,6 @@ const val messageExtra = "messageExtra"
 class Notification : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
         val channelID = intent?.getStringExtra("channelID") ?: "channel1" // 기본값은 "channel1"
         val notificationID = intent?.getStringExtra("notificationID")
 

@@ -3,30 +3,14 @@ package com.example.allyak
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
 import com.naver.maps.map.NaverMapSdk
 
-class MyApplication :MultiDexApplication(){  //원래 :Application() 이었음
-//    companion object {
-//        var instance : MyApplication? = null
-//    }
-//수경 코드
+class MyApplication :MultiDexApplication(){
     companion object {
-        lateinit var auth: FirebaseAuth //인증 관리
         lateinit var db: FirebaseFirestore
-
-        fun checkAuth(): Boolean {
-            var currentUser = auth.currentUser
-            return currentUser?.let {
-                //email = currentUser.email
-                currentUser.isEmailVerified
-            } ?: let {
-                false
-            }
-        }
     }
 
     override fun onCreate() {
@@ -51,13 +35,4 @@ class MyApplication :MultiDexApplication(){  //원래 :Application() 이었음
             }
         }
     }
-//    override fun onTerminate() {
-//        super.onTerminate()
-//        instance = null
-//    }
-//    fun getAppContext() : MyApplication {
-//        checkNotNull(instance) { "this application does not inherit com.kakao.GlobalApplication" }
-//        return instance!!
-//    }
-
 }

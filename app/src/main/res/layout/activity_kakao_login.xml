@@ -28,8 +28,8 @@
                 android:gravity="center">
                 <ImageButton
                     android:id="@+id/kakaobtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="center"
                     android:src="@drawable/kakao_login_medium_wide"
                     android:layout_marginTop="120dp"

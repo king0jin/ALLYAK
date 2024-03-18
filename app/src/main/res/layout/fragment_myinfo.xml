@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -16,30 +17,28 @@
             android:text="현재 복용 중인 약"
             android:fontFamily="@font/notoebold"
             android:textColor="@color/black"
-            android:layout_marginLeft="55dp"
             android:layout_marginTop="25dp"
+            android:layout_marginRight="55dp"
             android:textSize="25dp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mediRecyclerView"
             android:layout_width="304dp"
             android:layout_height="180dp"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/rect1"/>
+            android:background="@drawable/rect2"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="73dp"
             android:text="부작용이 있는 약"
             android:fontFamily="@font/notoebold"
             android:textColor="@color/black"
-            android:layout_marginLeft="55dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="57dp"
             android:textSize="25dp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sideRecyclerView"
             android:layout_width="304dp"
             android:layout_height="180dp"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/rect1"/>
+            android:background="@drawable/rect2"/>
     </LinearLayout>
     <TextView
         android:id="@+id/logoutBtn"

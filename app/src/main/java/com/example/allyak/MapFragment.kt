@@ -1,6 +1,5 @@
 package com.example.allyak
 
-//import android.widget.SearchView
 import android.Manifest
 import android.app.Dialog
 import android.content.pm.PackageManager
@@ -36,7 +35,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private val pharmacyViewModel by lazy { PharmacyLocationTaskViewModel() }
     private val markers = mutableListOf<Marker>()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)

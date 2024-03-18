@@ -14,8 +14,6 @@ import java.util.Date
 import java.util.Locale
 
 class AddpostActivity : AppCompatActivity() {
-    //add post를 하면 프래그먼트가 업데이트 되어야 됨
-    //누르면 바로 업데이트가 안되고, 프래그먼트를 다시 불러와야 됨
     lateinit var tb: Toolbar
     lateinit var binding: ActivityAddpostBinding
     private lateinit var userId :String

@@ -4,7 +4,6 @@ import com.example.allyak.databinding.ActivitySearchsymptomBinding
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
@@ -28,7 +27,6 @@ class SearchsymptomActivity : AppCompatActivity() {
         }
         binding.pillSearchBtn.setOnClickListener {
             val mySymptom = binding.searchSymptomText.text.toString()
-            Toast.makeText(this, "$mySymptom 정보 불러오는 중", Toast.LENGTH_SHORT).show()
             pillRequest(mySymptom)
         }
     }

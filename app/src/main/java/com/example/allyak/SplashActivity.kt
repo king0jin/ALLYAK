@@ -31,7 +31,6 @@ class SplashActivity : AppCompatActivity() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
-                //Splash 화면은 앱 처음 시작에 딱 1번만 보여지는 화면
                 finish()
             }
         },SPLASH_DELAY)

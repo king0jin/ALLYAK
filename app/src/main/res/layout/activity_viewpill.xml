@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:minHeight="150dp"
             android:background="#E1E1E1" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,19 +69,13 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DEDEDE"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--    <Button
-        android:id="@+id/pillReviewBtn"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:text="증상 추가"
-        android:fontFamily="@font/notobold"
-        android:background="@drawable/buttonround2"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center|bottom" />-->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"

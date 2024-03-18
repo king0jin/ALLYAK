@@ -54,7 +54,6 @@ class AddAlarmActivity : AppCompatActivity() {
                         setAlarm(date, year, month, dayOfMonth)
                         //알람 설정
                         scheduleNotification()
-
                         finish()
                     } else {
                         Toast.makeText(this, "약 이름을 입력해주세요", Toast.LENGTH_SHORT).show()

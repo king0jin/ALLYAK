@@ -31,12 +31,10 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import java.lang.Thread.sleep
 import kotlin.collections.set
 import kotlin.system.exitProcess
-//마지막 알람을 체크하면 true - 파란점이 생기는 문제
 
 class PillFragment : Fragment() {
     lateinit var calendar : MaterialCalendarView
     lateinit var pillListAdapter: PillListAdapter
-    //lateinit var progress : ProgressBar
     lateinit var recyclerView: RecyclerView
     lateinit var pillsList: ArrayList<PillListInfo> //서버에서 가져온 모든 알약 정보를 담은 리스트
     private lateinit var userId: String

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +17,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kakao.sdk.user.UserApiClient
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
 class HomeFragment : Fragment() {
     lateinit var searchSymptom: CardView
     lateinit var searchName: CardView
@@ -74,7 +69,6 @@ class HomeFragment : Fragment() {
                 Log.w("Allyakk", "loadPost:onCancelled", error.toException())
             }
         }
-        // addValueEventListener() 메서드로 DatabaseReference에 ValueEventListener를 추가한다.
         MyRef.alarmRef.child(userId).child("${CalendarDay.today().year}${CalendarDay.today().month}${CalendarDay.today().day}").addValueEventListener(todayListener)
     }
     private fun loadActivity(activity: Activity) {

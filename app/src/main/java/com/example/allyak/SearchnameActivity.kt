@@ -3,7 +3,6 @@ package com.example.allyak
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.allyak.databinding.ActivitySearchnameBinding
@@ -33,7 +32,6 @@ class SearchnameActivity: AppCompatActivity() {
         }
         binding.pillSearchBtn.setOnClickListener {
             val pillName = binding.searchNameText.text.toString()
-            Toast.makeText(this, "$pillName 정보 불러오는 중", Toast.LENGTH_SHORT).show()
             pillRequest(pillName)
         }
     }

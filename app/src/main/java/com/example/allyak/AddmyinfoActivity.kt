@@ -8,7 +8,6 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.google.firebase.database.FirebaseDatabase
 import com.kakao.sdk.user.UserApiClient
 
 class AddmyinfoActivity : AppCompatActivity() {

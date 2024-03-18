@@ -9,17 +9,18 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:text="08:00"
             android:id="@+id/tv_time"
             android:textColor="@color/black"
-            android:textSize="25sp"
+            android:textSize="22sp"
+            android:paddingStart="10dp"
             android:fontFamily="@font/notobold"/>
         <TextView
             android:id="@+id/tv_pill"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_marginRight="8dp"
@@ -37,9 +38,9 @@
 
         <CheckBox
             android:id="@+id/check_pill"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="40dp"/>
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"/>
 
         <ImageView
             android:layout_width="wrap_content"

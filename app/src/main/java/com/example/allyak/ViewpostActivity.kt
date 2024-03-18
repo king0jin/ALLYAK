@@ -84,7 +84,6 @@ class ViewpostActivity : AppCompatActivity()  {
         }
         binding.viewLike.setOnClickListener {
             var existId1 = false
-            //likeData map
             likeRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for(data in dataSnapshot.children){
@@ -223,7 +222,6 @@ class ViewpostActivity : AppCompatActivity()  {
         UserApiClient.instance.me { user, error ->
             if (error == null && user != null) {
                 val myUid = user.id.toString()
-
                 // 버튼을 누른 사용자의 uid와 내 uid를 비교하여 팝업 메뉴의 항목을 제어
                 if (myUid == uid) {
                     // 내 uid와 같으면 item1, item2, item3 모두 표시

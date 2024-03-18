@@ -20,7 +20,6 @@ class PharmacyLocationTaskViewModel : ViewModel() {
     private val _pharmacyLocationData = MutableLiveData<List<Pharmacy>>()
     private val _pharmacyData = MutableLiveData<List<Pharmacy>>()
     val pharmacyLocationData: LiveData<List<Pharmacy>> get() = _pharmacyLocationData
-    val pharmacyData: LiveData<List<Pharmacy>> get() = _pharmacyData
 
     fun getPharmacyLocationData(city: String, district: String) {
         GlobalScope.launch(Dispatchers.IO) {

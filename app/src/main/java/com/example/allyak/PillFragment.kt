@@ -370,7 +370,6 @@ class PillFragment : Fragment() {
 
                         override fun decorate(view: DayViewFacade?) {
                             view?.addSpan(DotSpan(5f, Color.BLUE)) //파란점
-                            //여기에 맵 추가 수수
                         }
                     }
                     // 이전에 추가된 장식이 있으면 제거

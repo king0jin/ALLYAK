@@ -12,33 +12,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.user.UserApiClient
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.json.JSONException
-import java.io.IOException
 import java.lang.Thread.sleep
-import java.util.Calendar
+import kotlin.collections.set
 import kotlin.system.exitProcess
 //마지막 알람을 체크하면 true - 파란점이 생기는 문제
 
@@ -71,7 +62,7 @@ class PillFragment : Fragment() {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         requireActivity(),
                         android.Manifest.permission.POST_NOTIFICATIONS
-                )) {
+                    )) {
                     // 이미 권한을 거절한 경우 권한 설정 화면으로 이동
                     val intent: Intent =
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
@@ -112,9 +103,9 @@ class PillFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-/*        // progress 초기화
-        progress = view.findViewById(R.id.pr_loading)
-        progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정*/
+        /*        // progress 초기화
+                progress = view.findViewById(R.id.pr_loading)
+                progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정*/
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("##INFO", "사용자 정보 요청 실패", error)
@@ -129,64 +120,17 @@ class PillFragment : Fragment() {
 
     //FCM을 통해 알림을 보내는 함수
     private fun sendNotificationFCM(pillList: ArrayList<PillListInfo>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                Thread {
-                    val todayPill = ArrayList<PillListInfo>()
-                    pillList.forEach {
-                        val year = it.calendarYear
-                        val month = it.calendarMonth
-                        val day = it.calendarDay
-
-                        val today = CalendarDay.today()
-
-                        if (year == today.year && month == today.month && day == today.day) {
-                            todayPill.add(it)
-                        }
-                    }
-
-                    try {
-                        var pillStr = ""
-                        todayPill.forEach {
-                            pillStr += "${it.hour}시 ${it.minute}분에 ${it.mediName} , "
-                        }
-
-                        val fcm = SendNotfication()
-                        if (todayPill.isNotEmpty()) {
-                            fcm.sendTopicNotification(
-                                token,
-                                "Allyak List",
-                                "금일 ${pillStr} 을/를 복용하셔야 합니다"
-                            )
-                        } else {
-                            fcm.sendTopicNotification(
-                                token,
-                                "Allyak List",
-                                "오늘은 복용해야 할 약이 없습니다"
-                            )
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-                }.start()
-            }
-                .addOnFailureListener { e: Exception? ->
-                    Log.i(
-                        "##INFO",
-                        "getToken() Fail"
-                    )
-                }
-        }
     }
+
+
     //파이어베이스에서 알림 데이터를 가져오는 함수
     private fun requestPillData(userId : String) {
-/*        progress = requireView().findViewById(R.id.pr_loading)
-        progress.visibility = View.VISIBLE*/
+        /*        progress = requireView().findViewById(R.id.pr_loading)
+                progress.visibility = View.VISIBLE*/
         //데이터 베이스에서 데이터 읽기
         val selectedDate = calendar.selectedDate
         val date = "${selectedDate?.year}${selectedDate?.month}${selectedDate?.day}"
+
         MyRef.alarmRef.child(userId).child(date)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -222,6 +166,8 @@ class PillFragment : Fragment() {
                     Log.i("##INFO", "pillList.size = ${pillsList.size}");
                     checkPillChecked()
                     comparePillData()
+                    // 데이터 변경 후에 어댑터에 변경 내용을 알려줌
+                    pillListAdapter.notifyDataSetChanged()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

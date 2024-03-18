@@ -197,14 +197,12 @@ class ViewpostActivity : AppCompatActivity()  {
                     intent.putExtra("key", postkey)
                     intent.putExtra("uid", uid)
                     startActivity(intent)
+                    finish()
                     true
                 }
                 R.id.popDel -> {
                     MyRef.contentRef.child(postkey).removeValue()
-                    // MainActivity로 이동하여 CommunityFragment로 전환
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("destination", "community")
-                    startActivity(intent)
+                    finish()
                     true
                 }
                 R.id.popClose -> {

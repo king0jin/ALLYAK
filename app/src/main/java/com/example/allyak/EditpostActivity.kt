@@ -45,9 +45,6 @@ class EditpostActivity : AppCompatActivity() {
                         if (binding.postTitle.text.isNotEmpty() && binding.postContent.text.isNotEmpty()) {
                             //파이어베이스에 업데이트
                             editStore(postkey)
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.putExtra("destination", "community")
-                            startActivity(intent)
                             finish()
                         } else {
                             Toast.makeText(this, "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show()

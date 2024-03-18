@@ -126,7 +126,7 @@ class PharmacyLocationTaskViewModel : ViewModel() {
             "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire"
         val apiKey =
             "Bht6UBoql5Zuh2tvMckFU8%2FADjJBctoibZLwRZxojBgR3aOBeRyIjdD33DwP4teYhTAEIYs1fuQHt7eplCkv0w%3D%3D"
-//        val apiKey = "Bht6UBoql5Zuh2tvMckFU8/ADjJBctoibZLwRZxojBgR3aOBeRyIjdD33DwP4teYhTAEIYs1fuQHt7eplCkv0w=="
+        //val apiKey = "Bht6UBoql5Zuh2tvMckFU8/ADjJBctoibZLwRZxojBgR3aOBeRyIjdD33DwP4teYhTAEIYs1fuQHt7eplCkv0w=="
         val requestUrl = "$apiUrl?serviceKey=$apiKey&Q0=$city&Q1=$district" // serviceKey 파라미터명 변경
 
         // OkHttp 요청 객체 생성

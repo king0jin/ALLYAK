@@ -12,10 +12,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
-    override fun onNewToken(token: String) {
-        super.onNewToken(token)
-    }
-
     /**
      * 메시지가 왔을때 onMessageReceived 에서 받음.
      * @param message
@@ -71,7 +67,5 @@ class FirebaseMessagingServiceUtil : FirebaseMessagingService() {
         }
         //알림 생성
         notificationManager.notify(uniId, notificationBuilder.build())
-
-
     }
 }

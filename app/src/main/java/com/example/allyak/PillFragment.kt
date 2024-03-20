@@ -95,15 +95,11 @@ class PillFragment : Fragment() {
         calendar = view.findViewById(R.id.cal_calendar)
         calendar.selectedDate = CalendarDay.today() // 오늘 날짜로 초기화
         recyclerView = view.findViewById(R.id.re_pill_list)
-        //progress = view.findViewById(R.id.pr_loading)
         pillsList = ArrayList()
         return view
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*        // progress 초기화
-                progress = view.findViewById(R.id.pr_loading)
-                progress.visibility = View.VISIBLE // ProgressBar를 보이도록 설정*/
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("##INFO", "사용자 정보 요청 실패", error)
@@ -123,8 +119,6 @@ class PillFragment : Fragment() {
 
     //파이어베이스에서 알림 데이터를 가져오는 함수
     private fun requestPillData(userId : String) {
-        /*        progress = requireView().findViewById(R.id.pr_loading)
-                progress.visibility = View.VISIBLE*/
         //데이터 베이스에서 데이터 읽기
         val selectedDate = calendar.selectedDate
         val date = "${selectedDate?.year}${selectedDate?.month}${selectedDate?.day}"

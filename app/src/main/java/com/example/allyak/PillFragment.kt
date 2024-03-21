@@ -1,6 +1,9 @@
 package com.example.allyak
 
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
+import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -115,7 +118,6 @@ class PillFragment : Fragment() {
     //FCM을 통해 알림을 보내는 함수
     private fun sendNotificationFCM(pillList: ArrayList<PillListInfo>) {
     }
-
 
     //파이어베이스에서 알림 데이터를 가져오는 함수
     private fun requestPillData(userId : String) {
@@ -349,6 +351,9 @@ class PillFragment : Fragment() {
                             decoratedDates.remove(date)
                         }
                     }
+                    val notificationID =  data.calendarYear+ data.calendarMonth + data.calendarDay + data.hour + data.minute
+
+                    cancelNotification(notificationID)
 
                 }
                 dialog.setNegativeButton("취소") { dialog, which ->
@@ -361,6 +366,24 @@ class PillFragment : Fragment() {
         recyclerView.adapter = pillListAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
+    /**
+     * 알람을 삭제하는 함수
+     */
+    private fun cancelNotification(notificationID: Int) {
+        val intent = Intent(requireContext(), Notification::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(),
+            notificationID,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
+
+        pendingIntent.cancel()
+    }
+
     override fun onResume() {
         super.onResume()
         if (::pillsList.isInitialized) {

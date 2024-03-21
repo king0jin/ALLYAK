@@ -53,8 +53,9 @@ class AddAlarmActivity : AppCompatActivity() {
                         //파이어베이스에 저장
                         setAlarm(date, year, month, dayOfMonth)
                         //알람 설정
-                        scheduleNotification()
+                        scheduleNotification(year, month, dayOfMonth)
                         finish()
+
                     } else {
                         Toast.makeText(this, "약 이름을 입력해주세요", Toast.LENGTH_SHORT).show()
                     }
@@ -100,26 +101,28 @@ class AddAlarmActivity : AppCompatActivity() {
             }
     }
 
-
     // 알람
     private var notificationID = ""
     private var channelID = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ScheduleExactAlarm")
-    private fun scheduleNotification() {
+    private fun scheduleNotification(year: Int, month: Int, dayOfMonth: Int) {
         val intent = Intent(applicationContext, Notification::class.java)
         val notificationTitle = alarmMediName.text.toString()
         val notificationMessage = "${notificationTitle} 복용할 시간입니다."
-        // 알림을 여러개 설정하기 위해서 NotificationID를 다르게 설정
-        val uniqueNotificationID = System.currentTimeMillis().toInt() // Create a unique ID
 
+        val hour = timePicker.hour
+        val minute = timePicker.minute
+        val mediName = alarmMediName.text.toString()
+        // 알림을 여러개 설정하기 위해서 NotificationID를 다르게 설정
+        //val uniqueNotificationID = System.currentTimeMillis().toInt() // Create a unique ID
+        val uniqueNotificationID = year+month+dayOfMonth+hour+minute
+        Log.i("##INFO", "uniqueNotificationID: $uniqueNotificationID")
         notificationID = uniqueNotificationID.toString()
         channelID = "channel_$uniqueNotificationID"
 
-
         createNotificationChannel(channelID)
-
 
         intent.putExtra(titleExtra, notificationTitle)
         intent.putExtra(messageExtra, notificationMessage)
@@ -156,7 +159,6 @@ class AddAlarmActivity : AppCompatActivity() {
         return calendar.timeInMillis
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelID: String) {
         val name = "notif channel"
@@ -167,5 +169,4 @@ class AddAlarmActivity : AppCompatActivity() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
-
 }

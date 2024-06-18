@@ -1,6 +1,7 @@
 * **DB구조**
   
-![image](https://github.com/soo5o/Allyak/assets/90204622/31bfa020-7199-4c9f-a9fe-4f09af0e8e4f)
+![image](https://github.com/soo5o/Allyak/assets/90204622/a3a1dbe9-e59b-4ceb-bf54-90158f104ca0)
+
 
 * **시스템 구성도**
   

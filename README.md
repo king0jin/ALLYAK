@@ -4,5 +4,5 @@
 
 
 * **시스템 구성도**
-  
-![Group 1](https://github.com/soo5o/Allyak/assets/90204622/75294b45-d005-42ee-841c-3829e963679e)
+
+  ![Group 1 (1)](https://github.com/soo5o/Allyak/assets/90204622/c131cee8-c2f1-4a2a-8c7a-f7b79551b194)
